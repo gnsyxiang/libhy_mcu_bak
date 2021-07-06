@@ -63,6 +63,7 @@ AC_CHECK_FUNCS([memset])
 AC_CONFIG_FILES([Makefile
                  $project_name.pc
                  doc/Makefile
+                 doc/at32f4xx/Makefile
                  example/Makefile
                  include/Makefile
                  res/Makefile
