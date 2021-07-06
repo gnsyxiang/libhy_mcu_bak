@@ -78,7 +78,7 @@ _build/
 install/
 doxygen/
 
-autotools_demo_lib.pc
+hy_mcu.pc
 
 *.o
 *.lo
