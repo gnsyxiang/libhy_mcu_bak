@@ -55,7 +55,7 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += -export-symbols-regex 'Hy*' \
+_ldflags_com    += \
                    -version-info @current@:@revision@:@age@ \
                    $(LIB_LDFLAGS_COM) \
                    $(top_builddir)/src/$(select_mcu_platform)/libmcu.la
