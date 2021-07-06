@@ -39,9 +39,13 @@ _ldadd_com      =
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    += -I$(top_srcdir)/include
+_include_com    += -I$(top_srcdir)/include \
+                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/CoreSupport \
+                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport \
+                   -I$(top_srcdir)/src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/inc
 
-_sources_com    += module_a.c
+_sources_com    += \
+                   hy_uart.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \

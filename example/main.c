@@ -19,17 +19,31 @@
  */
 #include <stdio.h>
 
-#include "module_a.h"
+#include "hy_uart.h"
+
+static void _read_cb(char byte, void *args)
+{
+
+}
 
 int main(int argc, char const* argv[])
 {
-    printf("hello world \n");
+    HyUartConfig_t uart_config;
+    uart_config.num = HY_UART_1;
+    uart_config.rate = 115200;
+    uart_config.config_save.read_cb = _read_cb;
+    uart_config.config_save.args = NULL;
 
-    HyModuleAInit();
+    void *handle = HyUartCreate(&uart_config);
+    if (!handle) {
+        return -1;
+    }
 
-    printf("run main ok \n");
+    while (1) {
 
-    HyModuleADeInit();
+    }
+
+    HyUartDestroy(handle);
 
     return 0;
 }
