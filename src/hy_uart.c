@@ -149,15 +149,15 @@ void *HyUartCreate(HyUartConfig_t *uart_config)
         }
         memset(context, '\0', sizeof(*context));
 
-        context->num = uart_config->num;
+        context_array[uart_config->num] = context;
+        context->num                    = uart_config->num;
+
         memcpy(&context->config_save, &uart_config->config_save,
                 sizeof(context->config_save));
 
         _init_uart_gpio(uart_config->num);
         _init_uart_func(uart_config->num, uart_config->rate);
         _init_uart_interrupt(uart_config->num);
-
-        context_array[uart_config->num] = context;
 
         return context;
     } while (0);
@@ -180,7 +180,9 @@ static void _uart_irq_handler(HyUartNum_t num)
 {
     if (context_array[num]) {
         HyUartConfigSave_t *config_save = &context_array[num]->config_save;
-        USART_Type *uart[HY_UART_MAX] = {NULL, USART1, USART2, USART3, UART4, UART5};
+        USART_Type *uart[HY_UART_MAX] = {
+            NULL, USART1, USART2, USART3, UART4, UART5
+        };
 
         if(USART_GetITStatus(uart[num], USART_INT_RDNE) != RESET) {
             if (config_save->read_cb) {
