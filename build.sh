@@ -3,26 +3,28 @@
 # set -x
 
 if [ $# != 1 ]; then
-    echo "eg: ./build.sh pc/arm"
+    echo "eg: ./build.sh arm"
     exit
 fi
 
 data_disk_path=/opt/data
 
-if [ x$1 = x"pc" ]; then
-    vender=pc
-    gcc_version=x86_64-linux-gnu
-elif [ x$1 = x"arm" ]; then
-    vender=hisi
-    host=arm-himix200-linux
-    gcc_version=arm-himix200-linux
-    gcc_prefix=arm-himix200-linux
+if [ x$1 = x"arm" -o x$1 = x"pwd" ]; then
+    vender=gnu_arm_embedded
+    host=arm-none-eabi
+    gcc_version=gcc-arm-none-eabi-10-2020-q4-major
+    gcc_prefix=arm-none-eabi
     cross_gcc_path=${data_disk_path}/opt/toolchains/${vender}/${gcc_version}/bin/${gcc_prefix}-
-elif [ x$1 = x"pwd" ]; then
-    vender=pc
-    gcc_version=x86_64-linux-gnu
+
+    _cflags_com="-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard \
+        -ffunction-sections -fdata-sections \
+        -specs=nano.specs -specs=nosys.specs"
+
+    # _cppflags_com="-DAT32F407VGT7 -DUSE_STDPERIPH_DRIVER"
+    _cppflags_com="-DAT32F403ARGT7 -DUSE_STDPERIPH_DRIVER"
 else
-    echo "eg: ./build.sh pc/arm"
+    echo "eg: ./build.sh arm"
+    exit
 fi
 
 # 3rd_lib path
@@ -42,10 +44,10 @@ fi
 ${target_path}/configure                            \
     CC=${cross_gcc_path}gcc                         \
     CXX=${cross_gcc_path}g++                        \
-    CPPFLAGS=""                                     \
-    CFLAGS="-I${lib_3rd_path}/include"              \
-    CXXFLAGS="-I${lib_3rd_path}/include"            \
-    LDFLAGS="-L${lib_3rd_path}/lib"                 \
+    CPPFLAGS="${_cppflags_com}"                     \
+    CFLAGS="${_cflags_com}"                         \
+    CXXFLAGS=""                                     \
+    LDFLAGS=""                                      \
     LIBS=""                                         \
     PKG_CONFIG_PATH="${lib_3rd_path}/lib/pkgconfig" \
     --prefix=${prefix_path}                         \
@@ -57,5 +59,5 @@ ${target_path}/configure                            \
 
 thread_jobs=`getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`
 
-make -j${thread_jobs}; make install
+# make -j${thread_jobs}; make install
 
