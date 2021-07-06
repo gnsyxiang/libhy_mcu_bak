@@ -32,6 +32,7 @@ AC_PROG_CXX
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
+AM_PROG_AS
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -41,10 +42,23 @@ AC_PROG_MKDIR_P
 # Checks for libraries.
 
 # Checks for header files.
+AC_CHECK_HEADERS([stddef.h stdint.h stdlib.h string.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_TYPE_INT16_T
+AC_TYPE_INT32_T
+AC_TYPE_INT64_T
+AC_TYPE_INT8_T
+AC_TYPE_SIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
+AC_TYPE_UINT8_T
 
 # Checks for library functions.
+AC_FUNC_MALLOC
+AC_CHECK_FUNCS([memset])
 
 AC_CONFIG_FILES([Makefile
                  $project_name.pc
@@ -52,5 +66,16 @@ AC_CONFIG_FILES([Makefile
                  example/Makefile
                  include/Makefile
                  res/Makefile
-                 src/Makefile])
+                 src/Makefile
+                 src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/Makefile
+                 src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/inc/Makefile
+                 src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/src/Makefile
+                 src/at32f4xx/Libraries/CMSIS/CM4/CoreSupport/Makefile
+                 src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport/Makefile
+                 src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport/startup/Makefile
+                 src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport/startup/gcc/Makefile
+                 src/at32f4xx/Libraries/CMSIS/CM4/Makefile
+                 src/at32f4xx/Libraries/CMSIS/Makefile
+                 src/at32f4xx/Libraries/Makefile
+                 src/at32f4xx/Makefile])
 AC_OUTPUT

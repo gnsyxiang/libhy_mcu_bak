@@ -18,6 +18,11 @@
 #     last modified: 05/03 2021 10:35
 # ===============================================================
 
+if COMPILE_MCU_PLATFORM_AT32F4XX
+SUBDIRS = at32f4xx
+select_mcu_platform = at32f4xx
+endif
+
 lib_LTLIBRARIES = lib@project_name@.la
 
 # ------------------
@@ -48,7 +53,8 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += -export-symbols-regex 'Hy*' \
                    -version-info @current@:@revision@:@age@ \
-                   $(LIB_LDFLAGS_COM)
+                   $(LIB_LDFLAGS_COM) \
+                   $(top_builddir)/src/$(select_mcu_platform)/libmcu.la
 
 lib@project_name@_la_SOURCES    = $(_sources_com)
 lib@project_name@_la_CPPFLAGS   = $(_cppflags_com)
