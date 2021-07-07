@@ -42,9 +42,11 @@ AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 
 # Checks for libraries.
+AC_CHECK_LIB([m], [sqrt])
 
 # Checks for header files.
-AC_CHECK_HEADERS([stddef.h stdint.h stdlib.h string.h])
+AC_HEADER_MAJOR
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h netinet/in.h shadow.h stddef.h stdint.h stdlib.h string.h sys/param.h sys/socket.h sys/time.h syslog.h unistd.h utmp.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -52,15 +54,22 @@ AC_TYPE_INT16_T
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
 AC_TYPE_INT8_T
+AC_TYPE_MODE_T
+AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_CHECK_MEMBERS([struct stat.st_rdev])
+AC_TYPE_UID_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
+AC_CHECK_TYPES([ptrdiff_t])
 
 # Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([gethostbyname gettimeofday inet_ntoa memmove memset select strchr strdup strerror strncasecmp strrchr strstr strtol strtoul])
 
 AC_CONFIG_FILES([Makefile
                  $project_name.pc
@@ -70,6 +79,14 @@ AC_CONFIG_FILES([Makefile
                  include/Makefile
                  res/Makefile
                  src/Makefile
+                 src/at32f4xx/3rd_lib/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/port/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/src/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/src/api/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/src/core/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/src/core/ipv4/Makefile
+                 src/at32f4xx/3rd_lib/lwip-2.1.2/src/netif/Makefile
                  src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/Makefile
                  src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/inc/Makefile
                  src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/src/Makefile
