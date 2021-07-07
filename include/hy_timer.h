@@ -43,15 +43,20 @@ typedef enum {
     HY_TIMER_MAX,
 } HyTimerNum_t;
 
+typedef enum {
+    HY_TIMER_DISABLE,
+    HY_TIMER_ENABLE,
+} HytimerFlag_t;
+
 typedef struct {
     void (*timer_cb)(void *args);
     void *args;
 } HyTimerConfigSave_t;
 
 typedef struct {
-    HyTimerNum_t num;
-    uint32_t us;
-    int flag;
+    HyTimerNum_t    num;
+    uint32_t        us;
+    HytimerFlag_t   flag;
 
     HyTimerConfigSave_t config_save;
 } HyTimerConfig_t;

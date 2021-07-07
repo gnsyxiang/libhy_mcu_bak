@@ -60,7 +60,7 @@ static void _init_timer_func(HyTimerNum_t num, uint16_t us, int flag)
     config.TMR_CounterMode   = TMR_CounterDIR_Up;
     config.TMR_RepetitionCounter = 0;
 
-    TMR_TimeBaseInit(TMR2, &config);
+    TMR_TimeBaseInit(timer[num], &config);
 
     TMR_Cmd(timer[num], (FunctionalState)flag);
 }

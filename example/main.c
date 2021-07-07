@@ -34,6 +34,11 @@ typedef struct {
     void    *timer_handle;
 } _main_context_t;
 
+static void _timer_cb(void *args)
+{
+    LOGD("----haha \n");
+}
+
 typedef void *(*create_t)(void *config);
 typedef void (*destroy_t)(void *handle);
 typedef struct {
@@ -49,23 +54,6 @@ typedef struct {
     void        *handle;
     destroy_t   destroy;
 } _module_destroy_t;
-
-#define _DEC_MODULE_CREATE() \
-    _module_create_t module[] = { \
-        {"debug uart",  context->uart_handle,  &uart_config,   (create_t)HyUartDebugCreate,     HyUartDebugDestroy}, \
-        {"timer",       context->timer_handle, &timer_config,  (create_t)HyTimerCreate,         HyTimerDestroy}, \
-    };
-
-#define _DEC_MODULE_DESTROY() \
-    _module_destroy_t module[] = { \
-        {"debug uart",  context->uart_handle,   HyUartDebugDestroy}, \
-        {"timer",       context->timer_handle,  HyTimerDestroy}, \
-    };
-
-static void _timer_cb(void *args)
-{
-    LOGD("----haha \n");
-}
 
 static _main_context_t *_module_create(void)
 {
@@ -87,7 +75,11 @@ static _main_context_t *_module_create(void)
     timer_config.config_save.timer_cb   = _timer_cb;
     timer_config.config_save.args       = context;
 
-    _DEC_MODULE_CREATE();
+    // note: 增加或删除要同步到_module_destroy_t中
+    _module_create_t module[] = {
+        {"debug uart",  context->uart_handle,  &uart_config,   (create_t)HyUartDebugCreate,     HyUartDebugDestroy},
+        {"timer",       context->timer_handle, &timer_config,  (create_t)HyTimerCreate,         HyTimerDestroy},
+    };
 
     int i = 0;
     int len = HyUtilsArrayCnt(module);
@@ -113,7 +105,11 @@ static _main_context_t *_module_create(void)
 
 static void _module_destroy(_main_context_t *context)
 {
-    _DEC_MODULE_DESTROY();
+    // note: 增加或删除要同步到_module_create_t中
+    _module_destroy_t module[] = {
+        {"debug uart",  context->uart_handle,   HyUartDebugDestroy},
+        {"timer",       context->timer_handle,  HyTimerDestroy},
+    };
 
     for (int i = 0; i < HyUtilsArrayCnt(module); ++i) {
         _module_destroy_t *module_tmp = &module[i];
