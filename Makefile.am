@@ -79,7 +79,9 @@ CFLAGS_COM          += \
 endif
 
 if COMPILE_MCU_AT32F407VGT7
-CPPFLAGS_COM        += -DAT32F407VGT7
+CPPFLAGS_COM        += \
+                       -DAT32F407VGT7 \
+                       -DAT_START_F407_V1_0
 endif
 
 export CPPFLAGS_COM
