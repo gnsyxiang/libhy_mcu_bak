@@ -30,9 +30,6 @@ _ldflags_com    =
 _ldadd_com      =
 bin_PROGRAMS    =
 
-_install_com    =
-exampledir      = $(prefix)/example
-
 # ---------------------
 # add necessary content
 # ---------------------
@@ -63,4 +60,8 @@ main_elf_CFLAGS     = $(_cflags_com)
 main_elf_CXXFLAGS   = $(_cxxflags_com)
 main_elf_LDFLAGS    = $(_ldflags_com) -Wl,--gc-sections,-Map=main.map,-cref,-u,Reset_Handler
 main_elf_LDADD      = $(_ldadd_com)
+
+install-exec-hook:
+	@gcc_prefix@objcopy -O binary main.elf main.bin
+	$(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) main.bin "$(DESTDIR)$(bindir)$$dir"
 
