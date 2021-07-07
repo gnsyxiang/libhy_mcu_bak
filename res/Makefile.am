@@ -28,6 +28,7 @@ _dist_file_com  =
 # ---------------
 _dist_file_com  += \
                    Doxyfile \
+                   get_cross_gcc_info.sh \
                    get_project_info.sh
 EXTRA_DIST      = $(_dist_file_com)
 
