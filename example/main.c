@@ -18,27 +18,122 @@
  *     last modified: 18/03 2021 20:21
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "hy_uart.h"
+#include "hy_timer.h"
+#include "hy_log.h"
 
-int main(int argc, char const* argv[])
+#define ALONE_DEBUG 1
+
+#define HyUtilsArrayCnt(array) (int)(sizeof((array)) / sizeof((array)[0]))
+
+typedef struct {
+    void    *uart_handle;
+    void    *timer_handle;
+} _main_context_t;
+
+typedef void *(*create_t)(void *config);
+typedef void (*destroy_t)(void *handle);
+typedef struct {
+    char        *name;
+    void        *handle;
+    void        *config;
+    create_t    create;
+    destroy_t   destroy;
+} _module_create_t;
+
+typedef struct {
+    char        *name;
+    void        *handle;
+    destroy_t   destroy;
+} _module_destroy_t;
+
+#define _DEC_MODULE_CREATE() \
+    _module_create_t module[] = { \
+        {"debug uart",  context->uart_handle,  &uart_config,   (create_t)HyUartDebugCreate,     HyUartDebugDestroy}, \
+        {"timer",       context->timer_handle, &timer_config,  (create_t)HyTimerCreate,         HyTimerDestroy}, \
+    };
+
+#define _DEC_MODULE_DESTROY() \
+    _module_destroy_t module[] = { \
+        {"debug uart",  context->uart_handle,   HyUartDebugDestroy}, \
+        {"timer",       context->timer_handle,  HyTimerDestroy}, \
+    };
+
+static void _timer_cb(void *args)
 {
+    LOGD("----haha \n");
+}
+
+static _main_context_t *_module_create(void)
+{
+    _main_context_t *context = malloc(sizeof(*context));
+    if (!context) {
+        LOGE("malloc faild \n");
+        return NULL;
+    }
+    memset(context, '\0', sizeof(*context));
+
     HyUartConfig_t uart_config;
     uart_config.num     = DEBUG_UART_NUM;
     uart_config.rate    = 115200;
 
-    void *handle = HyUartDebugCreate(&uart_config);
-    if (!handle) {
-        return -1;
+    HyTimerConfig_t timer_config;
+    timer_config.num    = HY_TIMER_2;
+    timer_config.us     = 1000;
+    timer_config.flag   = HY_TIMER_ENABLE;
+    timer_config.config_save.timer_cb   = _timer_cb;
+    timer_config.config_save.args       = context;
+
+    _DEC_MODULE_CREATE();
+
+    int i = 0;
+    int len = HyUtilsArrayCnt(module);
+    for (i = 0; i < len; ++i) {
+        _module_create_t *module_tmp = &module[i];
+        module_tmp->handle = module_tmp->create(module_tmp->config);
+        if (!module_tmp->handle) {
+            LOGE("%s create error \n", module_tmp->name);
+            break;
+        }
     }
 
-    printf("-----haha\n");
+    if (i < len) {
+        for (int j = i - 1; j >= 0; j--) {
+            _module_create_t *module_tmp = &module[j];
+            module_tmp->destroy(module_tmp->handle);
+        }
+        return NULL;
+    }
+
+    return context;
+}
+
+static void _module_destroy(_main_context_t *context)
+{
+    _DEC_MODULE_DESTROY();
+
+    for (int i = 0; i < HyUtilsArrayCnt(module); ++i) {
+        _module_destroy_t *module_tmp = &module[i];
+        module_tmp->destroy(module_tmp->handle);
+    }
+}
+
+int main(int argc, char const* argv[])
+{
+    _main_context_t *context = _module_create();
+    if (!context) {
+        LOGE("_module_create faild \n");
+        return -1;
+    }
 
     while (1) {
 
     }
 
-    HyUartDebugDestroy(handle);
+    _module_destroy(context);
 
     return 0;
 }

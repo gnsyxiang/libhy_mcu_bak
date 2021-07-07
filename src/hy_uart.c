@@ -25,6 +25,10 @@
 
 #include "at32f4xx_gpio.h"
 
+#include "hy_log.h"
+
+#define ALONE_DEBUG 1
+
 typedef struct {
     HyUartNum_t num;
 
@@ -303,6 +307,8 @@ void *HyUartDebugCreate(HyUartConfig_t *uart_config)
 
 void HyUartDebugDestroy(void *handle)
 {
+    LOGT("%s:%d \n", __func__, __LINE__);
+
     HyUartDestroy(handle);
 }
 
