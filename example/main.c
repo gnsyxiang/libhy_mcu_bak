@@ -24,10 +24,9 @@
 #include "hy_uart.h"
 #include "hy_timer.h"
 #include "hy_log.h"
+#include "hy_module.h"
 
 #define ALONE_DEBUG 1
-
-#define HyUtilsArrayCnt(array) (int)(sizeof((array)) / sizeof((array)[0]))
 
 typedef struct {
     void    *uart_handle;
@@ -38,22 +37,6 @@ static void _timer_cb(void *args)
 {
     LOGD("----haha \n");
 }
-
-typedef void *(*create_t)(void *config);
-typedef void (*destroy_t)(void *handle);
-typedef struct {
-    char        *name;
-    void        *handle;
-    void        *config;
-    create_t    create;
-    destroy_t   destroy;
-} _module_create_t;
-
-typedef struct {
-    char        *name;
-    void        *handle;
-    destroy_t   destroy;
-} _module_destroy_t;
 
 static _main_context_t *_module_create(void)
 {
@@ -75,46 +58,26 @@ static _main_context_t *_module_create(void)
     timer_config.config_save.timer_cb   = _timer_cb;
     timer_config.config_save.args       = context;
 
-    // note: 增加或删除要同步到_module_destroy_t中
-    _module_create_t module[] = {
+    // note: 增加或删除要同步到module_destroy_t中
+    module_create_t module[] = {
         {"debug uart",  context->uart_handle,  &uart_config,   (create_t)HyUartDebugCreate,     HyUartDebugDestroy},
         {"timer",       context->timer_handle, &timer_config,  (create_t)HyTimerCreate,         HyTimerDestroy},
     };
 
-    int i = 0;
-    int len = HyUtilsArrayCnt(module);
-    for (i = 0; i < len; ++i) {
-        _module_create_t *module_tmp = &module[i];
-        module_tmp->handle = module_tmp->create(module_tmp->config);
-        if (!module_tmp->handle) {
-            LOGE("%s create error \n", module_tmp->name);
-            break;
-        }
-    }
-
-    if (i < len) {
-        for (int j = i - 1; j >= 0; j--) {
-            _module_create_t *module_tmp = &module[j];
-            module_tmp->destroy(module_tmp->handle);
-        }
-        return NULL;
-    }
+    RUN_CREATE(module);
 
     return context;
 }
 
 static void _module_destroy(_main_context_t *context)
 {
-    // note: 增加或删除要同步到_module_create_t中
-    _module_destroy_t module[] = {
+    // note: 增加或删除要同步到module_create_t中
+    module_destroy_t module[] = {
         {"debug uart",  context->uart_handle,   HyUartDebugDestroy},
         {"timer",       context->timer_handle,  HyTimerDestroy},
     };
 
-    for (int i = 0; i < HyUtilsArrayCnt(module); ++i) {
-        _module_destroy_t *module_tmp = &module[i];
-        module_tmp->destroy(module_tmp->handle);
-    }
+    RUN_DESTROY(module);
 }
 
 int main(int argc, char const* argv[])
