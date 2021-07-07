@@ -51,7 +51,6 @@ _sources_com    += system_at32f4xx.c
 
 _cppflags_com   += \
                    -Wno-error=unused-variable \
-                   -Wno-error=shift-negative-value \
                    $(CPPFLAGS_COM) \
                    $(_include_com)
 

@@ -12,16 +12,9 @@ data_disk_path=/opt/data
 if [ x$1 = x"arm" -o x$1 = x"pwd" ]; then
     vender=gnu_arm_embedded
     host=arm-none-eabi
-    gcc_version=gcc-arm-none-eabi-10-2020-q4-major
+    gcc_version=gcc-arm-none-eabi-5_4-2016q3
     gcc_prefix=arm-none-eabi
     cross_gcc_path=${data_disk_path}/opt/toolchains/${vender}/${gcc_version}/bin/${gcc_prefix}-
-
-    _cflags_com="-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard \
-        -ffunction-sections -fdata-sections \
-        -specs=nano.specs -specs=nosys.specs"
-
-    # _cppflags_com="-DAT32F407VGT7 -DUSE_STDPERIPH_DRIVER"
-    _cppflags_com="-DAT32F403ARGT7 -DUSE_STDPERIPH_DRIVER"
 else
     echo "eg: ./build.sh arm"
     exit
@@ -44,8 +37,8 @@ fi
 ${target_path}/configure                            \
     CC=${cross_gcc_path}gcc                         \
     CXX=${cross_gcc_path}g++                        \
-    CPPFLAGS="${_cppflags_com}"                     \
-    CFLAGS="${_cflags_com}"                         \
+    CPPFLAGS=""                                     \
+    CFLAGS="-specs=nano.specs -specs=nosys.specs"   \
     CXXFLAGS=""                                     \
     LDFLAGS=""                                      \
     LIBS=""                                         \
@@ -55,6 +48,7 @@ ${target_path}/configure                            \
     --host=${host}                                  \
     --target=${host}                                \
     \
+    --enable-at32f407vgt7
 
 
 thread_jobs=`getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`

@@ -16,10 +16,16 @@
 * 三部曲编译源码并生成对应文件
 
 ```shell
-$ ./configure CC=xxxx
+$ ./configure CC=xxxx --enable-at32f407vgt7
 $ make
 $ make install
 ```
+
+> note:
+> 1, 需要设置交叉编译工具链，不能在pc机器上编译
+>
+> 2, 需要指定特定的mcu型号
+
 
 详见`build.sh`
 
@@ -30,7 +36,5 @@ $ make install
 
 * `--enable-doxygen-doc`: 生成html帮助文档
 
-* `--enable-feature-xxx`: 编译`feature-xxx`功能
-
-* `--with-mcu-platform`: 选择对应的mcu平台
+* `--enable-at32f407vgt7`: 选择`at32f407vgt7`，默认为关闭
 

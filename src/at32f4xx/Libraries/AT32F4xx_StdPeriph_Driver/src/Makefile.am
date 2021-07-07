@@ -70,7 +70,6 @@ _sources_com    += \
 
 _cppflags_com   += \
                    -Wno-error=unused-variable \
-                   -Wno-error=shift-negative-value \
                    $(CPPFLAGS_COM) \
                    $(_include_com)
 

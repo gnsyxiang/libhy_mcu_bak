@@ -18,7 +18,7 @@
 #     last modified: 05/03 2021 10:35
 # ===============================================================
 
-if COMPILE_MCU_PLATFORM_AT32F4XX
+if COMPILE_MCU_AT32F4XX
 SUBDIRS = at32f4xx
 select_mcu_platform = at32f4xx
 endif

@@ -67,6 +67,21 @@ LIB_LDFLAGS_COM     += -rdynamic
 
 BIN_LDFLAGS_COM     += -Wl,--gc-sections
 
+if COMPILE_MCU_AT32F4XX
+CPPFLAGS_COM        += -DUSE_STDPERIPH_DRIVER
+CFLAGS_COM          += \
+                       -mcpu=cortex-m4 \
+                       -mthumb \
+                       -mfpu=fpv4-sp-d16 \
+                       -mfloat-abi=hard \
+                       -ffunction-sections \
+                       -fdata-sections
+endif
+
+if COMPILE_MCU_AT32F407VGT7
+CPPFLAGS_COM        += -DAT32F407VGT7
+endif
+
 export CPPFLAGS_COM
 export CFLAGS_COM
 export CXXFLAGS_COM
