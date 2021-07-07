@@ -21,29 +21,24 @@
 
 #include "hy_uart.h"
 
-static void _read_cb(char byte, void *args)
-{
-
-}
-
 int main(int argc, char const* argv[])
 {
     HyUartConfig_t uart_config;
-    uart_config.num = HY_UART_1;
-    uart_config.rate = 115200;
-    uart_config.config_save.read_cb = _read_cb;
-    uart_config.config_save.args = NULL;
+    uart_config.num     = DEBUG_UART_NUM;
+    uart_config.rate    = 115200;
 
-    void *handle = HyUartCreate(&uart_config);
+    void *handle = HyUartDebugCreate(&uart_config);
     if (!handle) {
         return -1;
     }
+
+    printf("--------haha\n");
 
     while (1) {
 
     }
 
-    HyUartDestroy(handle);
+    HyUartDebugDestroy(handle);
 
     return 0;
 }

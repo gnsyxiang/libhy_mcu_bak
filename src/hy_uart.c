@@ -140,6 +140,10 @@ static void _init_uart_interrupt(HyUartNum_t num)
 
 void *HyUartCreate(HyUartConfig_t *uart_config)
 {
+    if (!uart_config) {
+        return NULL;
+    }
+
     _uart_context_t *context = NULL;
 
     do {
@@ -260,3 +264,50 @@ int HyUartSendBuf(void *handle, void *buf, size_t len)
     return (i);
 }
 
+#ifdef DEBUG_UART
+#include  <sys/unistd.h>
+#include <stdlib.h>
+
+int _write(int fd, char *ptr, int len)
+{
+    /*
+     * write "len" of char from "ptr" to file id "fd"
+     * Return number of char written.
+     *
+     * Only work for STDOUT, STDIN, and STDERR
+     */
+    if (fd > 2) {
+        return -1;
+    }
+
+    int i = 0;
+    while (*ptr && (i < len)) {
+        HyUartSendByte(context_array[DEBUG_UART_NUM], *ptr);
+        if (*ptr == '\n') {
+            HyUartSendByte(context_array[DEBUG_UART_NUM], '\r');
+        }
+        i++;
+        ptr++;
+    }
+    return i;
+}
+
+void *HyUartDebugCreate(HyUartConfig_t *uart_config)
+{
+    if (!uart_config) {
+        return NULL;
+    }
+
+    return HyUartCreate(uart_config);
+}
+
+void HyUartDebugDestroy(void *handle)
+{
+    if (!handle) {
+        return ;
+    }
+
+    HyUartDestroy(handle);
+}
+
+#endif

@@ -27,6 +27,8 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+#define DEBUG_UART
+
 typedef enum {
     HY_UART_0,
     HY_UART_1,
@@ -55,6 +57,15 @@ void HyUartDestroy(void *handle);
 
 int HyUartSendByte(void *handle, char byte);
 int HyUartSendBuf(void *handle, void *buf, size_t len);
+
+#ifdef DEBUG_UART
+
+#define DEBUG_UART_NUM (HY_UART_1)
+
+void *HyUartDebugCreate(HyUartConfig_t *uart_config);
+void HyUartDebugDestroy(void *handle);
+
+#endif
 
 #ifdef __cplusplus
 }
