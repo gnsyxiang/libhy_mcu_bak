@@ -50,12 +50,11 @@
 #include "lwip/sys.h"
 #include <lwip/stats.h>
 #include <lwip/snmp.h>
+#include <lwip/err.h>
 #include "netif/etharp.h"
 #include "netif/ppp/pppoe.h"
-#include "err.h"
 #include "ethernetif.h"
 
-#include "main.h"
 #include "at32f4xx_eth.h"
 #include <string.h>
 
@@ -369,7 +368,7 @@ ethernetif_init(struct netif *netif)
 FrameTypeDef ETH_RxPkt_ChainMode(void)
 { 
   u32 framelength = 0;
-  FrameTypeDef frame = {0,0}; 
+  FrameTypeDef frame = {0,0, NULL}; 
 
   /* Check if the descriptor is owned by the ETHERNET DMA (when set) or CPU (when reset) */
   if((DMARxDescToGet->Status & ETH_DMARxDesc_OWN) != (u32)RESET)
