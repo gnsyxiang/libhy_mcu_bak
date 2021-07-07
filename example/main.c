@@ -32,7 +32,7 @@ int main(int argc, char const* argv[])
         return -1;
     }
 
-    printf("--------haha\n");
+    printf("-----haha\n");
 
     while (1) {
 

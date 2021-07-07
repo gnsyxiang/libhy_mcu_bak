@@ -75,19 +75,19 @@ static void _init_uart_gpio(HyUartNum_t num)
             GPIO_PinsRemapConfig(uart_rcc[i].gpio_remap, uart_rcc[i].new_state);
         }
 
-        GPIO_InitType GPIO_InitStructure;
+        GPIO_InitType gpio;
 
-        GPIO_StructInit(&GPIO_InitStructure);
-        GPIO_InitStructure.GPIO_Pins = uart_pin[i].tx_pin; 
-        GPIO_InitStructure.GPIO_MaxSpeed = GPIO_MaxSpeed_50MHz;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+        GPIO_StructInit(&gpio);
+        gpio.GPIO_Pins      = uart_pin[i].tx_pin; 
+        gpio.GPIO_MaxSpeed  = GPIO_MaxSpeed_50MHz;
+        gpio.GPIO_Mode      = GPIO_Mode_AF_PP;
 
-        GPIO_Init(uart_pin[i].gpiox, &GPIO_InitStructure);
+        GPIO_Init(uart_pin[i].gpiox, &gpio);
 
-        GPIO_InitStructure.GPIO_Pins = uart_pin[i].rx_pin;
-        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_PD;
+        gpio.GPIO_Pins      = uart_pin[i].rx_pin;
+        gpio.GPIO_Mode      = GPIO_Mode_IN_PD;
 
-        GPIO_Init(uart_pin[i].gpiox, &GPIO_InitStructure);
+        GPIO_Init(uart_pin[i].gpiox, &gpio);
 
         break;
     }
@@ -95,24 +95,26 @@ static void _init_uart_gpio(HyUartNum_t num)
 
 static void _init_uart_func(HyUartNum_t num, uint32_t rate)
 {
-    USART_InitType USART_InitStructure;
-    USART_Type* uart[HY_UART_MAX] = {NULL, USART1, USART2, USART3, UART4, UART5};
+    USART_InitType uart;
+    USART_Type* uart_num[HY_UART_MAX] = {
+        NULL, USART1, USART2, USART3, UART4, UART5
+    };
 
-    USART_StructInit(&USART_InitStructure);
-    USART_InitStructure.USART_BaudRate              = rate;
-    USART_InitStructure.USART_WordLength            = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits              = USART_StopBits_1;
-    USART_InitStructure.USART_Parity                = USART_Parity_No;
-    USART_InitStructure.USART_HardwareFlowControl   = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode                  = USART_Mode_Rx | USART_Mode_Tx;	
+    USART_StructInit(&uart);
+    uart.USART_BaudRate              = rate;
+    uart.USART_WordLength            = USART_WordLength_8b;
+    uart.USART_StopBits              = USART_StopBits_1;
+    uart.USART_Parity                = USART_Parity_No;
+    uart.USART_HardwareFlowControl   = USART_HardwareFlowControl_None;
+    uart.USART_Mode                  = USART_Mode_Rx | USART_Mode_Tx;	
 
-    USART_Init(uart[num], &USART_InitStructure); 
+    USART_Init(uart_num[num], &uart); 
 }
 
 typedef struct {
     USART_Type  *uart;
-    uint8_t     NVIC_IRQChannel;
-    uint8_t     NVIC_IRQChannelSubPriority;
+    uint8_t     ch;
+    uint8_t     sub_priority;
 } _uart_interrupt_t;
 
 static void _init_uart_interrupt(HyUartNum_t num)
@@ -126,13 +128,13 @@ static void _init_uart_interrupt(HyUartNum_t num)
         {UART5,     UART5_IRQn,     5},
     };
 
-    NVIC_InitType NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel                      = uart_interrupt[num].NVIC_IRQChannel;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority           = uart_interrupt[num].NVIC_IRQChannelSubPriority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
+    NVIC_InitType nvic;
+    nvic.NVIC_IRQChannel                      = uart_interrupt[num].ch;
+    nvic.NVIC_IRQChannelPreemptionPriority    = 0;
+    nvic.NVIC_IRQChannelSubPriority           = uart_interrupt[num].sub_priority;
+    nvic.NVIC_IRQChannelCmd                   = ENABLE;
 
-    NVIC_Init(&NVIC_InitStructure);
+    NVIC_Init(&nvic);
 
     USART_INTConfig(uart_interrupt[num].uart, USART_INT_RDNE, ENABLE);
     USART_Cmd(uart_interrupt[num].uart, ENABLE);
@@ -218,7 +220,9 @@ int HyUartSendByte(void *handle, char byte)
     }
 
     _uart_context_t *context = handle;
-    USART_Type* uart[HY_UART_MAX] = {NULL, USART1, USART2, USART3, UART4, UART5};
+    USART_Type* uart[HY_UART_MAX] = {
+        NULL, USART1, USART2, USART3, UART4, UART5
+    };
     FlagStatus Status = RESET;
     uint32_t Count=0;
 
@@ -241,7 +245,9 @@ int HyUartSendBuf(void *handle, void *buf, size_t len)
     }
 
     _uart_context_t *context = handle;
-    USART_Type* uart[HY_UART_MAX] = {NULL, USART1, USART2, USART3, UART4, UART5};
+    USART_Type* uart[HY_UART_MAX] = {
+        NULL, USART1, USART2, USART3, UART4, UART5
+    };
     FlagStatus Status = RESET;
     uint32_t Count=0;
     uint16_t i = 0;
@@ -265,8 +271,6 @@ int HyUartSendBuf(void *handle, void *buf, size_t len)
 }
 
 #ifdef DEBUG_UART
-#include  <sys/unistd.h>
-#include <stdlib.h>
 
 int _write(int fd, char *ptr, int len)
 {
@@ -294,20 +298,13 @@ int _write(int fd, char *ptr, int len)
 
 void *HyUartDebugCreate(HyUartConfig_t *uart_config)
 {
-    if (!uart_config) {
-        return NULL;
-    }
-
     return HyUartCreate(uart_config);
 }
 
 void HyUartDebugDestroy(void *handle)
 {
-    if (!handle) {
-        return ;
-    }
-
     HyUartDestroy(handle);
 }
 
 #endif
+
