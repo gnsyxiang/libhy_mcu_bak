@@ -25,6 +25,10 @@
 
 #include "at32f4xx_rcc.h"
 
+#include "hy_log.h"
+
+#define ALONE_DEBUG 1
+
 typedef struct {
     HyTimerNum_t num;
 
@@ -78,6 +82,11 @@ static void _init_timer_interrupt(HyTimerNum_t num, int flag)
 
 void *HyTimerCreate(HyTimerConfig_t *timer_config)
 {
+    if (!timer_config) {
+        LOGE("the param is NULL \n");
+        return NULL;
+    }
+
     _timer_context_t *context = NULL;
 
     do {
@@ -151,6 +160,7 @@ static void _timer_control_com(void *handle, int flag)
 void HyTimerEnable(void *handle)
 {
     if (!handle) {
+        LOGE("the param is NULL \n");
         return;
     }
 
@@ -160,6 +170,7 @@ void HyTimerEnable(void *handle)
 void HyTimerDisable(void *handle)
 {
     if (!handle) {
+        LOGE("the param is NULL \n");
         return;
     }
 
