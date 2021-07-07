@@ -75,7 +75,7 @@ stamp-h1
 #---------------
 # ignore for doc
 #---------------
-doc/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.2.8
+doc/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0
 
 #--------------------
 # ignore for building

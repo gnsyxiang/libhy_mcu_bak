@@ -27,6 +27,7 @@ _dist_files_com     =
 # add necessary content
 # ---------------------
 _dist_files_com     += \
+                       README.md \
                        ARTERY_AT32_MCU_PSG_v202009_sc.pdf \
                        AT32F403A_407_sLib_Demo_V1.0.1.zip \
                        AT32F403A_AT32F407_Get_started_guide_CH_V1.0.1.pdf \
