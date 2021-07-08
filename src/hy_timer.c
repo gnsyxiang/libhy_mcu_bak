@@ -52,7 +52,12 @@ static void _init_timer_func(HyTimerNum_t num, uint16_t us, int flag)
     TMR_TimerBaseInitType  config;
     TMR_TimeBaseStructInit(&config);
 
+#ifdef SYSCLK_FREQ_200MHz
+    config.TMR_DIV           = 200 - 1;      // 1us
+#endif
+#ifdef SYSCLK_FREQ_240MHz
     config.TMR_DIV           = 240 - 1;      // 1us
+#endif
     // config.TMR_DIV           = 2400 - 1;     // 10us
     // config.TMR_DIV           = 24000 - 1;    // 100us
     config.TMR_Period        = us;

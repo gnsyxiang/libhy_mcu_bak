@@ -80,9 +80,12 @@ CFLAGS_COM          += \
 endif
 
 if COMPILE_MCU_AT32F407VGT7
+CPPFLAGS_COM        += -DSYSCLK_FREQ_200MHz=200000000
+# CPPFLAGS_COM        += -DSYSCLK_FREQ_240MHz=240000000
+
 CPPFLAGS_COM        += \
-                       -DAT32F407VGT7 \
-                       -DAT_START_F407_V1_0
+                       -DAT_START_F407_V1_0 \
+                       -DAT32F407VGT7
 endif
 
 export CPPFLAGS_COM
