@@ -25,6 +25,7 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
 
 typedef struct {
     void (*sys_tick_cb)(void *args);
@@ -38,12 +39,12 @@ typedef struct {
 void *HySystemCreate(HySystemConfig_t *system_config);
 void HySystemDestroy(void *handle);
 
-// #define USE_SYSTICK_DELAY
+#define USE_SYSTICK_DELAY
 
 #ifdef USE_SYSTICK_DELAY
-void HySystemDelayUs(size_t us);
-void HySystemDelayMs(size_t ms);
-void HySystemDelayS(size_t s);
+void HySystemDelayUs(uint32_t us);
+void HySystemDelayMs(uint32_t ms);
+void HySystemDelayS(uint32_t s);
 #endif
 
 #ifdef __cplusplus

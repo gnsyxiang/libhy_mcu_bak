@@ -119,6 +119,10 @@ int main(int argc, char const* argv[])
     LOGT("version: %s \n", VERSION);
 
     while (1) {
+#ifdef USE_SYSTICK_DELAY
+        HySystemDelayS(1);
+        LOGD("delay 1s\n");
+#endif
     }
 
     _module_destroy(context);

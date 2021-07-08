@@ -37,48 +37,49 @@ typedef struct {
 static _system_context_t *context = NULL;
 
 #ifdef USE_SYSTICK_DELAY
-static __IO uint32_t fac_us;
-static __IO uint32_t fac_ms;
 
-void HySystemDelayUs(size_t us)
+static void _delay_com(uint32_t us)
 {
+    SysTick->LOAD   = us;
+    SysTick->VAL    = 0x00;
+    SysTick->CTRL  |= SysTick_CTRL_ENABLE_Msk;
+
     uint32_t temp;
-    SysTick->LOAD = (uint32_t)(us * fac_us);
-    SysTick->VAL = 0x00;
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk ;
     do {
         temp = SysTick->CTRL;
-    } while ((temp & 0x01) &&! (temp & (1<<16)));
+    } while ((temp & 0x01) && !(temp & (1 << 16)));
 
-    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
-    SysTick->VAL = 0x00;
+    SysTick->CTRL  &= ~SysTick_CTRL_ENABLE_Msk;
+    SysTick->VAL    = 0x00;
 }
 
-void HySystemDelayMs(size_t ms)
+void HySystemDelayUs(uint32_t us)
 {
-#define STEP_DELAY_MS	50
-    uint32_t temp;
+    uint32_t fac_us = SystemCoreClock / (1000000U);
+
+    _delay_com(us * fac_us);
+}
+
+void HySystemDelayMs(uint32_t ms)
+{
+    #define STEP_DELAY_MS 50
+    uint32_t ms_tmp;
+    uint32_t fac_ms = SystemCoreClock / (1000U);
+
     while (ms) {
         if (ms > STEP_DELAY_MS) {
-            SysTick->LOAD = (uint32_t)(STEP_DELAY_MS * fac_ms);
-            ms -= STEP_DELAY_MS;
+            ms_tmp  = (uint32_t)(STEP_DELAY_MS * fac_ms);
+            ms      -= STEP_DELAY_MS;
         } else {
-            SysTick->LOAD = (uint32_t)(ms * fac_ms);
-            ms = 0;
+            ms_tmp  = (uint32_t)(ms * fac_ms);
+            ms      = 0;
         }
-        SysTick->VAL = 0x00;
-        SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 
-        do {
-            temp = SysTick->CTRL;
-        } while ((temp & 0x01) && !(temp & (1<<16)));
-
-        SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
-        SysTick->VAL = 0x00;
+        _delay_com(ms_tmp);
     }
 }
 
-void HySystemDelayS(size_t s)
+void HySystemDelayS(uint32_t s)
 {
     for (size_t i = 0; i < s; ++i) {
         HySystemDelayMs(500);
@@ -107,11 +108,6 @@ static void _init_system(void)
 
     RCC_GetClocksFreq(&RCC_Clocks);
     SysTick_Config(RCC_Clocks.SYSCLK_Freq / SYSTEM_TICK_1MS_FACTOR);
-
-#ifdef USE_SYSTICK_DELAY
-    fac_us = SystemCoreClock / (1000000U);
-    fac_ms = fac_us * (1000U);
-#endif
 
     NVIC_SetPriority(SysTick_IRQn, 1);
 }
