@@ -54,7 +54,6 @@ _ldflags_com    += $(LIB_LDFLAGS_COM) \
                    $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/netif/libnetif.la \
                    $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port/libport.la
 
-
 liblwip_la_SOURCES  = $(_sources_com)
 liblwip_la_CPPFLAGS = $(_cppflags_com)
 liblwip_la_CFLAGS   = $(_cflags_com)
