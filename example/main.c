@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
+
 #include "hy_uart.h"
 #include "hy_timer.h"
 #include "hy_log.h"
@@ -87,6 +89,8 @@ int main(int argc, char const* argv[])
         LOGE("_module_create faild \n");
         return -1;
     }
+
+    LOGT("version: %s \n", VERSION);
 
     while (1) {
 
