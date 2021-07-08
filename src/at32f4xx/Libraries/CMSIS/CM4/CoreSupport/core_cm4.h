@@ -1,8 +1,8 @@
 /**************************************************************************//**
- * @file     core_cm4.h
- * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
- * @version  V4.30
- * @date     20. October 2015
+ * File   :core_cm4.h
+ * Brief  :CMSIS Cortex-M4 Core Peripheral Access Layer Header File
+ * Version:V4.30
+ * Date   :20. October 2015
  ******************************************************************************/
 /* Copyright (c) 2009 - 2015 ARM LIMITED
 

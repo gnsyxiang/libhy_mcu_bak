@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403zx_xl.s
-;* Description  : at32f4xx startup file for IAR Systems
-;* Date         : 2018-02-26
-;* Version      : V1.0.4
+;* File   : startup_at32f403zx_xl.s
+;* Version: V1.3.0
+;* Date   : 2021-03-18
+;* Brief  : at32f4xx startup file for IAR Systems
 ;**************************************************************************
 ;
 
@@ -70,7 +70,7 @@ __vector_table
         DCD     EXTI9_5_IRQHandler                  ; EXTI Line [9:5]
         DCD     TMR1_BRK_TMR9_IRQHandler            ; TMR1 Break and TMR9
         DCD     TMR1_OV_TMR10_IRQHandler            ; TMR1 Update and TMR10
-        DCD     TMR1_TRG_HALL_TMR11_IRQHandler      ; TMR1 Trigger and Commutation and TMR11
+        DCD     TMR1_TRG_COM_TMR11_IRQHandler       ; TMR1 Trigger and Commutation and TMR11
         DCD     TMR1_CC_IRQHandler                  ; TMR1 Capture Compare
         DCD     TMR2_GLOBAL_IRQHandler              ; TMR2
         DCD     TMR3_GLOBAL_IRQHandler              ; TMR3
@@ -89,7 +89,7 @@ __vector_table
         DCD     USBWakeUp_IRQHandler                ; USB Wakeup from suspend
         DCD     TMR8_BRK_TMR12_IRQHandler           ; TMR8 Break and TMR12
         DCD     TMR8_OV_TMR13_IRQHandler            ; TMR8 Update and TMR13
-        DCD     TMR8_TRG_HALL_TMR14_IRQHandler      ; TMR8 Trigger and Commutation and TMR14
+        DCD     TMR8_TRG_COM_TMR14_IRQHandler       ; TMR8 Trigger and Commutation and TMR14
         DCD     TMR8_CC_IRQHandler                  ; TMR8 Capture Compare
         DCD     ADC3_IRQHandler                     ; ADC3
         DCD     XMC_IRQHandler                      ; XMC
@@ -110,7 +110,7 @@ __vector_table
         DCD     SPI4_IRQHandler                     ; SPI4
         DCD     TMR15_BRK_IRQHandler                ; TMR15 Break
         DCD     TMR15_OV_IRQHandler                 ; TMR15 Update
-        DCD     TMR15_TRG_HALL_IRQHandler           ; TMR15 Trigger and Commutation
+        DCD     TMR15_TRG_COM_IRQHandler            ; TMR15 Trigger and Commutation
         DCD     TMR15_CC_IRQHandler                 ; TMR15 Capture Compare
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -301,10 +301,10 @@ TMR1_BRK_TMR9_IRQHandler
 TMR1_OV_TMR10_IRQHandler
         B TMR1_OV_TMR10_IRQHandler
 
-        PUBWEAK TMR1_TRG_HALL_TMR11_IRQHandler
+        PUBWEAK TMR1_TRG_COM_TMR11_IRQHandler 
         SECTION .text:CODE:REORDER:NOROOT(1)
-TMR1_TRG_HALL_TMR11_IRQHandler
-        B TMR1_TRG_HALL_TMR11_IRQHandler
+TMR1_TRG_COM_TMR11_IRQHandler 
+        B TMR1_TRG_COM_TMR11_IRQHandler 
 
         PUBWEAK TMR1_CC_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
@@ -396,10 +396,10 @@ TMR8_BRK_TMR12_IRQHandler
 TMR8_OV_TMR13_IRQHandler
         B TMR8_OV_TMR13_IRQHandler
 
-        PUBWEAK TMR8_TRG_HALL_TMR14_IRQHandler
+        PUBWEAK TMR8_TRG_COM_TMR14_IRQHandler 
         SECTION .text:CODE:REORDER:NOROOT(1)
-TMR8_TRG_HALL_TMR14_IRQHandler
-        B TMR8_TRG_HALL_TMR14_IRQHandler
+TMR8_TRG_COM_TMR14_IRQHandler 
+        B TMR8_TRG_COM_TMR14_IRQHandler 
 
         PUBWEAK TMR8_CC_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)
@@ -501,10 +501,10 @@ TMR15_BRK_IRQHandler
 TMR15_OV_IRQHandler
         B TMR15_OV_IRQHandler
 
-        PUBWEAK TMR15_TRG_HALL_IRQHandler
+        PUBWEAK TMR15_TRG_COM_IRQHandler 
         SECTION .text:CODE:REORDER:NOROOT(1)
-TMR15_TRG_HALL_IRQHandler
-        B TMR15_TRG_HALL_IRQHandler
+TMR15_TRG_COM_IRQHandler 
+        B TMR15_TRG_COM_IRQHandler 
 
         PUBWEAK TMR15_CC_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)

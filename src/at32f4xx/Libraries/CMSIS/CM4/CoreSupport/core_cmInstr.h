@@ -1,8 +1,8 @@
 /**************************************************************************//**
- * @file     core_cmInstr.h
- * @brief    CMSIS Cortex-M Core Instruction Access Header File
- * @version  V4.30
- * @date     20. October 2015
+ * File   :core_cmInstr.h
+ * Brief  :CMSIS Cortex-M Core Instruction Access Header File
+ * Version:V4.30
+ * Date   :20. October 2015
  ******************************************************************************/
 /* Copyright (c) 2009 - 2015 ARM LIMITED
 

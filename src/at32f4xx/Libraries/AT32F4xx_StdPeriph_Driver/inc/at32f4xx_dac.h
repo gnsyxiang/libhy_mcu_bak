@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_dac.h
- * Description  : at32f4xx DAC header file
- * Date         : 2018-10-08
- * Version      : V1.0.5
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_dac.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx DAC header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_DAC_H
-#define __AT32F4xx_DAC_H
+#ifndef __AT32F4XX_DAC_H
+#define __AT32F4XX_DAC_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -235,25 +235,24 @@ typedef struct
 /** @defgroup DAC_Exported_Functions
   * @{
   */
-
+void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data);
+void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1);
+uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel);
 void DAC_Reset(void);
 void DAC_Init(uint32_t DAC_Channel, DAC_InitType* DAC_InitStruct);
 void DAC_StructInit(DAC_InitType* DAC_InitStruct);
+void DAC_WaveGenerationCtrl(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState);
+void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data);
 void DAC_Ctrl(uint32_t DAC_Channel, FunctionalState NewState);
 void DAC_DMACtrl(uint32_t DAC_Channel, FunctionalState NewState);
 void DAC_SoftwareTriggerCtrl(uint32_t DAC_Channel, FunctionalState NewState);
 void DAC_DualSoftwareTriggerCtrl(FunctionalState NewState);
-void DAC_WaveGenerationCtrl(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState);
-void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data);
-void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data);
-void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1);
-uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*__AT32F4xx_DAC_H */
+#endif /*__AT32F4XX_DAC_H */
 /**
   * @}
   */

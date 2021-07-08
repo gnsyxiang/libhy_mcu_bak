@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_sdio.h
- * Description  : at32f4xx SDIO header file
- * Date         : 2018-10-08
- * Version      : V1.0.5
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_sdio.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx SDIO header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_SDIO_H
-#define __AT32F4xx_SDIO_H
+#ifndef __AT32F4XX_SDIO_H
+#define __AT32F4XX_SDIO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -474,15 +474,14 @@ typedef struct
 /** @defgroup SDIO_Exported_Functions
   * @{
   */
-
+void SDIO_CommandCompletionCmd(SDIO_Type * SDIOx, FunctionalState NewState);
+void SDIO_ATAINTCmd(SDIO_Type * SDIOx, FunctionalState NewState);
+void SDIO_SendATACmd(SDIO_Type * SDIOx, FunctionalState NewState);
+FlagStatus SDIO_GetFlagStatus(SDIO_Type * SDIOx, uint32_t SDIO_FLAG);
+void SDIO_ClearFlag(SDIO_Type * SDIOx, uint32_t SDIO_FLAG);
+ITStatus SDIO_GetINTStatus(SDIO_Type * SDIOx, uint32_t SDIO_INT);
+void SDIO_ClearINTPendingBit(SDIO_Type * SDIOx, uint32_t SDIO_INT);
 void SDIO_Reset(SDIO_Type * SDIOx);
-void SDIO_Init(SDIO_Type * SDIOx, SDIO_InitType* SDIO_InitStruct);
-void SDIO_StructInit(SDIO_InitType* SDIO_InitStruct);
-void SDIO_ClockCmd(SDIO_Type * SDIOx, FunctionalState NewState);
-void SDIO_SetPowerSaveState(SDIO_Type * SDIOx, uint32_t SDIO_PowerState);
-uint32_t SDIO_GetPowerSaveState(SDIO_Type * SDIOx);
-void SDIO_INTConfig(SDIO_Type * SDIOx, uint32_t SDIO_INT, FunctionalState NewState);
-void SDIO_DMACmd(SDIO_Type * SDIOx, FunctionalState NewState);
 void SDIO_SendCommand(SDIO_Type * SDIOx, SDIO_CmdInitType *SDIO_CmdInitStruct);
 void SDIO_CmdStructInit(SDIO_CmdInitType* SDIO_CmdInitStruct);
 uint8_t SDIO_GetCommandResponse(SDIO_Type * SDIOx);
@@ -493,24 +492,25 @@ uint32_t SDIO_GetDataCounter(SDIO_Type * SDIOx);
 uint32_t SDIO_ReadData(SDIO_Type * SDIOx);
 void SDIO_WriteData(SDIO_Type * SDIOx, uint32_t Data);
 uint32_t SDIO_GetBUFCount(SDIO_Type * SDIOx);
+void SDIO_Init(SDIO_Type * SDIOx, SDIO_InitType* SDIO_InitStruct);
+void SDIO_StructInit(SDIO_InitType* SDIO_InitStruct);
+void SDIO_ClockCmd(SDIO_Type * SDIOx, FunctionalState NewState);
+void SDIO_SetPowerSaveState(SDIO_Type * SDIOx, uint32_t SDIO_PowerState);
+uint32_t SDIO_GetPowerSaveState(SDIO_Type * SDIOx);
+void SDIO_INTConfig(SDIO_Type * SDIOx, uint32_t SDIO_INT, FunctionalState NewState);
+void SDIO_DMACmd(SDIO_Type * SDIOx, FunctionalState NewState);
 void SDIO_StartSDIOReadWait(SDIO_Type * SDIOx, FunctionalState NewState);
 void SDIO_StopSDIOReadWait(SDIO_Type * SDIOx, FunctionalState NewState);
 void SDIO_SetSDIOReadWaitMode(SDIO_Type * SDIOx, uint32_t SDIO_ReadWaitMode);
 void SDIO_SetSDIOOperation(SDIO_Type * SDIOx, FunctionalState NewState);
 void SDIO_SendSDIOSuspendCmd(SDIO_Type * SDIOx, FunctionalState NewState);
-void SDIO_CommandCompletionCmd(SDIO_Type * SDIOx, FunctionalState NewState);
-void SDIO_ATAINTCmd(SDIO_Type * SDIOx, FunctionalState NewState);
-void SDIO_SendATACmd(SDIO_Type * SDIOx, FunctionalState NewState);
-FlagStatus SDIO_GetFlagStatus(SDIO_Type * SDIOx, uint32_t SDIO_FLAG);
-void SDIO_ClearFlag(SDIO_Type * SDIOx, uint32_t SDIO_FLAG);
-ITStatus SDIO_GetINTStatus(SDIO_Type * SDIOx, uint32_t SDIO_INT);
-void SDIO_ClearINTPendingBit(SDIO_Type * SDIOx, uint32_t SDIO_INT);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AT32F4xx_SDIO_H */
+#endif /* __AT32F4XX_SDIO_H */
 /**
   * @}
   */

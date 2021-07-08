@@ -1,10 +1,9 @@
 /**
   ******************************************************************************
-  * @file      startup_at32f403rx_hd.s
-  * @author    Artery Tek
-  * @version   V1.0.0
-  * @date      2019-08-15
-  * @brief     AT32F4xx Devices vector table for GCC toolchain.
+  * File   : startup_at32f403rx_hd.s
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : AT32F4xx Devices vector table for GCC toolchain.
   *            This module performs:
   *                - Set the initial SP
   *                - Set the initial PC == Reset_Handler,
@@ -157,7 +156,7 @@ g_pfnVectors:
   .word  EXTI9_5_IRQHandler                  /* EXTI Line [9:5]                         */
   .word  TMR1_BRK_TMR9_IRQHandler            /* TMR1 Break and TMR9                     */
   .word  TMR1_OV_TMR10_IRQHandler            /* TMR1 Update and TMR10                   */
-  .word  TMR1_TRG_HALL_TMR11_IRQHandler      /* TMR1 Trigger and Commutation and TMR11  */
+  .word  TMR1_TRG_COM_TMR11_IRQHandler       /* TMR1 Trigger and Commutation and TMR11  */
   .word  TMR1_CC_IRQHandler                  /* TMR1 Capture Compare                    */
   .word  TMR2_GLOBAL_IRQHandler              /* TMR2                                    */
   .word  TMR3_GLOBAL_IRQHandler              /* TMR3                                    */
@@ -176,7 +175,7 @@ g_pfnVectors:
   .word  USBWakeUp_IRQHandler                /* USB Wakeup from suspend                 */
   .word  TMR8_BRK_TMR12_IRQHandler           /* TMR8 Break and TMR12                    */
   .word  TMR8_OV_TMR13_IRQHandler            /* TMR8 Update and TMR13                   */
-  .word  TMR8_TRG_HALL_TMR14_IRQHandler      /* TMR8 Trigger and Commutation and TMR14  */
+  .word  TMR8_TRG_COM_TMR14_IRQHandler       /* TMR8 Trigger and Commutation and TMR14  */
   .word  TMR8_CC_IRQHandler                  /* TMR8 Capture Compare                    */
   .word  ADC3_IRQHandler                     /* ADC3                                    */
   .word  0                                   /* Reserved                                */
@@ -307,8 +306,8 @@ g_pfnVectors:
    .weak      TMR1_OV_TMR10_IRQHandler
    .thumb_set TMR1_OV_TMR10_IRQHandler,Default_Handler
 
-   .weak      TMR1_TRG_HALL_TMR11_IRQHandler
-   .thumb_set TMR1_TRG_HALL_TMR11_IRQHandler,Default_Handler
+   .weak      TMR1_TRG_COM_TMR11_IRQHandler 
+   .thumb_set TMR1_TRG_COM_TMR11_IRQHandler ,Default_Handler
 
    .weak      TMR1_CC_IRQHandler
    .thumb_set TMR1_CC_IRQHandler,Default_Handler
@@ -364,8 +363,8 @@ g_pfnVectors:
    .weak      TMR8_OV_TMR13_IRQHandler
    .thumb_set TMR8_OV_TMR13_IRQHandler,Default_Handler
 
-   .weak      TMR8_TRG_HALL_TMR14_IRQHandler
-   .thumb_set TMR8_TRG_HALL_TMR14_IRQHandler,Default_Handler
+   .weak      TMR8_TRG_COM_TMR14_IRQHandler 
+   .thumb_set TMR8_TRG_COM_TMR14_IRQHandler ,Default_Handler
 
    .weak      TMR8_CC_IRQHandler
    .thumb_set TMR8_CC_IRQHandler,Default_Handler
@@ -415,4 +414,3 @@ g_pfnVectors:
    .weak      I2C3_ER_IRQHandler
    .thumb_set I2C3_ER_IRQHandler,Default_Handler
 
-/************************ (C) COPYRIGHT Artery Tek *****END OF FILE****/

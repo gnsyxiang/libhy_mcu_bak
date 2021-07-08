@@ -1,8 +1,8 @@
 /**************************************************************************//**
- * @file     core_cmFunc.h
- * @brief    CMSIS Cortex-M Core Function Access Header File
- * @version  V4.30
- * @date     20. October 2015
+ * File   :core_cmFunc.h
+ * Brief  :CMSIS Cortex-M Core Function Access Header File
+ * Version:V4.30
+ * Date   :20. October 2015
  ******************************************************************************/
 /* Copyright (c) 2009 - 2015 ARM LIMITED
 

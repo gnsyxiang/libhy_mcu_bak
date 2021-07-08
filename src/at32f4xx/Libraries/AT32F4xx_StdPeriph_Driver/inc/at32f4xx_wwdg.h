@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_wwdg.h
- * Description  : at32f4xx WWDG header file
- * Date         : 2018-02-26
- * Version      : V1.0.4
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_wwdg.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx WWDG header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_WWDG_H
-#define __AT32F4xx_WWDG_H
+#ifndef __AT32F4XX_WWDG_H
+#define __AT32F4XX_WWDG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,21 +72,21 @@ extern "C" {
 /** @defgroup WWDG_Exported_Functions
   * @{
   */
-
-void WWDG_Reset(void);
-void WWDG_SetPrescaler(uint32_t WWDG_Prescaler);
-void WWDG_SetWindowCounter(uint8_t WindowValue);
-void WWDG_EnableINT(void);
 void WWDG_SetCounter(uint8_t Counter);
 void WWDG_Enable(uint8_t Counter);
 FlagStatus WWDG_GetFlagStatus(void);
 void WWDG_ClearFlag(void);
+void WWDG_Reset(void);
+void WWDG_SetPrescaler(uint32_t WWDG_Prescaler);
+void WWDG_SetWindowCounter(uint8_t WindowValue);
+void WWDG_EnableINT(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AT32F4xx_WWDG_H */
+#endif /* __AT32F4XX_WWDG_H */
 
 /**
   * @}

@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f415cbu7.s
-;* Description  : at32f4xx startup file for keil
-;* Date         : 2019-10-08
-;* Version      : V1.0.0
+;* File   : startup_at32f415cbu7.s
+;* Version: V1.3.0
+;* Date   : 2021-03-18
+;* Brief  : at32f4xx startup file for keil
 ;**************************************************************************
 ;
 
@@ -83,7 +83,7 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     EXTI9_5_IRQHandler                  ; EXTI Line [9:5]
                 DCD     TMR1_BRK_TMR9_IRQHandler            ; TMR1 Break and TMR9
                 DCD     TMR1_OV_TMR10_IRQHandler            ; TMR1 Update and TMR10
-                DCD     TMR1_TRG_HALL_TMR11_IRQHandler      ; TMR1 Trigger and Commutation and TMR11
+                DCD     TMR1_TRG_COM_TMR11_IRQHandler       ; TMR1 Trigger and Commutation and TMR11
                 DCD     TMR1_CC_IRQHandler                  ; TMR1 Capture Compare
                 DCD     TMR2_GLOBAL_IRQHandler              ; TMR2
                 DCD     TMR3_GLOBAL_IRQHandler              ; TMR3
@@ -222,7 +222,7 @@ Default_Handler PROC
                 EXPORT  EXTI9_5_IRQHandler                  [WEAK]
                 EXPORT  TMR1_BRK_TMR9_IRQHandler            [WEAK]
                 EXPORT  TMR1_OV_TMR10_IRQHandler            [WEAK]
-                EXPORT  TMR1_TRG_HALL_TMR11_IRQHandler      [WEAK]
+                EXPORT  TMR1_TRG_COM_TMR11_IRQHandler       [WEAK]
                 EXPORT  TMR1_CC_IRQHandler                  [WEAK]
                 EXPORT  TMR2_GLOBAL_IRQHandler              [WEAK]
                 EXPORT  TMR3_GLOBAL_IRQHandler              [WEAK]
@@ -279,7 +279,7 @@ CAN1_SCE_IRQHandler
 EXTI9_5_IRQHandler
 TMR1_BRK_TMR9_IRQHandler
 TMR1_OV_TMR10_IRQHandler
-TMR1_TRG_HALL_TMR11_IRQHandler
+TMR1_TRG_COM_TMR11_IRQHandler 
 TMR1_CC_IRQHandler
 TMR2_GLOBAL_IRQHandler
 TMR3_GLOBAL_IRQHandler

@@ -1,8 +1,8 @@
 /**************************************************************************//**
- * @file     cmsis_gcc.h
- * @brief    CMSIS Cortex-M Core Function/Instruction Header File
- * @version  V4.30
- * @date     20. October 2015
+ * File   :cmsis_gcc.h
+ * Brief  :CMSIS Cortex-M Core Function/Instruction Header File
+ * Version:V4.30
+ * Date   :20. October 2015
  ******************************************************************************/
 /* Copyright (c) 2009 - 2015 ARM LIMITED
 

@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f415rct7-7.s
-;* Description  : at32f4xx startup file for IAR Systems
-;* Date         : 2019-05-30
-;* Version      : V1.0.0
+;* File   : startup_at32f415rct7-7.s
+;* Version: V1.3.0
+;* Date   : 2021-03-18
+;* Brief  : at32f4xx startup file for IAR Systems
 ;**************************************************************************
 ;
 
@@ -70,7 +70,7 @@ __vector_table
         DCD     EXTI9_5_IRQHandler              ; EXTI Line [9:5]
         DCD     TMR1_BRK_TMR9_IRQHandler        ; TMR1 Break and TMR9
         DCD     TMR1_OV_TMR10_IRQHandler        ; TMR1 Update and TMR10
-        DCD     TMR1_TRG_HALL_TMR11_IRQHandler  ; TMR1 Trigger and Commutation and TMR11
+        DCD     TMR1_TRG_COM_TMR11_IRQHandler   ; TMR1 Trigger and Commutation and TMR11
         DCD     TMR1_CC_IRQHandler              ; TMR1 Capture Compare
         DCD     TMR2_GLOBAL_IRQHandler          ; TMR2
         DCD     TMR3_GLOBAL_IRQHandler          ; TMR3
@@ -309,10 +309,10 @@ TMR1_BRK_TMR9_IRQHandler
 TMR1_OV_TMR10_IRQHandler
         B TMR1_OV_TMR10_IRQHandler
 
-        PUBWEAK TMR1_TRG_HALL_TMR11_IRQHandler
+        PUBWEAK TMR1_TRG_COM_TMR11_IRQHandler 
         SECTION .text:CODE:REORDER:NOROOT(1)
-TMR1_TRG_HALL_TMR11_IRQHandler
-        B TMR1_TRG_HALL_TMR11_IRQHandler
+TMR1_TRG_COM_TMR11_IRQHandler 
+        B TMR1_TRG_COM_TMR11_IRQHandler 
 
         PUBWEAK TMR1_CC_IRQHandler
         SECTION .text:CODE:REORDER:NOROOT(1)

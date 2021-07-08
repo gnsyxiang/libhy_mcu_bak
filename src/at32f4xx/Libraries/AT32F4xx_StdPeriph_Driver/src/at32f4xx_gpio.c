@@ -1,11 +1,11 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_gpio.c
- * Description  : at32f4xx GPIO source file
- * Date         : 2018-10-08
- * Version      : V1.0.5
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_gpio.c
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx GPIO source file
+  **************************************************************************
+  */
 
 
 /* Includes ------------------------------------------------------------------*/
@@ -21,6 +21,8 @@
   * @brief GPIO driver modules
   * @{
   */
+#if defined (AT32F403xx) || defined (AT32F413xx) || defined (AT32F415xx) || \
+    defined (AT32F403Axx)|| defined (AT32F407xx)
 
 /** @defgroup GPIO_Private_TypesDefinitions
   * @{
@@ -457,7 +459,49 @@ void GPIO_PinsLockConfig(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
   /* Read LCKK bit*/
   tmp = GPIOx->LOCK;
 }
+/**
+  * @brief  Enables or disables to enhance slew rate of GPIO Pins.
+  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @param  GPIO_Pin: specifies the port bit to be written.
+  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+  * @param  NewState: new state of the slew rate.
+  *   This parameter can be: ENABLE or DISABLE.
+  * @retval None
+  */
+#if defined (AT32F403Axx) || defined (AT32F407xx) 
+void GPIO_PinsEnhanceSlewRate(GPIO_Type* GPIOx, uint16_t GPIO_Pin, FunctionalState NewState)
+{
+  /* Check the parameters */
+  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+  assert_param(IS_GPIO_PINS(GPIO_Pin));
+  if( ENABLE == NewState ){
+      GPIOx->SRCTR |= GPIO_Pin;
+  }else{
+      GPIOx->SRCTR &= ~GPIO_Pin;
+  }
+}
+/**
+  * @brief  Enables or disables GPIO Pins huge driven.
+  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @param  GPIO_Pin: specifies the port bit to be written.
+  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+  * @param  NewState: new state of the slew rate.
+  *   This parameter can be: ENABLE or DISABLE.
+  * @retval None
+  */
 
+void GPIO_PinsHugeDriven(GPIO_Type* GPIOx, uint16_t GPIO_Pin, FunctionalState NewState)
+{
+  /* Check the parameters */
+  assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
+  assert_param(IS_GPIO_PINS(GPIO_Pin));
+  if( ENABLE == NewState ){
+      GPIOx->HDRV |= GPIO_Pin;
+  }else{
+      GPIOx->HDRV &= ~GPIO_Pin;
+  }
+}
+#endif
 /**
   * @brief  Selects the GPIO pin used as Event output.
   * @param  GPIO_PortSource: selects the GPIO port to be used as source
@@ -467,6 +511,7 @@ void GPIO_PinsLockConfig(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
   *   This parameter can be GPIO_PinSourcex where x can be (0..15).
   * @retval None
   */
+
 void GPIO_EventOutputConfig(uint8_t GPIO_PortSource, uint8_t GPIO_PinSource)
 {
   uint32_t tmpreg = 0x00;
@@ -553,6 +598,7 @@ void GPIO_EventOutputCmd(FunctionalState NewState)
   *     @arg AFIO_MAP4_TMR5_1000         : TMR5 Alternate Function mapping 1000: CH4 
   *     @arg AFIO_MAP4_TMR5_1001         : TMR5 Alternate Function mapping 1001: CH1/CH2+CH4 
   *     @arg AFIO_MAP5_I2C1_0001         : I2C1 Alternate Function mapping 0001
+  *     @arg AFIO_MAP5_I2C1_0010         : I2C1 Alternate Function mapping 0010  
   *     @arg AFIO_MAP5_I2C1_0011         : I2C1 Alternate Function mapping 0011
   *     @arg AFIO_MAP5_I2C2_0001         : I2C2 Alternate Function mapping 0001
   *     @arg AFIO_MAP5_I2C2_0010         : I2C2 Alternate Function mapping 0010
@@ -1154,6 +1200,9 @@ void GPIO_ETH_MediaInterfaceConfig(uint32_t GPIO_ETH_MediaInterface)
 /**
   * @}
   */
+
+#endif /* AT32F403xx || AT32F413xx || AT32F415xx || \
+          AT32F403Axx|| AT32F407xx */
 
 /**
   * @}

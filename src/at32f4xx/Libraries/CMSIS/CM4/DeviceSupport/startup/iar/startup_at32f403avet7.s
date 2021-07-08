@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403avet7.s
-;* Description  : at32f4xx startup file for IAR Systems
-;* Date         : 2019-10-12
-;* Version      : V1.0.0
+;* File   : startup_at32f403avet7.s
+;* Version: V1.3.0
+;* Date   : 2021-03-18
+;* Brief  : at32f4xx startup file for IAR Systems
 ;**************************************************************************
 ;
 

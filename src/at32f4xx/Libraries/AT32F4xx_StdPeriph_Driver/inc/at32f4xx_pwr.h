@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_pwr.h
- * Description  : at32f4xx PWR header file
- * Date         : 2018-02-26
- * Version      : V1.0.4
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_pwr.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx PWR header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_PWR_H
-#define __AT32F4xx_PWR_H
+#ifndef __AT32F4XX_PWR_H
+#define __AT32F4XX_PWR_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,8 +72,17 @@ extern "C" {
   */
 #define PWR_Regulator_ON                    ((uint32_t)0x00000000)
 #define PWR_Regulator_LowPower              ((uint32_t)0x00000001)
+
+#if defined (AT32F421xx)
+#define PWR_Regulator_LowPower_Extra        ((uint32_t)0x00000021)
+#define IS_PWR_REGULATOR(REGULATOR)         (((REGULATOR) == PWR_Regulator_ON) || \
+                                             ((REGULATOR) == PWR_Regulator_LowPower) || \
+                                             ((REGULATOR) == PWR_Regulator_LowPower_Extra))
+#else
 #define IS_PWR_REGULATOR(REGULATOR)         (((REGULATOR) == PWR_Regulator_ON) || \
                                              ((REGULATOR) == PWR_Regulator_LowPower))
+#endif
+                                             
 /**
   * @}
   */
@@ -120,12 +129,6 @@ extern "C" {
 /** @defgroup PWR_Exported_Functions
   * @{
   */
-
-void PWR_Reset(void);
-void PWR_BackupAccessCtrl(FunctionalState NewState);
-void PWR_PVDCtrl(FunctionalState NewState);
-void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel);
-void PWR_WakeUpPinCtrl(FunctionalState NewState);
 void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry);
 #if defined (AT32F403xx) || defined (AT32F413xx)
     void PWR_EnterSTOPMode(uint8_t PWR_STOPEntry);
@@ -135,12 +138,23 @@ void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry);
 void PWR_EnterSTANDBYMode(void);
 FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG);
 void PWR_ClearFlag(uint32_t PWR_FLAG);
+void PWR_Reset(void);
+void PWR_BackupAccessCtrl(FunctionalState NewState);
+void PWR_PVDCtrl(FunctionalState NewState);
+void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel);
+void PWR_WakeUpPinCtrl(FunctionalState NewState);
+#if defined (AT32F421xx)
+void PWR_WakeUpPinCtrl2(FunctionalState NewState);
+void PWR_WakeUpPinCtrl6(FunctionalState NewState);
+void PWR_WakeUpPinCtrl7(FunctionalState NewState);
+#endif
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AT32F4xx_PWR_H */
+#endif /* __AT32F4XX_PWR_H */
 /**
   * @}
   */

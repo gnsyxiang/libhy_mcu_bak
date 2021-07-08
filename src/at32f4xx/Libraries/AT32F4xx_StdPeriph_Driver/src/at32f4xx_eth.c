@@ -1,11 +1,12 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_eth.c
- * Description  : at32f4xx ETH source file
- * Date         : 2019-12-16
- * Version      : V1.0.0
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_eth.c
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx ETH source file
+  **************************************************************************
+  */
+
 
 /* Includes ------------------------------------------------------------------*/
 #include "at32f4xx_eth.h"
@@ -237,10 +238,18 @@ uint32_t ETH_Init(ETH_InitType* ETH_InitStruct, uint16_t PHYAddress)
   
   while (1) /*Wait Reset Complete*/
   {
-    if ( (ETH_ReadPHYRegister(PHYAddress, PHY_BSR) & PHY_Reset) == 0 )
+    timeout++;
+    if ( (ETH_ReadPHYRegister(PHYAddress, PHY_BSR) & PHY_Reset) == 0 ) {
       break;
+    }
     _eth_delay_(PHY_ResetDelay);
+    /* Timeout Mechanism*/
+    if(timeout == PHY_READ_TO) {
+      return ETH_ERROR;
+    }
   }
+  /* Reset Timeout counter */
+  timeout = 0;
   
   if(ETH_InitStruct->ETH_AutoNegotiation != ETH_AutoNegotiation_Disable)
   {  
@@ -252,7 +261,7 @@ uint32_t ETH_Init(ETH_InitType* ETH_InitStruct, uint16_t PHYAddress)
     /* Return ERROR in case of timeout */
     if(timeout == PHY_READ_TO)
     {
-//      return ETH_ERROR;
+      return ETH_ERROR;
     }
     /* Reset Timeout counter */
     timeout = 0;
@@ -279,6 +288,7 @@ uint32_t ETH_Init(ETH_InitType* ETH_InitStruct, uint16_t PHYAddress)
     /*Get Auto-Negotiation Result*/
     RegValue = ETH_ReadPHYRegister(PHYAddress, PHY_SR);
     
+		#ifdef DM9162
     if((RegValue & PHY_FullDuplex_Speed_100_Status) != (uint32_t)RESET)
     {
        ETH_InitStruct->ETH_Mode = ETH_Mode_FullDuplex;
@@ -299,6 +309,31 @@ uint32_t ETH_Init(ETH_InitType* ETH_InitStruct, uint16_t PHYAddress)
       ETH_InitStruct->ETH_Mode = ETH_Mode_HalfDuplex;
       ETH_InitStruct->ETH_Speed = ETH_Speed_10M;
     } 
+		#endif
+		#ifdef DP83848
+		if((RegValue & PHY_Duplex_Status) != (uint32_t)RESET)
+    {
+      /* Set Ethernet duplex mode to FullDuplex following the autonegotiation */
+      ETH_InitStruct->ETH_Mode = ETH_Mode_FullDuplex;
+            
+    }
+    else
+    {
+      /* Set Ethernet duplex mode to HalfDuplex following the autonegotiation */
+      ETH_InitStruct->ETH_Mode = ETH_Mode_HalfDuplex;           
+    }
+    /* Configure the MAC with the speed fixed by the autonegotiation process */
+    if(RegValue & PHY_Speed_Status)
+    {  
+      /* Set Ethernet speed to 10M following the autonegotiation */    
+      ETH_InitStruct->ETH_Speed = ETH_Speed_10M; 
+    }
+    else
+    {   
+      /* Set Ethernet speed to 100M following the autonegotiation */ 
+      ETH_InitStruct->ETH_Speed = ETH_Speed_100M;      
+    }
+		#endif
   }
   else
   {
@@ -3075,4 +3110,3 @@ static void ETH_Delay(__IO uint32_t nCount)
   * @}
   */
 
-/******************* (C) COPYRIGHT 2009 Artery Technology *****END OF FILE****/

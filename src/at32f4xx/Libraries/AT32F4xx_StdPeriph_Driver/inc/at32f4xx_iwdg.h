@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_iwdg.h
- * Description  : at32f4xx IWDG header file
- * Date         : 2018-02-26
- * Version      : V1.0.4
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_iwdg.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx IWDG header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_IWDG_H
-#define __AT32F4xx_IWDG_H
+#ifndef __AT32F4XX_IWDG_H
+#define __AT32F4XX_IWDG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,19 +100,18 @@ extern "C" {
 /** @defgroup IWDG_Exported_Functions
   * @{
   */
-
-void IWDG_KeyRegWrite(uint16_t IWDG_WriteAccess);
-void IWDG_SetPrescaler(uint8_t IWDG_Prescaler);
 void IWDG_SetReload(uint16_t Reload);
 void IWDG_ReloadCounter(void);
 void IWDG_Enable(void);
+void IWDG_KeyRegWrite(uint16_t IWDG_WriteAccess);
+void IWDG_SetPrescaler(uint8_t IWDG_Prescaler);
 FlagStatus IWDG_GetFlagStatus(uint16_t IWDG_FLAG);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AT32F4xx_IWDG_H */
+#endif /* __AT32F4XX_IWDG_H */
 /**
   * @}
   */

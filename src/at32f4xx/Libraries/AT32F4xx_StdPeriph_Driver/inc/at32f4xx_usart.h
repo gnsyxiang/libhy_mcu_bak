@@ -1,16 +1,16 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_usart.h
- * Description  : at32f4xx USART header file
- * Date         : 2018-02-26
- * Version      : V1.0.4
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_usart.h
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx USART header file
+  **************************************************************************
+  */
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __AT32F4xx_USART_H
-#define __AT32F4xx_USART_H
+#ifndef __AT32F4XX_USART_H
+#define __AT32F4XX_USART_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -91,21 +91,44 @@ typedef struct
 /** @defgroup USART_Exported_Constants
   * @{
   */
+#if defined (AT32F403xx) || defined (AT32F413xx) || defined (AT32F415xx)
+  #define IS_USART_ALL_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
+                                               ((PERIPH) == USART2) || \
+                                               ((PERIPH) == USART3) || \
+                                               ((PERIPH) == UART4)  || \
+                                               ((PERIPH) == UART5))
+#elif defined (AT32F403Axx)|| defined (AT32F407xx)
+  #define IS_USART_ALL_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
+                                               ((PERIPH) == USART2) || \
+                                               ((PERIPH) == USART3) || \
+                                               ((PERIPH) == UART4)  || \
+                                               ((PERIPH) == UART5)  || \
+                                               ((PERIPH) == USART6) || \
+                                               ((PERIPH) == UART7)  || \
+                                               ((PERIPH) == UART8))
+#elif defined (AT32F421xx)
+  #define IS_USART_ALL_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
+                                               ((PERIPH) == USART2))
+#endif
 
-#define IS_USART_ALL_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
-                                             ((PERIPH) == USART2) || \
-                                             ((PERIPH) == USART3) || \
-                                             ((PERIPH) == UART4) || \
-                                             ((PERIPH) == UART5))
-
+#if !defined (AT32F421xx)
 #define IS_USART_123_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
                                              ((PERIPH) == USART2) || \
                                              ((PERIPH) == USART3))
-                                            
+#else
+#define IS_USART_123_PERIPH(PERIPH)         (((PERIPH) == USART1) || \
+                                             ((PERIPH) == USART2))
+#endif
+
+#if !defined (AT32F421xx)
 #define IS_USART_1234_PERIPH(PERIPH)        (((PERIPH) == USART1) || \
                                              ((PERIPH) == USART2) || \
                                              ((PERIPH) == USART3) || \
                                              ((PERIPH) == UART4))
+#else
+#define IS_USART_1234_PERIPH(PERIPH)        (((PERIPH) == USART1) || \
+                                             ((PERIPH) == USART2))
+#endif
 /** @defgroup USART_Word_Length
   * @{
   */
@@ -324,9 +347,10 @@ typedef struct
 
 #define IS_USART_CLEAR_FLAG(FLAG)           ((((FLAG) & (uint16_t)0xFC9F) == 0x00) && ((FLAG) != (uint16_t)0x00))
 #define IS_USART_PERIPH_FLAG(PERIPH, USART_FLAG)    ((((*(uint32_t*)&(PERIPH)) != UART4_BASE) &&\
-                                                     ((*(uint32_t*)&(PERIPH)) != UART5_BASE)) \
+                                                     ((*(uint32_t*)&(PERIPH)) != UART5_BASE) &&\
+                                                     ((*(uint32_t*)&(PERIPH)) != UART7_BASE) &&\
+                                                     ((*(uint32_t*)&(PERIPH)) != UART8_BASE)) \
                                                      || ((USART_FLAG) != USART_FLAG_CTSF))
-#define IS_USART_BAUDRATE(BAUDRATE)         (((BAUDRATE) > 0) && ((BAUDRATE) < 0x0044AA21))
 #define IS_USART_ADDRESS(ADDRESS)           ((ADDRESS) <= 0xF)
 #define IS_USART_DATA(DATA)                 ((DATA) <= 0x1FF)
 
@@ -349,42 +373,42 @@ typedef struct
 /** @defgroup USART_Exported_Functions
   * @{
   */
-
-void USART_Reset(USART_Type* USARTx);
-void USART_Init(USART_Type* USARTx, USART_InitType* USART_InitStruct);
-void USART_StructInit(USART_InitType* USART_InitStruct);
-void USART_ClockInit(USART_Type* USARTx, USART_ClockInitType* USART_ClockInitStruct);
-void USART_ClockStructInit(USART_ClockInitType* USART_ClockInitStruct);
-void USART_Cmd(USART_Type* USARTx, FunctionalState NewState);
-void USART_INTConfig(USART_Type* USARTx, uint16_t USART_INT, FunctionalState NewState);
-void USART_DMACmd(USART_Type* USARTx, uint16_t USART_DMAReq, FunctionalState NewState);
-void USART_SetAddress(USART_Type* USARTx, uint8_t USART_Address);
-void USART_WakeUpConfig(USART_Type* USARTx, uint16_t USART_WakeUp);
-void USART_ReceiverWakeUpCmd(USART_Type* USARTx, FunctionalState NewState);
-void USART_LINBreakDetectLengthConfig(USART_Type* USARTx, uint16_t USART_LINBreakDetectLength);
-void USART_LINCmd(USART_Type* USARTx, FunctionalState NewState);
-void USART_SendData(USART_Type* USARTx, uint16_t Data);
-uint16_t USART_ReceiveData(USART_Type* USARTx);
 void USART_SendBreak(USART_Type* USARTx);
 void USART_SetGuardTime(USART_Type* USARTx, uint8_t USART_GuardTime);
 void USART_SetPrescaler(USART_Type* USARTx, uint8_t USART_Prescaler);
 void USART_SmartCardCmd(USART_Type* USARTx, FunctionalState NewState);
 void USART_SmartCardNACKCmd(USART_Type* USARTx, FunctionalState NewState);
 void USART_HalfDuplexCmd(USART_Type* USARTx, FunctionalState NewState);
-void USART_OverSampling8Cmd(USART_Type* USARTx, FunctionalState NewState);
-void USART_OneBitMethodCmd(USART_Type* USARTx, FunctionalState NewState);
 void USART_IrDAConfig(USART_Type* USARTx, uint16_t USART_IrDAMode);
 void USART_IrDACmd(USART_Type* USARTx, FunctionalState NewState);
 FlagStatus USART_GetFlagStatus(USART_Type* USARTx, uint16_t USART_FLAG);
+void USART_Reset(USART_Type* USARTx);
+void USART_Init(USART_Type* USARTx, USART_InitType* USART_InitStruct);
+void USART_StructInit(USART_InitType* USART_InitStruct);
+void USART_ClockInit(USART_Type* USARTx, USART_ClockInitType* USART_ClockInitStruct);
+void USART_ReceiverWakeUpCmd(USART_Type* USARTx, FunctionalState NewState);
+void USART_LINBreakDetectLengthConfig(USART_Type* USARTx, uint16_t USART_LINBreakDetectLength);
+void USART_LINCmd(USART_Type* USARTx, FunctionalState NewState);
+void USART_SendData(USART_Type* USARTx, uint16_t Data);
+uint16_t USART_ReceiveData(USART_Type* USARTx);
 void USART_ClearFlag(USART_Type* USARTx, uint16_t USART_FLAG);
 ITStatus USART_GetITStatus(USART_Type* USARTx, uint16_t USART_INT);
 void USART_ClearITPendingBit(USART_Type* USARTx, uint16_t USART_INT);
+#if defined (AT32F421xx)
+void USART_SWAP(USART_Type* USARTx, FunctionalState NewState);
+#endif
+void USART_ClockStructInit(USART_ClockInitType* USART_ClockInitStruct);
+void USART_Cmd(USART_Type* USARTx, FunctionalState NewState);
+void USART_INTConfig(USART_Type* USARTx, uint16_t USART_INT, FunctionalState NewState);
+void USART_DMACmd(USART_Type* USARTx, uint16_t USART_DMAReq, FunctionalState NewState);
+void USART_SetAddress(USART_Type* USARTx, uint8_t USART_Address);
+void USART_WakeUpConfig(USART_Type* USARTx, uint16_t USART_WakeUp);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AT32F4xx_USART_H */
+#endif /* __AT32F4XX_USART_H */
 /**
   * @}
   */

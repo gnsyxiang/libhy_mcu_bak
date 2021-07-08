@@ -1,8 +1,8 @@
 ;**************************************************************************
-;* File Name    : startup_at32f403zx_xl.s
-;* Description  : at32f4xx startup file for keil
-;* Date         : 2018-02-26
-;* Version      : V1.0.4
+;* File   : startup_at32f403zx_xl.s
+;* Version: V1.3.0
+;* Date   : 2021-03-18
+;* Brief  : at32f4xx startup file for keil
 ;**************************************************************************
 ;
 
@@ -83,7 +83,7 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     EXTI9_5_IRQHandler                  ; EXTI Line [9:5]
                 DCD     TMR1_BRK_TMR9_IRQHandler            ; TMR1 Break and TMR9
                 DCD     TMR1_OV_TMR10_IRQHandler            ; TMR1 Update and TMR10
-                DCD     TMR1_TRG_HALL_TMR11_IRQHandler      ; TMR1 Trigger and Commutation and TMR11
+                DCD     TMR1_TRG_COM_TMR11_IRQHandler       ; TMR1 Trigger and Commutation and TMR11
                 DCD     TMR1_CC_IRQHandler                  ; TMR1 Capture Compare
                 DCD     TMR2_GLOBAL_IRQHandler              ; TMR2
                 DCD     TMR3_GLOBAL_IRQHandler              ; TMR3
@@ -102,7 +102,7 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     USBWakeUp_IRQHandler                ; USB Wakeup from suspend
                 DCD     TMR8_BRK_TMR12_IRQHandler           ; TMR8 Break and TMR12
                 DCD     TMR8_OV_TMR13_IRQHandler            ; TMR8 Update and TMR13
-                DCD     TMR8_TRG_HALL_TMR14_IRQHandler      ; TMR8 Trigger and Commutation and TMR14
+                DCD     TMR8_TRG_COM_TMR14_IRQHandler       ; TMR8 Trigger and Commutation and TMR14
                 DCD     TMR8_CC_IRQHandler                  ; TMR8 Capture Compare
                 DCD     ADC3_IRQHandler                     ; ADC3
                 DCD     XMC_IRQHandler                      ; XMC
@@ -123,7 +123,7 @@ __Vectors       DCD     __initial_sp                        ; Top of Stack
                 DCD     SPI4_IRQHandler                     ; SPI4
                 DCD     TMR15_BRK_IRQHandler                ; TMR15 Break
                 DCD     TMR15_OV_IRQHandler                 ; TMR15 Update
-                DCD     TMR15_TRG_HALL_IRQHandler           ; TMR15 Trigger and Commutation
+                DCD     TMR15_TRG_COM_IRQHandler            ; TMR15 Trigger and Commutation
                 DCD     TMR15_CC_IRQHandler                 ; TMR15 Capture Compare
 __Vectors_End
 
@@ -214,7 +214,7 @@ Default_Handler PROC
                 EXPORT  EXTI9_5_IRQHandler                  [WEAK]
                 EXPORT  TMR1_BRK_TMR9_IRQHandler            [WEAK]
                 EXPORT  TMR1_OV_TMR10_IRQHandler            [WEAK]
-                EXPORT  TMR1_TRG_HALL_TMR11_IRQHandler      [WEAK]
+                EXPORT  TMR1_TRG_COM_TMR11_IRQHandler       [WEAK]
                 EXPORT  TMR1_CC_IRQHandler                  [WEAK]
                 EXPORT  TMR2_GLOBAL_IRQHandler              [WEAK]
                 EXPORT  TMR3_GLOBAL_IRQHandler              [WEAK]
@@ -233,7 +233,7 @@ Default_Handler PROC
                 EXPORT  USBWakeUp_IRQHandler                [WEAK]
                 EXPORT  TMR8_BRK_TMR12_IRQHandler           [WEAK]
                 EXPORT  TMR8_OV_TMR13_IRQHandler            [WEAK]
-                EXPORT  TMR8_TRG_HALL_TMR14_IRQHandler      [WEAK]
+                EXPORT  TMR8_TRG_COM_TMR14_IRQHandler       [WEAK]
                 EXPORT  TMR8_CC_IRQHandler                  [WEAK]
                 EXPORT  ADC3_IRQHandler                     [WEAK]
                 EXPORT  XMC_IRQHandler                      [WEAK]
@@ -254,7 +254,7 @@ Default_Handler PROC
                 EXPORT  SPI4_IRQHandler                     [WEAK]
                 EXPORT  TMR15_BRK_IRQHandler                [WEAK]
                 EXPORT  TMR15_OV_IRQHandler                 [WEAK]
-                EXPORT  TMR15_TRG_HALL_IRQHandler           [WEAK]
+                EXPORT  TMR15_TRG_COM_IRQHandler            [WEAK]
                 EXPORT  TMR15_CC_IRQHandler                 [WEAK]
 
 
@@ -285,7 +285,7 @@ CAN1_SCE_IRQHandler
 EXTI9_5_IRQHandler
 TMR1_BRK_TMR9_IRQHandler
 TMR1_OV_TMR10_IRQHandler
-TMR1_TRG_HALL_TMR11_IRQHandler
+TMR1_TRG_COM_TMR11_IRQHandler 
 TMR1_CC_IRQHandler
 TMR2_GLOBAL_IRQHandler
 TMR3_GLOBAL_IRQHandler
@@ -304,7 +304,7 @@ RTCAlarm_IRQHandler
 USBWakeUp_IRQHandler
 TMR8_BRK_TMR12_IRQHandler
 TMR8_OV_TMR13_IRQHandler
-TMR8_TRG_HALL_TMR14_IRQHandler
+TMR8_TRG_COM_TMR14_IRQHandler 
 TMR8_CC_IRQHandler
 ADC3_IRQHandler
 XMC_IRQHandler
@@ -325,7 +325,7 @@ I2C3_ER_IRQHandler
 SPI4_IRQHandler
 TMR15_BRK_IRQHandler
 TMR15_OV_IRQHandler
-TMR15_TRG_HALL_IRQHandler
+TMR15_TRG_COM_IRQHandler 
 TMR15_CC_IRQHandler
                 B       .
 

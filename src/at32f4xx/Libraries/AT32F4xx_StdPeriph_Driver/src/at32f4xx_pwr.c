@@ -1,11 +1,11 @@
 /**
- **************************************************************************
- * File Name    : at32f4xx_pwr.c
- * Description  : at32f4xx PWR source file
- * Date         : 2018-02-26
- * Version      : V1.0.4
- **************************************************************************
- */
+  **************************************************************************
+  * File   : at32f4xx_pwr.c
+  * Version: V1.3.0
+  * Date   : 2021-03-18
+  * Brief  : at32f4xx PWR source file
+  **************************************************************************
+  */
 
 
 /* Includes ------------------------------------------------------------------*/
@@ -54,16 +54,31 @@
 #define EWUP_BitNumber              0x08
 #define CTRLSTS_EWUP_BB             (PERIPH_BB_BASE + (CTRLSTS_OFFSET * 32) + (EWUP_BitNumber * 4))
 
+#if defined (AT32F421xx)
+  /* Alias word address of EWUP2 bit */
+  #define EWUP_BitNumber2           0x09
+  #define CTRLSTS_EWUP_BB2          (PERIPH_BB_BASE + (CTRLSTS_OFFSET * 32) + (EWUP_BitNumber2 * 4))
+
+  /* Alias word address of EWUP6 bit */
+  #define EWUP_BitNumber6           0x0D
+  #define CTRLSTS_EWUP_BB6          (PERIPH_BB_BASE + (CTRLSTS_OFFSET * 32) + (EWUP_BitNumber6 * 4))
+
+  /* Alias word address of EWUP7 bit */
+  #define EWUP_BitNumber7           0x0E
+  #define CTRLSTS_EWUP_BB7          (PERIPH_BB_BASE + (CTRLSTS_OFFSET * 32) + (EWUP_BitNumber7 * 4))
+#endif
 /* ------------------ PWR registers bit mask ------------------------ */
 
 /* CTRL register bit mask */
 #if defined (AT32F403xx) || defined (AT32F413xx)
-    #define CTRL_DS_MASK                ((uint32_t)0xFFFFFFFD)
+  #define CTRL_LPDS_MASK            ((uint32_t)0x00000002)
 #else
-    #define CTRL_DS_MASK                ((uint32_t)0xFFFFFFFC)
+  #define CTRL_LPDS_MASK            ((uint32_t)0x00000003)
 #endif
-#define CTRL_PVDS_MASK              ((uint32_t)0xFFFFFF1F)
-
+#if defined (AT32F421xx)
+  #define CTRL2_LPDS1_MASK          ((uint32_t)0x00000020)
+#endif
+#define CTRL_PVDS_MASK              ((uint32_t)0x000000E0)
 
 /**
   * @}
@@ -96,6 +111,49 @@
 /** @defgroup PWR_Private_Functions
   * @{
   */
+/**
+  * @brief  Checks whether the specified PWR flag is set or not.
+  * @param  PWR_FLAG: specifies the flag to check.
+  *   This parameter can be one of the following values:
+  *     @arg PWR_FLAG_WUF: Wake Up flag
+  *     @arg PWR_FLAG_SBF: StandBy flag
+  *     @arg PWR_FLAG_PVDO: PVD Output
+  * @retval The new state of PWR_FLAG (SET or RESET).
+  */
+FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
+{
+  FlagStatus bitstatus = RESET;
+  /* Check the parameters */
+  assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
+
+  if ((PWR->CTRLSTS & PWR_FLAG) != (uint32_t)RESET)
+  {
+    bitstatus = SET;
+  }
+  else
+  {
+    bitstatus = RESET;
+  }
+
+  /* Return the flag status */
+  return bitstatus;
+}
+
+/**
+  * @brief  Clears the PWR's pending flags.
+  * @param  PWR_FLAG: specifies the flag to clear.
+  *   This parameter can be one of the following values:
+  *     @arg PWR_FLAG_WUF: Wake Up flag
+  *     @arg PWR_FLAG_SBF: StandBy flag
+  * @retval None
+  */
+void PWR_ClearFlag(uint32_t PWR_FLAG)
+{
+  /* Check the parameters */
+  assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
+
+  PWR->CTRL |=  PWR_FLAG << 2;
+}
 
 /**
   * @brief  Deinitializes the PWR peripheral registers to their default reset values.
@@ -155,7 +213,7 @@ void PWR_PVDLevelConfig(uint32_t PWR_PVDLevel)
   assert_param(IS_PWR_PVD_LEVEL(PWR_PVDLevel));
   tmpreg = PWR->CTRL;
   /* Clear PLS[7:5] bits */
-  tmpreg &= CTRL_PVDS_MASK;
+  tmpreg &= ~CTRL_PVDS_MASK;
   /* Set PLS[7:5] bits according to PWR_PVDLevel value */
   tmpreg |= PWR_PVDLevel;
   /* Store the new value */
@@ -174,6 +232,47 @@ void PWR_WakeUpPinCtrl(FunctionalState NewState)
   assert_param(IS_FUNCTIONAL_STATE(NewState));
   *(__IO uint32_t *) CTRLSTS_EWUP_BB = (uint32_t)NewState;
 }
+
+#if defined (AT32F421xx)
+/**
+  * @brief  Enables or disables the WakeUp Pin2 functionality.
+  * @param  NewState: new state of the WakeUp Pin2 functionality.
+  *   This parameter can be: ENABLE or DISABLE.
+  * @retval None
+  */
+void PWR_WakeUpPinCtrl2(FunctionalState NewState)
+{
+  /* Check the parameters */
+  assert_param(IS_FUNCTIONAL_STATE(NewState));
+  *(__IO uint32_t *) CTRLSTS_EWUP_BB2 = (uint32_t)NewState;
+}
+
+/**
+  * @brief  Enables or disables the WakeUp Pin6 functionality.
+  * @param  NewState: new state of the WakeUp Pin6 functionality.
+  *   This parameter can be: ENABLE or DISABLE.
+  * @retval None
+  */
+void PWR_WakeUpPinCtrl6(FunctionalState NewState)
+{
+  /* Check the parameters */
+  assert_param(IS_FUNCTIONAL_STATE(NewState));
+  *(__IO uint32_t *) CTRLSTS_EWUP_BB6 = (uint32_t)NewState;
+}
+
+/**
+  * @brief  Enables or disables the WakeUp Pin7 functionality.
+  * @param  NewState: new state of the WakeUp Pin7 functionality.
+  *   This parameter can be: ENABLE or DISABLE.
+  * @retval None
+  */
+void PWR_WakeUpPinCtrl7(FunctionalState NewState)
+{
+  /* Check the parameters */
+  assert_param(IS_FUNCTIONAL_STATE(NewState));
+  *(__IO uint32_t *) CTRLSTS_EWUP_BB7 = (uint32_t)NewState;
+}
+#endif
 
 /**
   * @brief  Enters Sleep mode.
@@ -202,8 +301,8 @@ void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry)
   {
     /* Request Wait For Event */
     __SEV();
-	__WFE();
-	__WFE();
+    __WFE();
+    __WFE();
   }
 }
 
@@ -225,7 +324,7 @@ void PWR_EnterSTOPMode(uint8_t PWR_STOPEntry)
   /* Select the regulator state in STOP mode ---------------------------------*/
   tmpreg = PWR->CTRL;
   /* Clear PDDS bit */
-  tmpreg &= CTRL_DS_MASK;
+  tmpreg &= ~CTRL_LPDS_MASK;
   /* Store the new value */
   PWR->CTRL = tmpreg;
   /* Set SLEEPDEEP bit of Cortex System Control Register */
@@ -241,8 +340,8 @@ void PWR_EnterSTOPMode(uint8_t PWR_STOPEntry)
   {
     /* Request Wait For Event */
     __SEV();
-	__WFE();
-	__WFE();
+    __WFE();
+    __WFE();
   }
 
   /* Reset SLEEPDEEP bit of Cortex System Control Register */
@@ -254,6 +353,7 @@ void PWR_EnterSTOPMode(uint8_t PWR_STOPEntry)
   * @param  PWR_Regulator: specifies the regulator state in STOP mode.
   *   This parameter can be one of the following values:
   *     @arg PWR_Regulator_ON: STOP mode with regulator ON
+  *     @arg PWR_Regulator_LowPower: STOP mode with regulator LowPower
   * @param  PWR_STOPEntry: specifies if STOP mode in entered with WFI or WFE instruction.
   *   This parameter can be one of the following values:
   *     @arg PWR_STOPEntry_WFI: enter STOP mode with WFI instruction
@@ -266,13 +366,18 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
   /* Check the parameters */
   assert_param(IS_PWR_REGULATOR(PWR_Regulator));
   assert_param(IS_PWR_STOP_ENTRY(PWR_STOPEntry));
-
+  
+#if defined (AT32F421xx)
+  PWR->CTRL2 &= ~CTRL2_LPDS1_MASK;
+  tmpreg = PWR_Regulator & CTRL2_LPDS1_MASK;
+  PWR->CTRL2 = tmpreg;
+#endif
   /* Select the regulator state in STOP mode ---------------------------------*/
   tmpreg = PWR->CTRL;
   /* Clear PDDS bit */
-  tmpreg &= CTRL_DS_MASK;
+  tmpreg &= ~CTRL_LPDS_MASK;
   /* Set PWR_Regulator value */
-  tmpreg |= PWR_Regulator;
+  tmpreg |= PWR_Regulator & CTRL_LPDS_MASK;
   /* Store the new value */
   PWR->CTRL = tmpreg;
   /* Set SLEEPDEEP bit of Cortex System Control Register */
@@ -288,8 +393,8 @@ void PWR_EnterSTOPMode(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
   {
     /* Request Wait For Event */
     __SEV();
-	__WFE();
-	__WFE();
+    __WFE();
+    __WFE();
   }
 
   /* Reset SLEEPDEEP bit of Cortex System Control Register */
@@ -318,49 +423,7 @@ void PWR_EnterSTANDBYMode(void)
   __WFI();
 }
 
-/**
-  * @brief  Checks whether the specified PWR flag is set or not.
-  * @param  PWR_FLAG: specifies the flag to check.
-  *   This parameter can be one of the following values:
-  *     @arg PWR_FLAG_WUF: Wake Up flag
-  *     @arg PWR_FLAG_SBF: StandBy flag
-  *     @arg PWR_FLAG_PVDO: PVD Output
-  * @retval The new state of PWR_FLAG (SET or RESET).
-  */
-FlagStatus PWR_GetFlagStatus(uint32_t PWR_FLAG)
-{
-  FlagStatus bitstatus = RESET;
-  /* Check the parameters */
-  assert_param(IS_PWR_GET_FLAG(PWR_FLAG));
 
-  if ((PWR->CTRLSTS & PWR_FLAG) != (uint32_t)RESET)
-  {
-    bitstatus = SET;
-  }
-  else
-  {
-    bitstatus = RESET;
-  }
-
-  /* Return the flag status */
-  return bitstatus;
-}
-
-/**
-  * @brief  Clears the PWR's pending flags.
-  * @param  PWR_FLAG: specifies the flag to clear.
-  *   This parameter can be one of the following values:
-  *     @arg PWR_FLAG_WUF: Wake Up flag
-  *     @arg PWR_FLAG_SBF: StandBy flag
-  * @retval None
-  */
-void PWR_ClearFlag(uint32_t PWR_FLAG)
-{
-  /* Check the parameters */
-  assert_param(IS_PWR_CLEAR_FLAG(PWR_FLAG));
-
-  PWR->CTRL |=  PWR_FLAG << 2;
-}
 
 /**
   * @}
