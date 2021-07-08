@@ -50,7 +50,6 @@ _include_com    += \
 _sources_com    += system_at32f4xx.c
 
 _cppflags_com   += \
-                   -Wno-error=unused-variable \
                    $(CPPFLAGS_COM) \
                    $(_include_com)
 

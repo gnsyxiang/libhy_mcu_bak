@@ -69,7 +69,6 @@ _sources_com    += \
                    misc.c
 
 _cppflags_com   += \
-                   -Wno-error=unused-variable \
                    $(CPPFLAGS_COM) \
                    $(_include_com)
 
