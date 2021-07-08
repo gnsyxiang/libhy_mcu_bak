@@ -39,20 +39,25 @@ typedef struct {
 
 static void _sys_tick_cb(void *args)
 {
+#if 1
     static int cnt = 0;
     if (cnt++ == 1000) {
         cnt = 0;
         LOGD("--------tick\n");
     }
+#endif
 }
+
 
 static void _timer_cb(void *args)
 {
+#if 0
     static int cnt = 0;
     if (cnt++ == 1000) {
         cnt = 0;
-        LOGD("--------timer\n");
+        LOGD("--timer\n");
     }
+#endif
 }
 
 static _main_context_t *_module_create(void)
@@ -114,7 +119,6 @@ int main(int argc, char const* argv[])
     LOGT("version: %s \n", VERSION);
 
     while (1) {
-
     }
 
     _module_destroy(context);

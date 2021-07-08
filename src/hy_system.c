@@ -36,6 +36,57 @@ typedef struct {
 
 static _system_context_t *context = NULL;
 
+#ifdef USE_SYSTICK_DELAY
+static __IO uint32_t fac_us;
+static __IO uint32_t fac_ms;
+
+void HySystemDelayUs(size_t us)
+{
+    uint32_t temp;
+    SysTick->LOAD = (uint32_t)(us * fac_us);
+    SysTick->VAL = 0x00;
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk ;
+    do {
+        temp = SysTick->CTRL;
+    } while ((temp & 0x01) &&! (temp & (1<<16)));
+
+    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+    SysTick->VAL = 0x00;
+}
+
+void HySystemDelayMs(size_t ms)
+{
+#define STEP_DELAY_MS	50
+    uint32_t temp;
+    while (ms) {
+        if (ms > STEP_DELAY_MS) {
+            SysTick->LOAD = (uint32_t)(STEP_DELAY_MS * fac_ms);
+            ms -= STEP_DELAY_MS;
+        } else {
+            SysTick->LOAD = (uint32_t)(ms * fac_ms);
+            ms = 0;
+        }
+        SysTick->VAL = 0x00;
+        SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+
+        do {
+            temp = SysTick->CTRL;
+        } while ((temp & 0x01) && !(temp & (1<<16)));
+
+        SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+        SysTick->VAL = 0x00;
+    }
+}
+
+void HySystemDelayS(size_t s)
+{
+    for (size_t i = 0; i < s; ++i) {
+        HySystemDelayMs(500);
+        HySystemDelayMs(500);
+    }
+}
+#endif
+
 void SysTick_Handler(void)
 {
     if (context) {
@@ -50,14 +101,17 @@ static void _init_system(void)
 {
     RCC_ClockType RCC_Clocks;
 
-    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
-
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 
-    /* SystTick configuration: an interrupt every 10ms */
-    RCC_GetClocksFreq(&RCC_Clocks);
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 
+    RCC_GetClocksFreq(&RCC_Clocks);
     SysTick_Config(RCC_Clocks.SYSCLK_Freq / SYSTEM_TICK_1MS_FACTOR);
+
+#ifdef USE_SYSTICK_DELAY
+    fac_us = SystemCoreClock / (1000000U);
+    fac_ms = fac_us * (1000U);
+#endif
 
     NVIC_SetPriority(SysTick_IRQn, 1);
 }
