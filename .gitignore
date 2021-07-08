@@ -72,11 +72,6 @@ stamp-h1
 *.svg
 
 
-#---------------
-# ignore for doc
-#---------------
-doc/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0
-
 #--------------------
 # ignore for building
 #--------------------
