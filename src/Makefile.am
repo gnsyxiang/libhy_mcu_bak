@@ -46,7 +46,8 @@ _include_com    += -I$(top_srcdir)/include \
 
 _sources_com    += \
                    hy_timer.c \
-                   hy_uart.c
+                   hy_uart.c \
+                   hy_system.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
