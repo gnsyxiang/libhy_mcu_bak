@@ -116,7 +116,7 @@ int main(int argc, char const* argv[])
         return -1;
     }
 
-    LOGT("version: %s \n", VERSION);
+    LOGT("version: %s, date: %s, time: %s \n", VERSION, __DATE__, __TIME__);
 
     while (1) {
 #ifdef USE_SYSTICK_DELAY
