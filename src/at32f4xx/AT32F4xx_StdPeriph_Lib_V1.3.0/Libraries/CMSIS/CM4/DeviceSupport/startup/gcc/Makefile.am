@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    07/07 2021 19:53
+# @date    06/07 2021 15:34
 # @version v0.0.1
 # 
 # @since    note
@@ -13,12 +13,12 @@
 # 
 #     change log:
 #     NO.     Author              Date            Modified
-#     00      zhenquan.qiu        07/07 2021      create the file
+#     00      zhenquan.qiu        06/07 2021      create the file
 # 
-#     last modified: 07/07 2021 19:53
+#     last modified: 06/07 2021 15:34
 # ===============================================================
 
-noinst_LTLIBRARIES = libipv4.la
+noinst_LTLIBRARIES = libstartup.la
 
 # ------------------
 # defining variables
@@ -34,19 +34,9 @@ _ldadd_com      =
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    += \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/include
+_include_com    +=
 
-_sources_com    += \
-                   dhcp.c \
-                   autoip.c \
-                   etharp.c \
-                   icmp.c \
-                   igmp.c \
-                   ip4.c \
-                   ip4_addr.c \
-                   ip4_frag.c
+_sources_com    += startup_at32f403argt7.s
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
@@ -58,10 +48,11 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += $(LIB_LDFLAGS_COM)
 
-libipv4_la_SOURCES  = $(_sources_com)
-libipv4_la_CPPFLAGS = $(_cppflags_com)
-libipv4_la_CFLAGS   = $(_cflags_com)
-libipv4_la_CXXFLAGS = $(_cxxflags_com)
-libipv4_la_LDFLAGS  = $(_ldflags_com)
-libipv4_la_LIBADD   = $(_ldadd_com)
+libstartup_la_SOURCES   = $(_sources_com)
+libstartup_la_CPPFLAGS  = $(_cppflags_com)
+libstartup_la_CCASFLAGS =
+libstartup_la_CFLAGS    = $(_cflags_com)
+libstartup_la_CXXFLAGS  = $(_cxxflags_com)
+libstartup_la_LDFLAGS   = $(_ldflags_com)
+libstartup_la_LIBADD    = $(_ldadd_com)
 

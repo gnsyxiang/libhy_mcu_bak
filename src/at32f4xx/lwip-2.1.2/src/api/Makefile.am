@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    07/07 2021 19:45
+# @date    07/07 2021 19:47
 # @version v0.0.1
 # 
 # @since    note
@@ -15,12 +15,10 @@
 #     NO.     Author              Date            Modified
 #     00      zhenquan.qiu        07/07 2021      create the file
 # 
-#     last modified: 07/07 2021 19:45
+#     last modified: 07/07 2021 19:47
 # ===============================================================
 
-SUBDIRS = src port
-
-noinst_LTLIBRARIES = liblwip.la
+noinst_LTLIBRARIES = libapi.la
 
 # ------------------
 # defining variables
@@ -33,12 +31,25 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_lwip_lib       = src/at32f4xx/lwip-2.1.2
+
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    +=
+_include_com    += \
+                   -I$(top_srcdir)/$(_lwip_lib)/port \
+                   -I$(top_srcdir)/$(_lwip_lib)/src/include
 
-_sources_com    +=
+_sources_com    += \
+                   if_api.c \
+                   netbuf.c \
+                   netdb.c \
+                   netifapi.c \
+                   tcpip.c \
+                   sockets.c \
+                   err.c \
+                   api_lib.c \
+                   api_msg.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
@@ -48,15 +59,12 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += $(LIB_LDFLAGS_COM) \
-                   $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/core/libcore.la \
-                   $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/api/libapi.la \
-                   $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/netif/libnetif.la \
-                   $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port/libport.la
+_ldflags_com    += $(LIB_LDFLAGS_COM)
 
-liblwip_la_SOURCES  = $(_sources_com)
-liblwip_la_CPPFLAGS = $(_cppflags_com)
-liblwip_la_CFLAGS   = $(_cflags_com)
-liblwip_la_CXXFLAGS = $(_cxxflags_com)
-liblwip_la_LDFLAGS  = $(_ldflags_com)
-liblwip_la_LIBADD   = $(_ldadd_com)
+libapi_la_SOURCES  = $(_sources_com)
+libapi_la_CPPFLAGS = $(_cppflags_com)
+libapi_la_CFLAGS   = $(_cflags_com)
+libapi_la_CXXFLAGS = $(_cxxflags_com)
+libapi_la_LDFLAGS  = $(_ldflags_com)
+libapi_la_LIBADD   = $(_ldadd_com)
+

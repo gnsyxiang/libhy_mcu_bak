@@ -5,7 +5,7 @@
 # @file    Makefile.am
 # @brief   
 # @author  gnsyxiang <gnsyxiang@163.com>
-# @date    07/07 2021 19:47
+# @date    07/07 2021 19:53
 # @version v0.0.1
 # 
 # @since    note
@@ -15,10 +15,10 @@
 #     NO.     Author              Date            Modified
 #     00      zhenquan.qiu        07/07 2021      create the file
 # 
-#     last modified: 07/07 2021 19:47
+#     last modified: 07/07 2021 19:53
 # ===============================================================
 
-noinst_LTLIBRARIES = libapi.la
+noinst_LTLIBRARIES = libipv4.la
 
 # ------------------
 # defining variables
@@ -31,23 +31,24 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_lwip_lib       = src/at32f4xx/lwip-2.1.2
+
 # ---------------------
 # add necessary content
 # ---------------------
 _include_com    += \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/include
+                   -I$(top_srcdir)/$(_lwip_lib)/port \
+                   -I$(top_srcdir)/$(_lwip_lib)/src/include
 
 _sources_com    += \
-                   if_api.c \
-                   netbuf.c \
-                   netdb.c \
-                   netifapi.c \
-                   tcpip.c \
-                   sockets.c \
-                   err.c \
-                   api_lib.c \
-                   api_msg.c
+                   dhcp.c \
+                   autoip.c \
+                   etharp.c \
+                   icmp.c \
+                   igmp.c \
+                   ip4.c \
+                   ip4_addr.c \
+                   ip4_frag.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
@@ -59,10 +60,10 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += $(LIB_LDFLAGS_COM)
 
-libapi_la_SOURCES  = $(_sources_com)
-libapi_la_CPPFLAGS = $(_cppflags_com)
-libapi_la_CFLAGS   = $(_cflags_com)
-libapi_la_CXXFLAGS = $(_cxxflags_com)
-libapi_la_LDFLAGS  = $(_ldflags_com)
-libapi_la_LIBADD   = $(_ldadd_com)
+libipv4_la_SOURCES  = $(_sources_com)
+libipv4_la_CPPFLAGS = $(_cppflags_com)
+libipv4_la_CFLAGS   = $(_cflags_com)
+libipv4_la_CXXFLAGS = $(_cxxflags_com)
+libipv4_la_LDFLAGS  = $(_ldflags_com)
+libipv4_la_LIBADD   = $(_ldadd_com)
 

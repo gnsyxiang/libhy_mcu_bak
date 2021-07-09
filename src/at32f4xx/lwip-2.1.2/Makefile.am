@@ -18,7 +18,9 @@
 #     last modified: 07/07 2021 19:45
 # ===============================================================
 
-noinst_LTLIBRARIES = libport.la
+SUBDIRS = src port
+
+noinst_LTLIBRARIES = liblwip.la
 
 # ------------------
 # defining variables
@@ -31,19 +33,14 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_lwip_lib       = src/at32f4xx/lwip-2.1.2
+
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    += \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/include \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/CoreSupport \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/inc
+_include_com    += $(top_srcdir)/$(_lwip_lib)/src/include
 
-_sources_com    += \
-                   sys_arch.c \
-                   ethernetif.c
+_sources_com    +=
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
@@ -53,12 +50,18 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += $(LIB_LDFLAGS_COM)
+_ldflags_com    += \
+                   $(top_builddir)/$(LIB_LDFLAGS_COM) \
+                   $(top_builddir)/$(_lwip_lib)/port/libport.la \
+                   $(top_builddir)/$(_lwip_lib)/src/api/libapi.la \
+                   $(top_builddir)/$(_lwip_lib)/src/core/ipv4/libipv4.la \
+                   $(top_builddir)/$(_lwip_lib)/src/core/libcore.la \
+                   $(top_builddir)/$(_lwip_lib)/src/netif/libnetif.la
 
-libport_la_SOURCES  = $(_sources_com)
-libport_la_CPPFLAGS = $(_cppflags_com)
-libport_la_CFLAGS   = $(_cflags_com)
-libport_la_CXXFLAGS = $(_cxxflags_com)
-libport_la_LDFLAGS  = $(_ldflags_com)
-libport_la_LIBADD   = $(_ldadd_com)
+liblwip_la_SOURCES  = $(_sources_com)
+liblwip_la_CPPFLAGS = $(_cppflags_com)
+liblwip_la_CFLAGS   = $(_cflags_com)
+liblwip_la_CXXFLAGS = $(_cxxflags_com)
+liblwip_la_LDFLAGS  = $(_ldflags_com)
+liblwip_la_LIBADD   = $(_ldadd_com)
 

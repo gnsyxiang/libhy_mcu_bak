@@ -30,6 +30,8 @@ _ldflags_com    =
 _ldadd_com      =
 bin_PROGRAMS    =
 
+_at32f4xx_lib   = src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries
+
 # ---------------------
 # add necessary content
 # ---------------------
@@ -50,7 +52,7 @@ _ldflags_com    += \
                    $(top_builddir)/src/lib@project_name@.la
 
 if COMPILE_MCU_AT32F407VGT7
-_ldflags_com    += -T$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport/startup/gcc/linker/AT32F407xG_FLASH.ld
+_ldflags_com    += -T$(top_srcdir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/startup/gcc/linker/AT32F407xG_FLASH.ld
 endif
 
 bin_PROGRAMS        += main.elf

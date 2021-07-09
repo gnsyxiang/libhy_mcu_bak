@@ -18,7 +18,7 @@
 #     last modified: 24/02 2021 10:34
 # ===============================================================
 
-noinst_LTLIBRARIES = libStdPeriph_Driver.la
+noinst_LTLIBRARIES = libdriver.la
 
 # ------------------
 # defining variables
@@ -31,14 +31,15 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_at32f4xx_lib   = src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries
+
 # ---------------------
 # add necessary content
 # ---------------------
 _include_com    += \
-                   -I$(top_srcdir)/include \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/CoreSupport \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/CMSIS/CM4/DeviceSupport \
-                   -I$(top_srcdir)/src/at32f4xx/Libraries/AT32F4xx_StdPeriph_Driver/inc
+                   -I$(top_srcdir)/$(_at32f4xx_lib)/CMSIS/CM4/CoreSupport \
+                   -I$(top_srcdir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport \
+                   -I$(top_srcdir)/$(_at32f4xx_lib)/AT32F4xx_StdPeriph_Driver/inc
 
 _sources_com    += \
                    at32f4xx_acc.c \
@@ -78,10 +79,10 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += $(LIB_LDFLAGS_COM)
 
-libStdPeriph_Driver_la_SOURCES  = $(_sources_com)
-libStdPeriph_Driver_la_CPPFLAGS = $(_cppflags_com)
-libStdPeriph_Driver_la_CFLAGS   = $(_cflags_com)
-libStdPeriph_Driver_la_CXXFLAGS = $(_cxxflags_com)
-libStdPeriph_Driver_la_LDFLAGS  = $(_ldflags_com)
-libStdPeriph_Driver_la_LIBADD   = $(_ldadd_com)
+libdriver_la_SOURCES  = $(_sources_com)
+libdriver_la_CPPFLAGS = $(_cppflags_com)
+libdriver_la_CFLAGS   = $(_cflags_com)
+libdriver_la_CXXFLAGS = $(_cxxflags_com)
+libdriver_la_LDFLAGS  = $(_ldflags_com)
+libdriver_la_LIBADD   = $(_ldadd_com)
 

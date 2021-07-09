@@ -33,12 +33,14 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_lwip_lib       = src/at32f4xx/lwip-2.1.2
+
 # ---------------------
 # add necessary content
 # ---------------------
 _include_com    += \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/port \
-                   -I$(top_srcdir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/include
+                   -I$(top_srcdir)/$(_lwip_lib)/port \
+                   -I$(top_srcdir)/$(_lwip_lib)/src/include
 
 _sources_com    += \
                    altcp.c \
@@ -70,8 +72,7 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += $(LIB_LDFLAGS_COM) \
-                   $(top_builddir)/src/at32f4xx/3rd_lib/lwip-2.1.2/src/core/ipv4/libipv4.la
+_ldflags_com    += $(LIB_LDFLAGS_COM)
 
 libcore_la_SOURCES  = $(_sources_com)
 libcore_la_CPPFLAGS = $(_cppflags_com)
