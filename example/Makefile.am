@@ -47,9 +47,9 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += \
-                   $(BIN_LDFLAGS_COM) \
-                   $(top_builddir)/src/lib@project_name@.la
+_ldflags_com    += $(BIN_LDFLAGS_COM)
+
+_ldadd_com      += $(top_builddir)/src/lib@project_name@.la
 
 if COMPILE_MCU_AT32F407VGT7
 _ldflags_com    += -T$(top_srcdir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/startup/gcc/linker/AT32F407xG_FLASH.ld

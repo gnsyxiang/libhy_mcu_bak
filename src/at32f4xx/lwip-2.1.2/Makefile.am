@@ -50,13 +50,14 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += \
-                   $(top_builddir)/$(LIB_LDFLAGS_COM) \
-                   $(top_builddir)/$(_lwip_lib)/port/libport.la \
-                   $(top_builddir)/$(_lwip_lib)/src/api/libapi.la \
-                   $(top_builddir)/$(_lwip_lib)/src/core/ipv4/libipv4.la \
-                   $(top_builddir)/$(_lwip_lib)/src/core/libcore.la \
-                   $(top_builddir)/$(_lwip_lib)/src/netif/libnetif.la
+_ldflags_com    += $(LIB_LDFLAGS_COM)
+
+_ldadd_com      += \
+				   $(top_builddir)/$(_lwip_lib)/port/libport.la \
+				   $(top_builddir)/$(_lwip_lib)/src/api/libapi.la \
+				   $(top_builddir)/$(_lwip_lib)/src/core/ipv4/libipv4.la \
+				   $(top_builddir)/$(_lwip_lib)/src/core/libcore.la \
+				   $(top_builddir)/$(_lwip_lib)/src/netif/libnetif.la
 
 liblwip_la_SOURCES  = $(_sources_com)
 liblwip_la_CPPFLAGS = $(_cppflags_com)

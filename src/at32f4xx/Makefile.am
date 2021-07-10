@@ -48,8 +48,9 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += \
-                   $(LIB_LDFLAGS_COM) \
+_ldflags_com    += $(LIB_LDFLAGS_COM)
+
+_ldadd_com      += \
                    $(top_builddir)/src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/libStdPeriph_Lib.la \
                    $(top_builddir)/src/at32f4xx/lwip-2.1.2/liblwip.la
 

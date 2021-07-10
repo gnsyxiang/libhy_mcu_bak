@@ -50,8 +50,9 @@ _cflags_com     += $(CFLAGS_COM)
 
 _cxxflags_com   += $(CXXFLAGS_COM)
 
-_ldflags_com    += \
-                   $(LIB_LDFLAGS_COM) \
+_ldflags_com    += $(LIB_LDFLAGS_COM)
+
+_ldadd_com      += \
                    $(top_builddir)/$(_at32f4xx_lib)/AT32F4xx_StdPeriph_Driver/src/libdriver.la \
                    $(top_builddir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/libDeviceSupport.la \
                    $(top_builddir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/startup/gcc/libstartup.la
