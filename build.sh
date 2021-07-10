@@ -20,6 +20,8 @@ if [ x$1 = x"mcu" ]; then
     gcc_version=gcc-arm-none-eabi-5_4-2016q3
     gcc_prefix=arm-none-eabi
     cross_gcc_path=${data_disk_path}/opt/toolchains/${vender}/${gcc_version}/bin/${gcc_prefix}-
+    _ldflag_com="-specs=nano.specs -specs=nosys.specs"
+    _param_com="--enable-at32f407vgt7"
 else
     help_info
 fi
@@ -38,21 +40,21 @@ if [ $# = 2 ]; then
     cd $2/${vender}
 fi
 
-${target_path}/configure                            \
-    CC=${cross_gcc_path}gcc                         \
-    CXX=${cross_gcc_path}g++                        \
-    CPPFLAGS=""                                     \
-    CFLAGS="-specs=nano.specs -specs=nosys.specs"   \
-    CXXFLAGS=""                                     \
-    LDFLAGS=""                                      \
-    LIBS=""                                         \
-    PKG_CONFIG_PATH="${lib_3rd_path}/lib/pkgconfig" \
-    --prefix=${prefix_path}                         \
-    --build=                                        \
-    --host=${host}                                  \
-    --target=${host}                                \
+${target_path}/configure                                    \
+    CC=${cross_gcc_path}gcc                                 \
+    CXX=${cross_gcc_path}g++                                \
+    CPPFLAGS="-I${lib_3rd_path}/include"                    \
+    CFLAGS=""                                               \
+    CXXFLAGS=""                                             \
+    LDFLAGS="-L${lib_3rd_path}/lib ${_ldflag_com}"          \
+    LIBS=""                                                 \
+    PKG_CONFIG_PATH="${lib_3rd_path}/lib/pkgconfig"         \
+    --prefix=${prefix_path}                                 \
+    --build=                                                \
+    --host=${host}                                          \
+    --target=${host}                                        \
     \
-    --enable-at32f407vgt7
+    ${_param_com}
 
 
 thread_jobs=`getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1`
