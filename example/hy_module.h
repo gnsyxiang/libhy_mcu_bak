@@ -28,7 +28,7 @@ typedef void *(*create_t)(void *config);
 typedef void (*destroy_t)(void *handle);
 typedef struct {
     char        *name;
-    void        *handle;
+    void        **handle;
     void        *config;
     create_t    create;
     destroy_t   destroy;
@@ -48,8 +48,8 @@ typedef struct {
         int len = HyUtilsArrayCnt(module);                      \
         for (i = 0; i < len; ++i) {                             \
             module_create_t *create = &module[i];               \
-            create->handle = create->create(create->config);    \
-            if (!create->handle) {                              \
+            *create->handle = create->create(create->config);   \
+            if (!*create->handle) {                             \
                 LOGE("%s create error \n", create->name);       \
                 break;                                          \
             }                                                   \

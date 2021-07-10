@@ -86,9 +86,9 @@ static _main_context_t *_module_create(void)
 
     // note: 增加或删除要同步到module_destroy_t中
     module_create_t module[] = {
-        {"system",      context->system_handle,     &system_config,     (create_t)HySystemCreate,       HySystemDestroy},
-        {"debug uart",  context->uart_handle,       &uart_config,       (create_t)HyUartDebugCreate,    HyUartDebugDestroy},
-        {"timer",       context->timer_handle,      &timer_config,      (create_t)HyTimerCreate,        HyTimerDestroy},
+        {"system",      &context->system_handle,    &system_config,     (create_t)HySystemCreate,       HySystemDestroy},
+        {"debug uart",  &context->uart_handle,      &uart_config,       (create_t)HyUartDebugCreate,    HyUartDebugDestroy},
+        {"timer",       &context->timer_handle,     &timer_config,      (create_t)HyTimerCreate,        HyTimerDestroy},
     };
 
     RUN_CREATE(module);
