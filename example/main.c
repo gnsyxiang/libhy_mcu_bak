@@ -27,7 +27,8 @@
 #include "hy_uart.h"
 #include "hy_timer.h"
 #include "hy_log.h"
-#include "hy_module.h"
+
+#include "hy_utils/hy_module.h"
 
 #define ALONE_DEBUG 1
 
