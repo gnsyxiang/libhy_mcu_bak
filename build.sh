@@ -4,7 +4,7 @@
 
 help_info()
 {
-    echo "eg: ./build.sh arm [_build]"
+    echo "eg: ./build.sh mcu [_build]"
     exit
 }
 
@@ -14,7 +14,7 @@ fi
 
 data_disk_path=/opt/data
 
-if [ x$1 = x"arm" ]; then
+if [ x$1 = x"mcu" ]; then
     vender=gnu_arm_embedded
     host=arm-none-eabi
     gcc_version=gcc-arm-none-eabi-5_4-2016q3
