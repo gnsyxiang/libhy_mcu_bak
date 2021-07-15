@@ -22,7 +22,9 @@
 #include <string.h>
 
 #include "hy_system.h"
-#include "hy_log.h"
+
+#include "hy_utils/hy_log.h"
+#include "hy_utils/hy_mem.h"
 
 #include "misc.h"
 
@@ -137,10 +139,10 @@ void *HySystemCreate(HySystemConfig_t *system_config)
     return NULL;
 }
 
-void HySystemDestroy(void *handle)
+void HySystemDestroy(void **handle)
 {
-    if (handle) {
-        free(handle);
+    if (handle && *handle) {
+        HY_FREE(handle);
     }
 }
 

@@ -25,7 +25,8 @@
 
 #include "at32f4xx_rcc.h"
 
-#include "hy_log.h"
+#include "hy_utils/hy_mem.h"
+#include "hy_utils/hy_log.h"
 
 #define ALONE_DEBUG 1
 
@@ -116,13 +117,14 @@ void *HyTimerCreate(HyTimerConfig_t *timer_config)
     return NULL;
 }
 
-void HyTimerDestroy(void *handle)
+void HyTimerDestroy(void **handle)
 {
-    if (handle) {
-        _timer_context_t *context = handle;
+    if (handle && *handle) {
+        _timer_context_t *context = *handle;
 
         context_array[context->num] = NULL;
-        free(context);
+
+        HY_FREE(handle);
     }
 }
 

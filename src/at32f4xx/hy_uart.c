@@ -23,9 +23,10 @@
 
 #include "hy_uart.h"
 
-#include "at32f4xx_gpio.h"
+#include "hy_utils/hy_log.h"
+#include "hy_utils/hy_mem.h"
 
-#include "hy_log.h"
+#include "at32f4xx_gpio.h"
 
 #define ALONE_DEBUG 1
 
@@ -175,14 +176,14 @@ void *HyUartCreate(HyUartConfig_t *uart_config)
     return NULL;
 }
 
-void HyUartDestroy(void *handle)
+void HyUartDestroy(void **handle)
 {
-    if (handle) {
-        _uart_context_t *context = handle;
+    if (handle && *handle) {
+        _uart_context_t *context = *handle;
 
         context_array[context->num] = NULL;
 
-        free(context);
+        HY_FREE(handle);
     }
 }
 
@@ -305,11 +306,13 @@ void *HyUartDebugCreate(HyUartConfig_t *uart_config)
     return HyUartCreate(uart_config);
 }
 
-void HyUartDebugDestroy(void *handle)
+void HyUartDebugDestroy(void **handle)
 {
     LOGT("%s:%d \n", __func__, __LINE__);
 
-    HyUartDestroy(handle);
+    if (handle && *handle) {
+        HyUartDestroy(handle);
+    }
 }
 
 #endif

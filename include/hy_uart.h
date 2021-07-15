@@ -53,7 +53,7 @@ typedef struct {
 } HyUartConfig_t;
 
 void *HyUartCreate(HyUartConfig_t *uart_config);
-void HyUartDestroy(void *handle);
+void HyUartDestroy(void **handle);
 
 int HyUartSendByte(void *handle, char byte);
 int HyUartSendBuf(void *handle, void *buf, size_t len);
@@ -63,7 +63,7 @@ int HyUartSendBuf(void *handle, void *buf, size_t len);
 #define DEBUG_UART_NUM (HY_UART_1)
 
 void *HyUartDebugCreate(HyUartConfig_t *uart_config);
-void HyUartDebugDestroy(void *handle);
+void HyUartDebugDestroy(void **handle);
 
 #endif
 

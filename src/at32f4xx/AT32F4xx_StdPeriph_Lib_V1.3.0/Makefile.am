@@ -33,7 +33,7 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
-_at32f4xx_lib   = src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries
+_at32f4xx_lib   = $(top_builddir)/src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries
 
 # ---------------------
 # add necessary content
@@ -53,9 +53,9 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 _ldflags_com    += $(LIB_LDFLAGS_COM)
 
 _ldadd_com      += \
-                   $(top_builddir)/$(_at32f4xx_lib)/AT32F4xx_StdPeriph_Driver/src/libdriver.la \
-                   $(top_builddir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/libDeviceSupport.la \
-                   $(top_builddir)/$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/startup/gcc/libstartup.la
+                   $(_at32f4xx_lib)/AT32F4xx_StdPeriph_Driver/src/libdriver.la \
+                   $(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/libDeviceSupport.la \
+                   $(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport/startup/gcc/libstartup.la
 
 libStdPeriph_Lib_la_SOURCES  = $(_sources_com)
 libStdPeriph_Lib_la_CPPFLAGS = $(_cppflags_com)

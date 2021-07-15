@@ -37,7 +37,7 @@ typedef struct {
 } HySystemConfig_t;
 
 void *HySystemCreate(HySystemConfig_t *system_config);
-void HySystemDestroy(void *handle);
+void HySystemDestroy(void **handle);
 
 #define USE_SYSTICK_DELAY
 

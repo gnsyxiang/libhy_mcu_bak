@@ -54,40 +54,28 @@ _no_error_com       += \
                        -Wno-error=unused-function \
                        -Wno-error=unused-parameter
 
-_remove_unuse_func  += \
-                       -ffunction-sections \
-                       -fdata-sections
-
 CPPFLAGS_COM        += \
                        -pipe \
                        $(_no_error_com) \
                        $(ACLOCAL_AMFLAGS)
 
-CFLAGS_COM          += $(_remove_unuse_func)
-CXXFLAGS_COM        += $(_remove_unuse_func)
-
 LIB_LDFLAGS_COM     += -rdynamic
 
-BIN_LDFLAGS_COM     += -Wl,--gc-sections
-
-if COMPILE_MCU_AT32F4XX
-CPPFLAGS_COM        += -DUSE_STDPERIPH_DRIVER
-CFLAGS_COM          += \
-                       -mcpu=cortex-m4 \
-                       -mthumb \
-                       -mfpu=fpv4-sp-d16 \
-                       -mfloat-abi=hard \
+_remove_unuse_func  += \
                        -ffunction-sections \
                        -fdata-sections
-endif
+CFLAGS_COM          += $(_remove_unuse_func)
+CXXFLAGS_COM        += $(_remove_unuse_func)
+BIN_LDFLAGS_COM     += -Wl,--gc-sections
 
 if COMPILE_MCU_AT32F407VGT7
-CPPFLAGS_COM        += -DSYSCLK_FREQ_200MHz=200000000
-# CPPFLAGS_COM        += -DSYSCLK_FREQ_240MHz=240000000
+CPPFLAGS_COM    += -DSYSCLK_FREQ_200MHz=200000000
+# CPPFLAGS_COM    += -DSYSCLK_FREQ_240MHz=240000000
+CFLAGS_COM      += $(AT32F407VGT7_CFLAGS)
+endif
 
-CPPFLAGS_COM        += \
-                       -DAT_START_F407_V1_0 \
-                       -DAT32F407VGT7
+if COMPILE_LIBHY_UTILS
+CPPFLAGS_COM        += $(HY_UTILS_INCS)
 endif
 
 export CPPFLAGS_COM

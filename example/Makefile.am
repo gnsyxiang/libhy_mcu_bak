@@ -49,6 +49,10 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += $(BIN_LDFLAGS_COM)
 
+if COMPILE_LIBHY_UTILS
+_ldadd_com      += $(HY_UTILS_LIBS)
+endif
+
 _ldadd_com      += $(top_builddir)/src/lib@project_name@.la
 
 if COMPILE_MCU_AT32F407VGT7

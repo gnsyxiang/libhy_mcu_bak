@@ -62,7 +62,7 @@ typedef struct {
 } HyTimerConfig_t;
 
 void *HyTimerCreate(HyTimerConfig_t *timer_config);
-void HyTimerDestroy(void *handle);
+void HyTimerDestroy(void **handle);
 
 void HyTimerEnable(void *handle);
 void HyTimerDisable(void *handle);

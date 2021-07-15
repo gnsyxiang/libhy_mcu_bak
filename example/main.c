@@ -26,15 +26,17 @@
 #include "hy_system.h"
 #include "hy_uart.h"
 #include "hy_timer.h"
-#include "hy_log.h"
 
+#include "hy_utils/hy_log.h"
 #include "hy_utils/hy_module.h"
+#include "hy_utils/hy_mem.h"
 
 #define ALONE_DEBUG 1
 
 typedef struct {
     void    *system_handle;
     void    *uart_handle;
+    void    *log_handle;
     void    *timer_handle;
 } _main_context_t;
 
@@ -61,6 +63,23 @@ static void _timer_cb(void *args)
 #endif
 }
 
+static void _module_destroy(_main_context_t **context_pp)
+{
+    _main_context_t *context = *context_pp;
+
+    // note: 增加或删除要同步到module_create_t中
+    module_destroy_t module[] = {
+        {"system",      &context->system_handle,    HySystemDestroy},
+        {"debug uart",  &context->uart_handle,      HyUartDebugDestroy},
+        {"log",         &context->log_handle,       HyLogDestroy},
+        {"timer",       &context->timer_handle,     HyTimerDestroy},
+    };
+
+    RUN_DESTROY(module);
+
+    HY_FREE(context_pp);
+}
+
 static _main_context_t *_module_create(void)
 {
     _main_context_t *context = malloc(sizeof(*context));
@@ -78,6 +97,11 @@ static _main_context_t *_module_create(void)
     uart_config.num     = DEBUG_UART_NUM;
     uart_config.rate    = 115200;
 
+    HyLogConfig_t log_config;
+    log_config.buf_len  = 256;
+    log_config.level    = HY_LOG_LEVEL_TRACE;
+    log_config.config_file = NULL;
+
     HyTimerConfig_t timer_config;
     timer_config.num    = HY_TIMER_2;
     timer_config.us     = 1000;
@@ -89,24 +113,13 @@ static _main_context_t *_module_create(void)
     module_create_t module[] = {
         {"system",      &context->system_handle,    &system_config,     (create_t)HySystemCreate,       HySystemDestroy},
         {"debug uart",  &context->uart_handle,      &uart_config,       (create_t)HyUartDebugCreate,    HyUartDebugDestroy},
+        {"log",         &context->log_handle,       &log_config,        (create_t)HyLogCreate,          HyLogDestroy},
         {"timer",       &context->timer_handle,     &timer_config,      (create_t)HyTimerCreate,        HyTimerDestroy},
     };
 
     RUN_CREATE(module);
 
     return context;
-}
-
-static void _module_destroy(_main_context_t *context)
-{
-    // note: 增加或删除要同步到module_create_t中
-    module_destroy_t module[] = {
-        {"system",      context->system_handle,     HySystemDestroy},
-        {"debug uart",  context->uart_handle,       HyUartDebugDestroy},
-        {"timer",       context->timer_handle,      HyTimerDestroy},
-    };
-
-    RUN_DESTROY(module);
 }
 
 int main(int argc, char const* argv[])
@@ -117,7 +130,7 @@ int main(int argc, char const* argv[])
         return -1;
     }
 
-    LOGT("version: %s, date: %s, time: %s \n", VERSION, __DATE__, __TIME__);
+    LOGI("version: %s, date: %s, time: %s \n", VERSION, __DATE__, __TIME__);
 
     while (1) {
 #ifdef USE_SYSTICK_DELAY
@@ -126,7 +139,7 @@ int main(int argc, char const* argv[])
 #endif
     }
 
-    _module_destroy(context);
+    _module_destroy(&context);
 
     return 0;
 }
