@@ -25,6 +25,8 @@
 
 #include "hy_utils/hy_log.h"
 #include "hy_utils/hy_mem.h"
+#include "hy_utils/hy_string.h"
+#include "hy_utils/hy_assert.h"
 
 #include "misc.h"
 
@@ -114,35 +116,29 @@ static void _init_system(void)
     NVIC_SetPriority(SysTick_IRQn, 1);
 }
 
+void HySystemDestroy(void **handle)
+{
+    if (handle && *handle) {
+        HY_FREE(handle);
+    }
+}
+
 void *HySystemCreate(HySystemConfig_t *system_config)
 {
-    if (!system_config) {
-        return NULL;
-    }
+    HY_ASSERT_NULL_RET_VAL(!system_config, NULL);
 
     do {
-        context = malloc(sizeof(*context));
-        if (!context) {
-            LOGE("malloc faild \n");
-            return NULL;
-        }
-        memset(context, '\0', sizeof(*context));
+        context = HY_MALLOC_BREAK(sizeof(*context));
 
-        memcpy(&context->config_save, &system_config->config_save,
-                sizeof(context->config_save));
+        HY_MEMCPY(&context->config_save, &system_config->config_save);
 
         _init_system();
 
         return context;
     } while (0);
 
-    return NULL;
-}
+    HySystemDestroy((void **)&context);
 
-void HySystemDestroy(void **handle)
-{
-    if (handle && *handle) {
-        HY_FREE(handle);
-    }
+    return NULL;
 }
 

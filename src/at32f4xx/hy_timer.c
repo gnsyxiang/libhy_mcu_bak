@@ -26,7 +26,9 @@
 #include "at32f4xx_rcc.h"
 
 #include "hy_utils/hy_mem.h"
+#include "hy_utils/hy_string.h"
 #include "hy_utils/hy_log.h"
+#include "hy_utils/hy_assert.h"
 
 #define ALONE_DEBUG 1
 
@@ -86,48 +88,6 @@ static void _init_timer_interrupt(HyTimerNum_t num, int flag)
     }
 }
 
-void *HyTimerCreate(HyTimerConfig_t *timer_config)
-{
-    if (!timer_config) {
-        LOGE("the param is NULL \n");
-        return NULL;
-    }
-
-    _timer_context_t *context = NULL;
-
-    do {
-        context = malloc(sizeof(*context));
-        if (!context) {
-            break;
-        }
-        memset(context, '\0', sizeof(*context));
-
-        context->num                        = timer_config->num;
-        context_array[timer_config->num]    = context;
-        memcpy(&context->config_save, &timer_config->config_save,
-                sizeof(context->config_save));
-
-        _init_timer_rcc(timer_config->num);
-        _init_timer_func(timer_config->num, timer_config->us, timer_config->flag);
-        _init_timer_interrupt(timer_config->num, timer_config->flag);
-
-        return context;
-    } while (0);
-
-    return NULL;
-}
-
-void HyTimerDestroy(void **handle)
-{
-    if (handle && *handle) {
-        _timer_context_t *context = *handle;
-
-        context_array[context->num] = NULL;
-
-        HY_FREE(handle);
-    }
-}
-
 static void _timer_irq_handler(HyTimerNum_t num)
 {
     if (context_array[num]) {
@@ -166,21 +126,52 @@ static void _timer_control_com(void *handle, int flag)
 
 void HyTimerEnable(void *handle)
 {
-    if (!handle) {
-        LOGE("the param is NULL \n");
-        return;
-    }
+    HY_ASSERT_NULL_RET(!handle);
 
     _timer_control_com(handle, 1);
 }
 
 void HyTimerDisable(void *handle)
 {
-    if (!handle) {
-        LOGE("the param is NULL \n");
-        return;
-    }
+    HY_ASSERT_NULL_RET(!handle);
 
     _timer_control_com(handle, 0);
+}
+
+void HyTimerDestroy(void **handle)
+{
+    if (handle && *handle) {
+        _timer_context_t *context = *handle;
+
+        context_array[context->num] = NULL;
+
+        HY_FREE(handle);
+    }
+}
+
+void *HyTimerCreate(HyTimerConfig_t *timer_config)
+{
+    HY_ASSERT_NULL_RET_VAL(!timer_config, NULL);
+
+    _timer_context_t *context = NULL;
+
+    do {
+        context = HY_MALLOC_BREAK(sizeof(*context));
+
+        context->num                        = timer_config->num;
+        context_array[timer_config->num]    = context;
+
+        HY_MEMCPY(&context->config_save, &timer_config->config_save);
+
+        _init_timer_rcc(timer_config->num);
+        _init_timer_func(timer_config->num, timer_config->us, timer_config->flag);
+        _init_timer_interrupt(timer_config->num, timer_config->flag);
+
+        return context;
+    } while (0);
+
+    HyTimerDestroy((void **)&context);
+
+    return NULL;
 }
 

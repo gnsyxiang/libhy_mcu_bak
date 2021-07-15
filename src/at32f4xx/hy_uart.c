@@ -25,6 +25,8 @@
 
 #include "hy_utils/hy_log.h"
 #include "hy_utils/hy_mem.h"
+#include "hy_utils/hy_string.h"
+#include "hy_utils/hy_assert.h"
 
 #include "at32f4xx_gpio.h"
 
@@ -145,48 +147,6 @@ static void _init_uart_interrupt(HyUartNum_t num)
     USART_Cmd(uart_interrupt[num].uart, ENABLE);
 }
 
-void *HyUartCreate(HyUartConfig_t *uart_config)
-{
-    if (!uart_config) {
-        return NULL;
-    }
-
-    _uart_context_t *context = NULL;
-
-    do {
-        context = malloc(sizeof(*context));
-        if (!context) {
-            break;
-        }
-        memset(context, '\0', sizeof(*context));
-
-        context_array[uart_config->num] = context;
-        context->num                    = uart_config->num;
-
-        memcpy(&context->config_save, &uart_config->config_save,
-                sizeof(context->config_save));
-
-        _init_uart_gpio(uart_config->num);
-        _init_uart_func(uart_config->num, uart_config->rate);
-        _init_uart_interrupt(uart_config->num);
-
-        return context;
-    } while (0);
-
-    return NULL;
-}
-
-void HyUartDestroy(void **handle)
-{
-    if (handle && *handle) {
-        _uart_context_t *context = *handle;
-
-        context_array[context->num] = NULL;
-
-        HY_FREE(handle);
-    }
-}
-
 static void _uart_irq_handler(HyUartNum_t num)
 {
     if (context_array[num]) {
@@ -220,9 +180,7 @@ void UART5_IRQHandler(void)
 
 int HyUartSendByte(void *handle, char byte)
 {
-    if (!handle) {
-        return -1;
-    }
+    HY_ASSERT_NULL_RET_VAL(!handle, -1);
 
     _uart_context_t *context = handle;
     USART_Type* uart[HY_UART_MAX] = {
@@ -245,9 +203,7 @@ int HyUartSendByte(void *handle, char byte)
 
 int HyUartSendBuf(void *handle, void *buf, size_t len)
 {
-    if (!handle) {
-        return -1;
-    }
+    HY_ASSERT_NULL_RET_VAL(!handle, -1);
 
     _uart_context_t *context = handle;
     USART_Type* uart[HY_UART_MAX] = {
@@ -273,6 +229,47 @@ int HyUartSendBuf(void *handle, void *buf, size_t len)
     } while (i < len);
 
     return (i);
+}
+
+void HyUartDestroy(void **handle)
+{
+    LOGT("%s:%d \n", __func__, __LINE__);
+
+    if (handle && *handle) {
+        _uart_context_t *context = *handle;
+
+        context_array[context->num] = NULL;
+
+        HY_FREE(handle);
+    }
+}
+
+void *HyUartCreate(HyUartConfig_t *uart_config)
+{
+    LOGT("%s:%d \n", __func__, __LINE__);
+
+    HY_ASSERT_NULL_RET_VAL(!uart_config, NULL);
+
+    _uart_context_t *context = NULL;
+
+    do {
+        context = HY_MALLOC_BREAK(sizeof(*context));
+
+        context_array[uart_config->num] = context;
+        context->num                    = uart_config->num;
+
+        HY_MEMCPY(&context->config_save, &uart_config->config_save);
+
+        _init_uart_gpio(uart_config->num);
+        _init_uart_func(uart_config->num, uart_config->rate);
+        _init_uart_interrupt(uart_config->num);
+
+        return context;
+    } while (0);
+
+    HyUartDestroy((void **)&context);
+
+    return NULL;
 }
 
 #ifdef DEBUG_UART
@@ -301,11 +298,6 @@ int _write(int fd, char *ptr, int len)
     return i;
 }
 
-void *HyUartDebugCreate(HyUartConfig_t *uart_config)
-{
-    return HyUartCreate(uart_config);
-}
-
 void HyUartDebugDestroy(void **handle)
 {
     LOGT("%s:%d \n", __func__, __LINE__);
@@ -313,6 +305,13 @@ void HyUartDebugDestroy(void **handle)
     if (handle && *handle) {
         HyUartDestroy(handle);
     }
+}
+
+void *HyUartDebugCreate(HyUartConfig_t *uart_config)
+{
+    LOGT("%s:%d \n", __func__, __LINE__);
+
+    return HyUartCreate(uart_config);
 }
 
 #endif
