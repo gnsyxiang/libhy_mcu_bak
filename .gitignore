@@ -88,6 +88,8 @@ hy_mcu.pc
 *.bin
 *.elf
 *.map
+*.pb-c.c
+*.pb-c.h
 
 
 
