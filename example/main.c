@@ -82,30 +82,25 @@ static void _module_destroy(_main_context_t **context_pp)
 
 static _main_context_t *_module_create(void)
 {
-    _main_context_t *context = malloc(sizeof(*context));
-    if (!context) {
-        LOGE("malloc faild \n");
-        return NULL;
-    }
-    memset(context, '\0', sizeof(*context));
+    _main_context_t *context = HY_MALLOC_RET_VAL(sizeof(*context), NULL);
 
     HySystemConfig_t system_config;
     system_config.config_save.sys_tick_cb   = _sys_tick_cb;
     system_config.config_save.args          = context;
 
     HyUartConfig_t uart_config;
-    uart_config.num     = DEBUG_UART_NUM;
-    uart_config.rate    = 115200;
+    uart_config.num                     = DEBUG_UART_NUM;
+    uart_config.rate                    = 115200;
 
     HyLogConfig_t log_config;
-    log_config.buf_len  = 256;
-    log_config.level    = HY_LOG_LEVEL_TRACE;
-    log_config.config_file = NULL;
+    log_config.buf_len                  = 256;
+    log_config.level                    = HY_LOG_LEVEL_TRACE;
+    log_config.config_file              = NULL;
 
     HyTimerConfig_t timer_config;
-    timer_config.num    = HY_TIMER_2;
-    timer_config.us     = 1000;
-    timer_config.flag   = HY_TIMER_ENABLE;
+    timer_config.num                    = HY_TIMER_2;
+    timer_config.us                     = 1000;
+    timer_config.flag                   = HY_TIMER_ENABLE;
     timer_config.config_save.timer_cb   = _timer_cb;
     timer_config.config_save.args       = context;
 
