@@ -43,6 +43,7 @@ _include_com    += \
                    -I$(top_srcdir)/include
 
 _sources_com    += \
+                   hy_adc.c \
                    hy_gpio.c \
                    hy_system.c \
                    hy_time.c \
