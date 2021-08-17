@@ -48,7 +48,7 @@ _include_com    += \
 
 _sources_com    += \
                    hy_system.c \
-                   hy_timer.c \
+                   hy_time.c \
                    hy_uart.c
 
 _cppflags_com   += \

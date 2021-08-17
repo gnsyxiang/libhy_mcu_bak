@@ -2,7 +2,7 @@
  * 
  * Release under GPLv-3.0.
  * 
- * @file    hy_timer.c
+ * @file    hy_time.c
  * @brief   
  * @author  gnsyxiang <gnsyxiang@163.com>
  * @date    06/07 2021 18:57
@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "hy_timer.h"
+#include "hy_time.h"
 
 #include "at32f4xx_rcc.h"
 
@@ -33,26 +33,26 @@
 #define ALONE_DEBUG 1
 
 typedef struct {
-    HyTimerNum_t num;
+    HyTimeNum_t num;
 
-    HyTimerConfigSave_t config_save;
-} _timer_context_t;
+    HyTimeConfigSave_t config_save;
+} _time_context_t;
 
-static _timer_context_t *context_array[HY_TIMER_MAX] = {NULL};
+static _time_context_t *context_array[HY_TIME_MAX] = {NULL};
 
-static void _init_timer_rcc(HyTimerNum_t num)
+static void _init_time_rcc(HyTimeNum_t num)
 {
-    if (num == HY_TIMER_2) {
+    if (num == HY_TIME_2) {
         RCC_APB1PeriphClockCmd(RCC_APB1PERIPH_TMR2, ENABLE);
     }
 }
 
-static void _init_timer_func(HyTimerNum_t num, uint16_t us, int flag)
+static void _init_time_func(HyTimeNum_t num, uint16_t us, int flag)
 {
-    TMR_Type* timer[] = {
+    TMR_Type* time[] = {
         NULL, TMR1, TMR2, TMR3, TMR4, TMR5, TMR6, TMR7, TMR8
     };
-    TMR_TimerBaseInitType  config;
+    TMR_TimeBaseInitType  config;
     TMR_TimeBaseStructInit(&config);
 
 #ifdef SYSCLK_FREQ_200MHz
@@ -68,14 +68,14 @@ static void _init_timer_func(HyTimerNum_t num, uint16_t us, int flag)
     config.TMR_CounterMode   = TMR_CounterDIR_Up;
     config.TMR_RepetitionCounter = 0;
 
-    TMR_TimeBaseInit(timer[num], &config);
+    TMR_TimeBaseInit(time[num], &config);
 
-    TMR_Cmd(timer[num], (FunctionalState)flag);
+    TMR_Cmd(time[num], (FunctionalState)flag);
 }
 
-static void _init_timer_interrupt(HyTimerNum_t num, int flag)
+static void _init_time_interrupt(HyTimeNum_t num, int flag)
 {
-    if (num == HY_TIMER_2) {
+    if (num == HY_TIME_2) {
         NVIC_InitType config;
 
         config.NVIC_IRQChannel                      = TMR2_GLOBAL_IRQn;
@@ -88,18 +88,18 @@ static void _init_timer_interrupt(HyTimerNum_t num, int flag)
     }
 }
 
-static void _timer_irq_handler(HyTimerNum_t num)
+static void _time_irq_handler(HyTimeNum_t num)
 {
     if (context_array[num]) {
-        TMR_Type* timer[] = {
+        TMR_Type* time[] = {
             NULL, TMR1, TMR2, TMR3, TMR4, TMR5, TMR6, TMR7, TMR8
         };
-        HyTimerConfigSave_t *timer_config = &context_array[num]->config_save;
+        HyTimeConfigSave_t *time_config = &context_array[num]->config_save;
 
-        if (TMR_GetINTStatus(timer[num], TMR_INT_Overflow) == SET)  {
-            TMR_ClearITPendingBit(timer[num], TMR_INT_Overflow);
-            if (timer_config->timer_cb) {
-                timer_config->timer_cb(timer_config->args);
+        if (TMR_GetINTStatus(time[num], TMR_INT_Overflow) == SET)  {
+            TMR_ClearITPendingBit(time[num], TMR_INT_Overflow);
+            if (time_config->time_cb) {
+                time_config->time_cb(time_config->args);
             }
         }
     }
@@ -107,41 +107,41 @@ static void _timer_irq_handler(HyTimerNum_t num)
 
 void TMR2_GLOBAL_IRQHandler(void)
 {
-    _timer_irq_handler(HY_TIMER_2);
+    _time_irq_handler(HY_TIME_2);
 }
 
-static void _timer_control_com(void *handle, int flag)
+static void _time_control_com(void *handle, int flag)
 {
-    _timer_context_t *context = handle;
-    TMR_Type* timer[] = {
+    _time_context_t *context = handle;
+    TMR_Type* time[] = {
         NULL, TMR1, TMR2, TMR3, TMR4, TMR5, TMR6, TMR7, TMR8
     };
 
     if (flag) {
-        TMR_Cmd(timer[context->num], ENABLE);
+        TMR_Cmd(time[context->num], ENABLE);
     } else {
-        TMR_Cmd(timer[context->num], DISABLE);
+        TMR_Cmd(time[context->num], DISABLE);
     }
 }
 
-void HyTimerEnable(void *handle)
+void HyTimeEnable(void *handle)
 {
     HY_ASSERT_NULL_RET(!handle);
 
-    _timer_control_com(handle, 1);
+    _time_control_com(handle, 1);
 }
 
-void HyTimerDisable(void *handle)
+void HyTimeDisable(void *handle)
 {
     HY_ASSERT_NULL_RET(!handle);
 
-    _timer_control_com(handle, 0);
+    _time_control_com(handle, 0);
 }
 
-void HyTimerDestroy(void **handle)
+void HyTimeDestroy(void **handle)
 {
     if (handle && *handle) {
-        _timer_context_t *context = *handle;
+        _time_context_t *context = *handle;
 
         context_array[context->num] = NULL;
 
@@ -149,28 +149,28 @@ void HyTimerDestroy(void **handle)
     }
 }
 
-void *HyTimerCreate(HyTimerConfig_t *timer_config)
+void *HyTimeCreate(HyTimeConfig_t *time_config)
 {
-    HY_ASSERT_NULL_RET_VAL(!timer_config, NULL);
+    HY_ASSERT_NULL_RET_VAL(!time_config, NULL);
 
-    _timer_context_t *context = NULL;
+    _time_context_t *context = NULL;
 
     do {
         context = HY_MALLOC_BREAK(sizeof(*context));
 
-        context->num                        = timer_config->num;
-        context_array[timer_config->num]    = context;
+        context->num                        = time_config->num;
+        context_array[time_config->num]    = context;
 
-        HY_MEMCPY(&context->config_save, &timer_config->config_save);
+        HY_MEMCPY(&context->config_save, &time_config->config_save);
 
-        _init_timer_rcc(timer_config->num);
-        _init_timer_func(timer_config->num, timer_config->us, timer_config->flag);
-        _init_timer_interrupt(timer_config->num, timer_config->flag);
+        _init_time_rcc(time_config->num);
+        _init_time_func(time_config->num, time_config->us, time_config->flag);
+        _init_time_interrupt(time_config->num, time_config->flag);
 
         return context;
     } while (0);
 
-    HyTimerDestroy((void **)&context);
+    HyTimeDestroy((void **)&context);
 
     return NULL;
 }

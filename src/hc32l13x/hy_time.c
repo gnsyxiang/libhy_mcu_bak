@@ -19,28 +19,28 @@
  */
 #include <stdio.h>
 
-#include "hy_timer.h"
+#include "hy_time.h"
 
 #include "hy_utils/hy_log.h"
 
 #define ALONE_DEBUG 1
 
-void HyTimerEnable(void *handle)
+void HyTimeEnable(void *handle)
 {
 
 }
 
-void HyTimerDisable(void *handle)
+void HyTimeDisable(void *handle)
 {
 
 }
 
-void HyTimerDestroy(void **handle)
+void HyTimeDestroy(void **handle)
 {
 
 }
 
-void *HyTimerCreate(HyTimerConfig_t *timer_config)
+void *HyTimeCreate(HyTimeConfig_t *time_config)
 {
     return NULL;
 }

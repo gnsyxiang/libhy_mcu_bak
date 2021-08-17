@@ -33,7 +33,7 @@ _no_install_headers_com +=
 
 _install_headers_com    += \
                            hy_system.h \
-                           hy_timer.h \
+                           hy_time.h \
                            hy_uart.h
 
 # ------------------

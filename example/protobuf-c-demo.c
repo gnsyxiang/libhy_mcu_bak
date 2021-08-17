@@ -27,7 +27,7 @@
 
 #include "hy_system.h"
 #include "hy_uart.h"
-#include "hy_timer.h"
+#include "hy_time.h"
 
 #include "hy_utils/hy_log.h"
 #include "hy_utils/hy_module.h"
@@ -39,7 +39,7 @@ typedef struct {
     void    *system_handle;
     void    *uart_handle;
     void    *log_handle;
-    void    *timer_handle;
+    void    *time_handle;
 } _main_context_t;
 
 static void _sys_tick_cb(void *args)
@@ -54,13 +54,13 @@ static void _sys_tick_cb(void *args)
 }
 
 
-static void _timer_cb(void *args)
+static void _time_cb(void *args)
 {
 #if 0
     static int cnt = 0;
     if (cnt++ == 1000) {
         cnt = 0;
-        LOGD("--timer\n");
+        LOGD("--time\n");
     }
 #endif
 }
@@ -74,7 +74,7 @@ static void _module_destroy(_main_context_t **context_pp)
         {"system",      &context->system_handle,    HySystemDestroy},
         {"debug uart",  &context->uart_handle,      HyUartDebugDestroy},
         {"log",         &context->log_handle,       HyLogDestroy},
-        {"timer",       &context->timer_handle,     HyTimerDestroy},
+        {"time",        &context->time_handle,      HyTimeDestroy},
     };
 
     RUN_DESTROY(module);
@@ -99,19 +99,19 @@ static _main_context_t *_module_create(void)
     log_config.level                    = HY_LOG_LEVEL_TRACE;
     log_config.config_file              = NULL;
 
-    HyTimerConfig_t timer_config;
-    timer_config.num                    = HY_TIMER_2;
-    timer_config.us                     = 1000;
-    timer_config.flag                   = HY_TIMER_ENABLE;
-    timer_config.config_save.timer_cb   = _timer_cb;
-    timer_config.config_save.args       = context;
+    HyTimeConfig_t time_config;
+    time_config.num                     = HY_TIME_2;
+    time_config.us                      = 1000;
+    time_config.flag                    = HY_TIME_ENABLE;
+    time_config.config_save.time_cb     = _time_cb;
+    time_config.config_save.args        = context;
 
     // note: 增加或删除要同步到module_destroy_t中
     module_create_t module[] = {
         {"system",      &context->system_handle,    &system_config,     (create_t)HySystemCreate,       HySystemDestroy},
         {"debug uart",  &context->uart_handle,      &uart_config,       (create_t)HyUartDebugCreate,    HyUartDebugDestroy},
         {"log",         &context->log_handle,       &log_config,        (create_t)HyLogCreate,          HyLogDestroy},
-        {"timer",       &context->timer_handle,     &timer_config,      (create_t)HyTimerCreate,        HyTimerDestroy},
+        {"time",        &context->time_handle,      &time_config,       (create_t)HyTimeCreate,         HyTimeDestroy},
     };
 
     RUN_CREATE(module);
