@@ -45,6 +45,7 @@ _include_com    += \
 _sources_com    += \
                    hy_adc.c \
                    hy_gpio.c \
+                   hy_gpio_int.c \
                    hy_system.c \
                    hy_time.c \
                    hy_uart.c
