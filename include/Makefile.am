@@ -31,13 +31,7 @@ install_includedir      = $(includedir)/@project_name@
 # ---------------------
 _no_install_headers_com +=
 
-_install_headers_com    += \
-                           hy_adc.h \
-                           hy_gpio.h \
-                           hy_gpio_int.h \
-                           hy_system.h \
-                           hy_time.h \
-                           hy_uart.h
+_install_headers_com    += hy_func_check.h
 
 # ------------------
 # make install files

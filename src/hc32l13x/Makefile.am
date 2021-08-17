@@ -36,19 +36,9 @@ _ldadd_com      =
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    += \
-                   -I$(top_srcdir)/src/hc32l13x/CMSIS/Include \
-                   -I$(top_srcdir)/src/hc32l13x/mcu/common \
-                   -I$(top_srcdir)/src/hc32l13x/driver/inc \
-                   -I$(top_srcdir)/include
+_include_com    += -I$(top_srcdir)/include
 
-_sources_com    += \
-                   hy_adc.c \
-                   hy_gpio.c \
-                   hy_gpio_int.c \
-                   hy_system.c \
-                   hy_time.c \
-                   hy_uart.c
+_sources_com    += hy_func_check.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
