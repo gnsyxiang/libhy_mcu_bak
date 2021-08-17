@@ -31,6 +31,11 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
+_no_install_headers_com =
+_install_headers_com    =
+
+install_includedir      = $(includedir)/@project_name@
+
 # ---------------------
 # add necessary content
 # ---------------------
@@ -60,4 +65,23 @@ libcommon_la_CFLAGS   = $(_cflags_com)
 libcommon_la_CXXFLAGS = $(_cxxflags_com)
 libcommon_la_LDFLAGS  = $(_ldflags_com)
 libcommon_la_LIBADD   = $(_ldadd_com)
+
+# ---------------------
+# add necessary content
+# ---------------------
+_no_install_headers_com +=
+
+_install_headers_com    += \
+                           base_types.h \
+                           board_stkhc32l13x.h \
+                           ddl_device.h \
+                           hc32l13x.h \
+                           interrupts_hc32l13x.h \
+                           system_hc32l13x.h
+
+# ------------------
+# make install files
+# ------------------
+noinst_HEADERS          = $(_no_install_headers_com)
+install_include_HEADERS = $(_install_headers_com)
 

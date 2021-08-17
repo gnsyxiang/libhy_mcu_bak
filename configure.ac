@@ -101,6 +101,8 @@ AC_CONFIG_FILES([Makefile
                  src/at32f4xx/lwip-2.1.2/src/core/Makefile
                  src/at32f4xx/lwip-2.1.2/src/core/ipv4/Makefile
                  src/at32f4xx/lwip-2.1.2/src/netif/Makefile
+                 src/hc32l13x/CMSIS/Include/Makefile
+                 src/hc32l13x/CMSIS/Makefile
                  src/hc32l13x/Makefile
                  src/hc32l13x/driver/Makefile
                  src/hc32l13x/driver/inc/Makefile

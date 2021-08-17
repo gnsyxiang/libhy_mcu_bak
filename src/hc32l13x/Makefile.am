@@ -18,7 +18,7 @@
 #     last modified: 17/08 2021 15:50
 # ===============================================================
 
-SUBDIRS = driver mcu
+SUBDIRS = driver mcu CMSIS
 
 noinst_LTLIBRARIES = libmcu.la
 
