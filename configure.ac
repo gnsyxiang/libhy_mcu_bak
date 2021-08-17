@@ -100,5 +100,11 @@ AC_CONFIG_FILES([Makefile
                  src/at32f4xx/lwip-2.1.2/src/api/Makefile
                  src/at32f4xx/lwip-2.1.2/src/core/Makefile
                  src/at32f4xx/lwip-2.1.2/src/core/ipv4/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/netif/Makefile])
+                 src/at32f4xx/lwip-2.1.2/src/netif/Makefile
+                 src/hc32l13x/Makefile
+                 src/hc32l13x/driver/Makefile
+                 src/hc32l13x/driver/inc/Makefile
+                 src/hc32l13x/driver/src/Makefile
+                 src/hc32l13x/mcu/Makefile
+                 src/hc32l13x/mcu/common/Makefile])
 AC_OUTPUT
