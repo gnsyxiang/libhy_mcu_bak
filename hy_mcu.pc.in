@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 includedir=@includedir@
 libdir=@libdir@
 
-Name: @PACKAGE@
+Name: @project_name@
 Version: @VERSION@
 URL: @PACKAGE_URL@
 Description: autotools demo for lib
@@ -13,5 +13,5 @@ Requires.private:
 Conflicts:
 
 Cflags: -I${includedir}/hy_mcu
-Libs: -L${libdir} -l@PACKAGE@
+Libs: -L${libdir} -l@project_name@
 Libs.private:
