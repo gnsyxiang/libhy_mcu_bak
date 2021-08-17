@@ -27,6 +27,9 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+/**
+ * @brief 打开该宏后，可以直接使用printf输出调试信息
+ */
 #define DEBUG_UART
 
 typedef enum {
