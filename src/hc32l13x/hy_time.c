@@ -127,7 +127,7 @@ static void App_Timer3Cfg(uint16_t u16Period)
 void HyTimeDestroy(void **handle)
 {
     LOGT("%s:%d \n", __func__, __LINE__);
-    HY_ASSERT_NULL_RET(!handle | !*handle);
+    HY_ASSERT_NULL_RET(!handle || !*handle);
 
     HY_FREE(handle);
 }
