@@ -37,6 +37,9 @@ _ldadd_com      =
 # add necessary content
 # ---------------------
 _include_com    += \
+                   -I$(top_srcdir)/src/hc32l13x/CMSIS/Include \
+                   -I$(top_srcdir)/src/hc32l13x/mcu/common \
+                   -I$(top_srcdir)/src/hc32l13x/driver/inc \
                    -I$(top_srcdir)/include
 
 _sources_com    += \

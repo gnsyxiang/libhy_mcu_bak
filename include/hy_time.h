@@ -27,6 +27,8 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+#include "hy_utils/hy_type.h"
+
 typedef enum {
     HY_TIME_0,
     HY_TIME_1,
@@ -36,7 +38,6 @@ typedef enum {
     HY_TIME_5,
     HY_TIME_6,
     HY_TIME_7,
-    HY_TIME_8,
 
     HY_TIME_SYSTICK,
 
@@ -54,11 +55,11 @@ typedef struct {
 } HyTimeConfigSave_t;
 
 typedef struct {
-    HyTimeNum_t    num;
-    uint32_t        us;
-    HytimeFlag_t   flag;
+    HyTimeConfigSave_t  config_save;
 
-    HyTimeConfigSave_t config_save;
+    HyTimeNum_t         num;
+    uint32_t            us;
+    HytimeFlag_t        flag;
 } HyTimeConfig_t;
 
 void *HyTimeCreate(HyTimeConfig_t *time_config);
