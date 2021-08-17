@@ -98,12 +98,12 @@ extern "C"
 
 ///<中断相关函数
 ///<中断使能/禁止
-en_result_t Ram_EnableIrq(void);
-en_result_t Ram_DisableIrq(void);
+void Ram_EnableIrq(void);
+void Ram_DisableIrq(void);
 ///<中断标志获取
 boolean_t Ram_GetIntFlag(void);
 ///<中断标志清除
-en_result_t Ram_ClearIntFlag(void);
+void Ram_ClearIntFlag(void);
 ///<奇偶校验出错地址获取
 uint32_t Ram_ErrAddrGet(void);
 
