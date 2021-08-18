@@ -23,7 +23,6 @@ include res/doxygen.am
 SUBDIRS = \
           include \
           src \
-          example \
           doc \
           res
 
@@ -81,14 +80,6 @@ CPPFLAGS_COM    += -DSYSCLK_FREQ_200MHz=200000000
 CFLAGS_COM      += $(AT32F407VGT7_CFLAGS)
 endif
 
-endif
-
-if COMPILE_LIBPROTOBUF_C
-CPPFLAGS_COM        += $(LIBPROTOBUF_C_INCS)
-endif
-
-if COMPILE_LIBHY_UTILS
-CPPFLAGS_COM        += $(HY_UTILS_INCS)
 endif
 
 export CPPFLAGS_COM

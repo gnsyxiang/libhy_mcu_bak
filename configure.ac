@@ -30,9 +30,6 @@ CHECK_JAVA
 SELECT_MCU_CORTEX
 ENABLE_MCU
 
-CHECK_LIBHY_UTILS
-CHECK_LIBPROTOBUF_C
-
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_AWK
@@ -78,7 +75,6 @@ AC_CONFIG_FILES([Makefile
                  $project_name.pc
                  doc/Makefile
                  doc/at32f4xx/Makefile
-                 example/Makefile
                  include/Makefile
                  res/Makefile
                  src/Makefile

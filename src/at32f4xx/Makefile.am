@@ -46,7 +46,7 @@ _include_com    += \
                    -I$(_lwip_lib)/src/include \
                    -I$(top_srcdir)/include
 
-_sources_com    += \
+_sources_com    += hy_func_check.c \
                    hy_system.c \
                    hy_time.c \
                    hy_uart.c

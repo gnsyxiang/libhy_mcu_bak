@@ -24,6 +24,9 @@
 extern "C" {
 #endif
 
+/**
+ * @brief 该函数没有实际作用，主要是为了m4宏检测用
+ */
 void HyFuncCheck(void);
 
 #ifdef __cplusplus
