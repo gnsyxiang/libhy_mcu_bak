@@ -84,7 +84,7 @@
 /* Function implementation - global ('extern') and local ('static')           */
 /******************************************************************************/
 #ifndef __DEBUG
-#define __DEBUG
+// #define __DEBUG
 //#define __CC_ARM
 #endif
 
