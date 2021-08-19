@@ -33,23 +33,12 @@ _cxxflags_com   =
 _ldflags_com    =
 _ldadd_com      =
 
-_at32f4xx_lib   = $(top_srcdir)/src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries
-_lwip_lib       = $(top_srcdir)/src/at32f4xx/lwip-2.1.2
-
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    += \
-                   -I$(_at32f4xx_lib)/CMSIS/CM4/CoreSupport \
-                   -I$(_at32f4xx_lib)/CMSIS/CM4/DeviceSupport \
-                   -I$(_at32f4xx_lib)/AT32F4xx_StdPeriph_Driver/inc \
-                   -I$(_lwip_lib)/src/include \
-                   -I$(top_srcdir)/include
+_include_com    +=
 
-_sources_com    += hy_func_check.c \
-                   hy_system.c \
-                   hy_time.c \
-                   hy_uart.c
+_sources_com    += hy_func_check.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
