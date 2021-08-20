@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
   * File   : startup_at32f421g8u7.s
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : AT32F4xx Devices vector table for GCC toolchain.
   *            This module performs:
   *                - Set the initial SP

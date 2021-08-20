@@ -2,7 +2,7 @@
 #---------------
 # ignore for doc
 #---------------
-AT32F4xx_StdPeriph_Lib_V1.3.0
+AT32F4xx_StdPeriph_Lib_V1.3.*
 AT_START_F407_CH_V1.2
 
 
