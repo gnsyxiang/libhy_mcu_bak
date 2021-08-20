@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_sdio.h
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx SDIO header file
   **************************************************************************
   */
@@ -451,7 +451,7 @@ typedef struct
   * @{
   */
 
-#define SDIO_ReadWaitMode_CLK               ((uint32_t)0x00000001)
+#define SDIO_ReadWaitMode_CLK               ((uint32_t)0x00000400)
 #define SDIO_ReadWaitMode_DATA2             ((uint32_t)0x00000000)
 #define IS_SDIO_READWAIT_MODE(MODE)         (((MODE) == SDIO_ReadWaitMode_CLK) || \
                                              ((MODE) == SDIO_ReadWaitMode_DATA2))

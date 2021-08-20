@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_flash.h
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx FMC header file
   **************************************************************************
   */
@@ -50,8 +50,7 @@ typedef enum
 
 typedef enum
 {
-    E_BANK3_SEL_ESMT_SP=0,
-    E_BANK3_SEL_GENERAL_CFGQE,
+    E_BANK3_SEL_GENERAL_CFGQE=1,
     E_BANK3_SEL_GENERAL,
 }T_BANK3_SEL;
 
@@ -266,7 +265,7 @@ typedef enum
 #define FLASH_FLAG_PRCDN                    ((uint32_t)0x00000020)  /*!< FLASH End of Operation flag */
 #define FLASH_FLAG_PRGMFLR                  ((uint32_t)0x00000004)  /*!< FLASH Program error flag */
 #define FLASH_FLAG_WRPRTFLR                 ((uint32_t)0x00000010)  /*!< FLASH Write protected error flag */
-#define FLASH_FLAG_UOBFLR                   ((uint32_t)0x00000001)  /*!< FLASH Option Byte error flag */
+#define FLASH_FLAG_UOBFLR                   ((uint32_t)0x00000100)  /*!< FLASH Option Byte error flag */
 
 #define FLASH_FLAG_BNK1_BSY                 FLASH_FLAG_BSY          /*!< FLASH BANK1 Busy flag*/
 #define FLASH_FLAG_BNK1_PRCDN               FLASH_FLAG_PRCDN        /*!< FLASH BANK1 End of Operation flag */

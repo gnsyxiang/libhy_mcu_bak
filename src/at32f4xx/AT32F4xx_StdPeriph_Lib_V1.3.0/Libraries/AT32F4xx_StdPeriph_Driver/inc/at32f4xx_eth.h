@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_eth.h
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx ETH header file
   **************************************************************************
   */
@@ -472,15 +472,17 @@ typedef struct  {
   */ 
 /* The PHY status register value change from a PHY to another so the user have 
    to update this value depending on the used external PHY */
+#ifdef DM9162
 /** 
-  * @brief  For DM6162  
+  * @brief  For DM9162  
   */ 
-#define PHY_SR                           17         /*!< Tranceiver Status Register */
+#define PHY_SR                           0x11         /*!< Tranceiver Status Register */
 /** 
   * @brief  For DP83848  
   */ 
-//#define PHY_SR                           0x10     /*!< Tranceiver Status Register */
-
+#else
+#define PHY_SR                           0x10     /*!< Tranceiver Status Register */
+#endif
 /* The Speed and Duplex mask values change from a PHY to another so the user have to update
    this value depending on the used external PHY */
 /** 

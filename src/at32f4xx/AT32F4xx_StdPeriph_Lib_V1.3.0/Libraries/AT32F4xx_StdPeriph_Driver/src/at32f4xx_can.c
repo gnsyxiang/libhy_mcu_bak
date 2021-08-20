@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_can.c
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx CAN source file
   **************************************************************************
   */
@@ -106,16 +106,18 @@ static ITStatus CheckINTStatus(uint32_t CAN_Reg, uint32_t It_Bit);
   */
 /**
   * @brief  Returns the CANx's last error code (LEC).
-  * @param  CANx:          where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @retval CAN_ErrorCode: specifies the Error code :
-  *                        - CAN_ErrorCode_NoErr            No Error
-  *                        - CAN_ErrorCode_StuffErr         Stuff Error
-  *                        - CAN_ErrorCode_FormErr          Form Error
-  *                        - CAN_ErrorCode_ACKErr           Acknowledgment Error
-  *                        - CAN_ErrorCode_BitRecessiveErr  Bit Recessive Error
-  *                        - CAN_ErrorCode_BitDominantErr   Bit Dominant Error
-  *                        - CAN_ErrorCode_CRCErr           CRC Error
-  *                        - CAN_ErrorCode_SoftwareSetErr   Software Set Error
+  *         - CAN_ErrorCode_NoErr            No Error
+  *         - CAN_ErrorCode_StuffErr         Stuff Error
+  *         - CAN_ErrorCode_FormErr          Form Error
+  *         - CAN_ErrorCode_ACKErr           Acknowledgment Error
+  *         - CAN_ErrorCode_BitRecessiveErr  Bit Recessive Error
+  *         - CAN_ErrorCode_BitDominantErr   Bit Dominant Error
+  *         - CAN_ErrorCode_CRCErr           CRC Error
+  *         - CAN_ErrorCode_SoftwareSetErr   Software Set Error
   */
 
 uint8_t CAN_GetLastErrorCode(CAN_Type* CANx)
@@ -133,13 +135,9 @@ uint8_t CAN_GetLastErrorCode(CAN_Type* CANx)
 }
 /**
   * @brief  Returns the CANx Receive Error Counter (REC).
-  * @note   In case of an error during reception, this counter is incremented
-  *         by 1 or by 8 depending on the error condition as defined by the CAN
-  *         standard. After every successful reception, the counter is
-  *         decremented by 1 or reset to 120 if its value was higher than 128.
-  *         When the counter value exceeds 127, the CAN controller enters the
-  *         error passive state.
-  * @param  CANx: where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @retval CAN Receive Error Counter.
   */
 uint8_t CAN_GetReceiveErrorCounter(CAN_Type* CANx)
@@ -159,8 +157,10 @@ uint8_t CAN_GetReceiveErrorCounter(CAN_Type* CANx)
 
 /**
   * @brief  Returns the LSB of the 9-bit CANx Transmit Error Counter(TEC).
-  * @param  CANx:   where x can be only 1 to to select the CAN peripheral.
-  * @retval LSB of the 9-bit CAN Transmit Error Counter.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
+  * @retval CAN Transmit Error Counter.
   */
 uint8_t CAN_GetLSBTransmitErrorCounter(CAN_Type* CANx)
 {
@@ -179,24 +179,26 @@ uint8_t CAN_GetLSBTransmitErrorCounter(CAN_Type* CANx)
 
 /**
   * @brief  Enables or disables the specified CANx interrupts.
-  * @param  CANx:   where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_INT: specifies the CAN interrupt sources to be enabled or disabled.
-  *                 This parameter can be:
-  *                 - CAN_INT_TSME,
-  *                 - CAN_INT_RFP0,
-  *                 - CAN_INT_RFFU0,
-  *                 - CAN_INT_RFOV0,
-  *                 - CAN_INT_RFP1,
-  *                 - CAN_INT_RFFU1,
-  *                 - CAN_INT_RFOV1,
-  *                 - CAN_INT_ERG,
-  *                 - CAN_INT_ERP,
-  *                 - CAN_INT_LEC,
-  *                 - CAN_INT_ERR,
-  *                 - CAN_INT_WK or
-  *                 - CAN_INT_SAK.
+  *         This parameter can be:
+  *         - CAN_INT_TSME,
+  *         - CAN_INT_RFP0,
+  *         - CAN_INT_RFFU0,
+  *         - CAN_INT_RFOV0,
+  *         - CAN_INT_RFP1,
+  *         - CAN_INT_RFFU1,
+  *         - CAN_INT_RFOV1,
+  *         - CAN_INT_ERG,
+  *         - CAN_INT_ERP,
+  *         - CAN_INT_LEC,
+  *         - CAN_INT_ERR,
+  *         - CAN_INT_WK or
+  *         - CAN_INT_SAK.
   * @param  NewState: new state of the CAN interrupts.
-  *                   This parameter can be: ENABLE or DISABLE.
+  *         This parameter can be: ENABLE or DISABLE.
   * @retval None.
   */
 void CAN_INTConfig(CAN_Type* CANx, uint32_t CAN_INT, FunctionalState NewState)
@@ -219,24 +221,26 @@ void CAN_INTConfig(CAN_Type* CANx, uint32_t CAN_INT, FunctionalState NewState)
 }
 /**
   * @brief  Checks whether the specified CAN flag is set or not.
-  * @param  CANx:     where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_FLAG: specifies the flag to check.
-  *                   This parameter can be one of the following flags:
-  *                  - CAN_FLAG_ERG
-  *                  - CAN_FLAG_ERP
-  *                  - CAN_FLAG_BU
-  *                  - CAN_FLAG_RQCP0
-  *                  - CAN_FLAG_RQCP1
-  *                  - CAN_FLAG_RQCP2
-  *                  - CAN_FLAG_RFP1
-  *                  - CAN_FLAG_RFFU1
-  *                  - CAN_FLAG_RFOV1
-  *                  - CAN_FLAG_RFP0
-  *                  - CAN_FLAG_RFFU0
-  *                  - CAN_FLAG_RFOV0
-  *                  - CAN_FLAG_WK
-  *                  - CAN_FLAG_SAK
-  *                  - CAN_FLAG_ERC
+  *         This parameter can be one of the following flags:
+  *         - CAN_FLAG_ERG
+  *         - CAN_FLAG_ERP
+  *         - CAN_FLAG_BU
+  *         - CAN_FLAG_RQCP0
+  *         - CAN_FLAG_RQCP1
+  *         - CAN_FLAG_RQCP2
+  *         - CAN_FLAG_RFP1
+  *         - CAN_FLAG_RFFU1
+  *         - CAN_FLAG_RFOV1
+  *         - CAN_FLAG_RFP0
+  *         - CAN_FLAG_RFFU0
+  *         - CAN_FLAG_RFOV0
+  *         - CAN_FLAG_WK
+  *         - CAN_FLAG_SAK
+  *         - CAN_FLAG_ERC
   * @retval The new state of CAN_FLAG (SET or RESET).
   */
 FlagStatus CAN_GetFlagStatus(CAN_Type* CANx, uint32_t CAN_FLAG)
@@ -325,19 +329,21 @@ FlagStatus CAN_GetFlagStatus(CAN_Type* CANx, uint32_t CAN_FLAG)
 
 /**
   * @brief  Clears the CAN's pending flags.
-  * @param  CANx:     where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_FLAG: specifies the flag to clear.
-  *                   This parameter can be one of the following flags:
-  *                    - CAN_FLAG_RQCP0
-  *                    - CAN_FLAG_RQCP1
-  *                    - CAN_FLAG_RQCP2
-  *                    - CAN_FLAG_RFFU1
-  *                    - CAN_FLAG_RFOV1
-  *                    - CAN_FLAG_RFFU0
-  *                    - CAN_FLAG_RFOV0
-  *                    - CAN_FLAG_WK
-  *                    - CAN_FLAG_SAK
-  *                    - CAN_FLAG_ERC
+  *         This parameter can be one of the following flags:
+  *         - CAN_FLAG_RQCP0
+  *         - CAN_FLAG_RQCP1
+  *         - CAN_FLAG_RQCP2
+  *         - CAN_FLAG_RFFU1
+  *         - CAN_FLAG_RFOV1
+  *         - CAN_FLAG_RFFU0
+  *         - CAN_FLAG_RFOV0
+  *         - CAN_FLAG_WK
+  *         - CAN_FLAG_SAK
+  *         - CAN_FLAG_ERC
   * @retval None.
   */
 void CAN_ClearFlag(CAN_Type* CANx, uint32_t CAN_FLAG)
@@ -381,23 +387,25 @@ void CAN_ClearFlag(CAN_Type* CANx, uint32_t CAN_FLAG)
 
 /**
   * @brief  Checks whether the specified CANx interrupt has occurred or not.
-  * @param  CANx:    where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_INT:  specifies the CAN interrupt source to check.
-  *                  This parameter can be one of the following flags:
-  *                 -  CAN_INT_TSME
-  *                 -  CAN_INT_RFP0
-  *                 -  CAN_INT_RFFU0
-  *                 -  CAN_INT_RFOV0
-  *                 -  CAN_INT_RFP1
-  *                 -  CAN_INT_RFFU1
-  *                 -  CAN_INT_RFOV1
-  *                 -  CAN_INT_WK
-  *                 -  CAN_INT_SAK
-  *                 -  CAN_INT_ERG
-  *                 -  CAN_INT_ERP
-  *                 -  CAN_INT_BU
-  *                 -  CAN_INT_LEC
-  *                 -  CAN_INT_ERR
+  *         This parameter can be one of the following flags:
+  *         -  CAN_INT_TSME
+  *         -  CAN_INT_RFP0
+  *         -  CAN_INT_RFFU0
+  *         -  CAN_INT_RFOV0
+  *         -  CAN_INT_RFP1
+  *         -  CAN_INT_RFFU1
+  *         -  CAN_INT_RFOV1
+  *         -  CAN_INT_WK
+  *         -  CAN_INT_SAK
+  *         -  CAN_INT_ERG
+  *         -  CAN_INT_ERP
+  *         -  CAN_INT_BU
+  *         -  CAN_INT_LEC
+  *         -  CAN_INT_ERR
   * @retval The current state of CAN_INT (SET or RESET).
   */
 ITStatus CAN_GetINTStatus(CAN_Type* CANx, uint32_t CAN_INT)
@@ -501,20 +509,22 @@ ITStatus CAN_GetINTStatus(CAN_Type* CANx, uint32_t CAN_INT)
 
 /**
   * @brief  Clears the CANx's interrupt pending bits.
-  * @param  CANx:    where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_INT: specifies the interrupt pending bit to clear.
-  *                  -  CAN_INT_TSME
-  *                  -  CAN_INT_RFFU0
-  *                  -  CAN_INT_RFOV0
-  *                  -  CAN_INT_RFFU1
-  *                  -  CAN_INT_RFOV1
-  *                  -  CAN_INT_WK
-  *                  -  CAN_INT_SAK
-  *                  -  CAN_INT_ERG
-  *                  -  CAN_INT_ERP
-  *                  -  CAN_INT_BU
-  *                  -  CAN_INT_LEC
-  *                  -  CAN_INT_ERR
+  *         -  CAN_INT_TSME
+  *         -  CAN_INT_RFFU0
+  *         -  CAN_INT_RFOV0
+  *         -  CAN_INT_RFFU1
+  *         -  CAN_INT_RFOV1
+  *         -  CAN_INT_WK
+  *         -  CAN_INT_SAK
+  *         -  CAN_INT_ERG
+  *         -  CAN_INT_ERP
+  *         -  CAN_INT_BU
+  *         -  CAN_INT_LEC
+  *         -  CAN_INT_ERR
   * @retval None.
   */
 void CAN_ClearINTPendingBit(CAN_Type* CANx, uint32_t CAN_INT)
@@ -605,7 +615,7 @@ void CAN_ClearINTPendingBit(CAN_Type* CANx, uint32_t CAN_INT)
 /**
   * @brief  Checks whether the CAN interrupt has occurred or not.
   * @param  CAN_Reg: specifies the CAN interrupt register to check.
-  * @param  It_Bit:  specifies the interrupt source bit to check.
+  * @param  It_Bit: specifies the interrupt source bit to check.
   * @retval The new state of the CAN Interrupt (SET or RESET).
   */
 static ITStatus CheckINTStatus(uint32_t CAN_Reg, uint32_t It_Bit)
@@ -628,7 +638,9 @@ static ITStatus CheckINTStatus(uint32_t CAN_Reg, uint32_t It_Bit)
 
 /**
   * @brief  Enables or disabes the CAN Time TriggerOperation communication mode.
-  * @param  CANx:      where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  NewState : Mode new state , can be one of @ref FunctionalState.
   * @note   when enabled, Time stamp (TIME[15:0]) value is sent in the last
   *         two data bytes of the 8-byte message: TIME[7:0] in data byte 6
@@ -666,11 +678,13 @@ void CAN_TTComModeCtrl(CAN_Type* CANx, FunctionalState NewState)
 }
 /**
   * @brief  Initiates the transmission of a message.
-  * @param  CANx:      where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  TxMessage: pointer to a structure which contains CAN Id, CAN
-  *                    DLC and CAN data.
+  *         DLC and CAN data.
   * @retval The number of the mailbox that is used for transmission
-  *                    or CAN_TxStatus_NoMailBox if there is no empty mailbox.
+  *         or CAN_TxStatus_NoMailBox if there is no empty mailbox.
   */
 uint8_t CAN_Transmit(CAN_Type* CANx, CanTxMsg* TxMessage)
 {
@@ -741,10 +755,10 @@ uint8_t CAN_Transmit(CAN_Type* CANx, CanTxMsg* TxMessage)
 
 /**
   * @brief  Checks the transmission of a message.
-  * @param  CANx:            where x can be only 1 to to select the
-  *                          CAN peripheral.
-  * @param  TransmitMailbox: the number of the mailbox that is used for
-  *                          transmission.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
+  * @param  TransmitMailbox: the number of the mailbox that is used for transmission.
   * @retval CAN_TxStatus_Ok if the CAN driver transmits the message, CAN_TxStatus_Failed
   *         in an other case.
   */
@@ -755,70 +769,73 @@ uint8_t CAN_TransmitStatus(CAN_Type* CANx, uint8_t TransmitMailbox)
   /* Check the parameters */
   assert_param(IS_CAN_ALL_PERIPH(CANx));
   assert_param(IS_CAN_TRANSMITMAILBOX(TransmitMailbox));
-
   switch (TransmitMailbox)
   {
   case (CAN_TXMAILBOX_0):
-    state =   CANx->TSTS &  (CAN_TSTS_RQC0 | CAN_TSTS_TOK0 | CAN_TSTS_TSME0);
+    if((CANx->TSTS &  CAN_TSTS_RQC0) == CAN_TSTS_RQC0)
+    {
+      if((CANx->TSTS &  CAN_TSTS_TOK0) == CAN_TSTS_TOK0)
+      {
+        state = CAN_TxStatus_Ok;
+      }
+      else
+      {
+        state = CAN_TxStatus_Failed;
+      }
+    }
+    else
+    {
+      state = CAN_TxStatus_Pending;
+    }
     break;
 
   case (CAN_TXMAILBOX_1):
-    state =   CANx->TSTS &  (CAN_TSTS_RQC1 | CAN_TSTS_TOK1 | CAN_TSTS_TSME1);
+    if((CANx->TSTS &  CAN_TSTS_RQC1) == CAN_TSTS_RQC1)
+    {
+      if((CANx->TSTS &  CAN_TSTS_TOK1) == CAN_TSTS_TOK1)
+      {
+        state = CAN_TxStatus_Ok;
+      }
+      else
+      {
+        state = CAN_TxStatus_Failed;
+      }
+    }
+    else
+    {
+      state = CAN_TxStatus_Pending;
+    }
     break;
 
   case (CAN_TXMAILBOX_2):
-    state =   CANx->TSTS &  (CAN_TSTS_RQC2 | CAN_TSTS_TOK2 | CAN_TSTS_TSME2);
+    if((CANx->TSTS &  CAN_TSTS_RQC2) == CAN_TSTS_RQC2)
+    {
+      if((CANx->TSTS &  CAN_TSTS_TOK2) == CAN_TSTS_TOK2)
+      {
+        state = CAN_TxStatus_Ok;
+      }
+      else
+      {
+        state = CAN_TxStatus_Failed;
+      }
+    }
+    else
+    {
+      state = CAN_TxStatus_Pending;
+    }
     break;
-
   default:
     state = CAN_TxStatus_Failed;
     break;
   }
-
-  switch (state)
-  {
-    /* transmit pending  */
-  case (0x0):
-    state = CAN_TxStatus_Pending;
-    break;
-
-    /* transmit failed  */
-  case (CAN_TSTS_RQC0 | CAN_TSTS_TSME0):
-    state = CAN_TxStatus_Failed;
-    break;
-
-  case (CAN_TSTS_RQC1 | CAN_TSTS_TSME1):
-    state = CAN_TxStatus_Failed;
-    break;
-
-  case (CAN_TSTS_RQC2 | CAN_TSTS_TSME2):
-    state = CAN_TxStatus_Failed;
-    break;
-
-    /* transmit succeeded  */
-  case (CAN_TSTS_RQC0 | CAN_TSTS_TOK0 | CAN_TSTS_TSME0):
-    state = CAN_TxStatus_Ok;
-    break;
-
-  case (CAN_TSTS_RQC1 | CAN_TSTS_TOK1 | CAN_TSTS_TSME1):
-    state = CAN_TxStatus_Ok;
-    break;
-
-  case (CAN_TSTS_RQC2 | CAN_TSTS_TOK2 | CAN_TSTS_TSME2):
-    state = CAN_TxStatus_Ok;
-    break;
-
-  default:
-    state = CAN_TxStatus_Failed;
-    break;
-  }
-
   return (uint8_t) state;
 }
 
 /**
   * @brief  Cancels a transmit request.
-  * @param  CANx:     where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  Mailbox:  Mailbox number.
   * @retval None.
   */
@@ -848,13 +865,14 @@ void CAN_CancelTransmit(CAN_Type* CANx, uint8_t Mailbox)
   }
 }
 
-
 /**
   * @brief  Receives a message.
-  * @param  CANx:       where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
-  * @param  RxMessage:  pointer to a structure receive message which contains
-  *                     CAN Id, CAN DLC, CAN datas and FMI number.
+  * @param  RxMessage: pointer to a structure receive message which contains
+  *         CAN Id, CAN DLC, CAN datas and FMI number.
   * @retval None.
   */
 void CAN_Receive(CAN_Type* CANx, uint8_t FIFONumber, CanRxMsg* RxMessage)
@@ -904,7 +922,9 @@ void CAN_Receive(CAN_Type* CANx, uint8_t FIFONumber, CanRxMsg* RxMessage)
 
 /**
   * @brief  Releases the specified FIFO.
-  * @param  CANx:       where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  FIFONumber: FIFO to release, CAN_FIFO0 or CAN_FIFO1.
   * @retval None.
   */
@@ -928,9 +948,11 @@ void CAN_FIFORelease(CAN_Type* CANx, uint8_t FIFONumber)
 
 /**
   * @brief  Returns the number of pending messages.
-  * @param  CANx:       where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
-  * @retval NbMessage : which is the number of pending message.
+  * @retval message_pending : which is the number of pending message.
   */
 uint8_t CAN_MessagePending(CAN_Type* CANx, uint8_t FIFONumber)
 {
@@ -955,11 +977,13 @@ uint8_t CAN_MessagePending(CAN_Type* CANx, uint8_t FIFONumber)
   return message_pending;
 }
 
-
 /**
   * @brief   Select the CAN Operation mode.
-  * @param CAN_OperatingMode : CAN Operating Mode. This parameter can be one
-  *                            of @ref CAN_Operating_Mode enumeration.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
+  * @param CAN_OperatingMode : CAN Operating Mode. 
+  *         This parameter can be one of @ref CAN_Operating_Mode enumeration.
   * @retval status of the requested mode which can be
   *         - CAN_ModeStatus_Failed    CAN failed entering the specific mode
   *         - CAN_ModeStatus_Success   CAN Succeed entering the specific mode
@@ -1046,9 +1070,11 @@ uint8_t CAN_OperatingModeRequest(CAN_Type* CANx, uint8_t CAN_OperatingMode)
 
 /**
   * @brief  Enters the low power mode.
-  * @param  CANx:   where x can be only 1 to to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @retval status: CAN_Sleep_Ok if sleep entered, CAN_Sleep_Failed in an
-  *                 other case.
+  *         other case.
   */
 uint8_t CAN_Sleep(CAN_Type* CANx)
 {
@@ -1073,9 +1099,11 @@ uint8_t CAN_Sleep(CAN_Type* CANx)
 
 /**
   * @brief  Wakes the CAN up.
-  * @param  CANx:    where x can be only 1 to to select the CAN peripheral.
-  * @retval status:  CAN_WakeUp_Ok if sleep mode left, CAN_WakeUp_Failed in an
-  *                  other case.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
+  * @retval wakeupstatus: CAN_WakeUp_Ok if sleep mode left, CAN_WakeUp_Failed in an
+  *         other case.
   */
 uint8_t CAN_WakeUp(CAN_Type* CANx)
 {
@@ -1106,7 +1134,9 @@ uint8_t CAN_WakeUp(CAN_Type* CANx)
 
 /**
   * @brief  Deinitializes the CAN peripheral registers to their default reset values.
-  * @param  CANx: where x can be only 1 to select the CAN peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @retval None.
   */
 void CAN_Reset(CAN_Type* CANx)
@@ -1121,7 +1151,7 @@ void CAN_Reset(CAN_Type* CANx)
     /* Release CAN1 from reset state */
     RCC_APB1PeriphResetCmd(RCC_APB1PERIPH_CAN1, DISABLE);
   }
-#ifdef AT32F413xx
+#if defined (AT32F403Axx) || defined (AT32F407xx) || defined (AT32F413xx)
 #ifndef AT32FEBKCx_MD
   if (CANx == CAN2)
   {
@@ -1137,11 +1167,11 @@ void CAN_Reset(CAN_Type* CANx)
 /**
   * @brief  Initializes the CAN peripheral according to the specified
   *         parameters in the CAN_InitStruct.
-  * @param  CANx:           where x can be only 1 to to select the CAN
-  *                         peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_InitStruct: pointer to a CAN_InitType structure that
-  *                         contains the configuration information for the
-  *                         CAN peripheral.
+  *         contains the configuration information for the CAN peripheral.
   * @retval Constant indicates initialization succeed which will be
   *         CAN_InitStatus_Failed or CAN_InitStatus_Success.
   */
@@ -1278,11 +1308,11 @@ uint8_t CAN_Init(CAN_Type* CANx, CAN_InitType* CAN_InitStruct)
 /**
   * @brief  Initializes the CAN peripheral according to the specified
   *         parameters in the CAN_FilterInitStruct.
-  * @param  CANx:           where x can be only 1 to to select the CAN
-  *                         peripheral.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
   * @param  CAN_FilterInitStruct: pointer to a CAN_FilterInitType
-  *                               structure that contains the configuration
-  *                               information.
+  *         structure that contains the configuration information.
   * @retval None.
   */
 void CAN_FilterInit(CAN_Type* CANx, CAN_FilterInitType* CAN_FilterInitStruct)
@@ -1418,9 +1448,12 @@ void CAN_StructInit(CAN_InitType* CAN_InitStruct)
 
 /**
   * @brief  Enables or disables the DBG Freeze for CAN.
-  * @param  CANx:     where x can be only 1 to to select the CAN peripheral.
-  * @param  NewState: new state of the CAN peripheral. This parameter can
-  *                   be: ENABLE or DISABLE.
+  * @param  CANx: select the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         CAN1,CAN2(not support in AT32F403 and AT32F415).
+  * @param  NewState: new state of the CAN peripheral.
+  *         this parameter can be one of the following values:
+  *         ENABLE or DISABLE.
   * @retval None.
   */
 void CAN_DBGFreeze(CAN_Type* CANx, FunctionalState NewState)

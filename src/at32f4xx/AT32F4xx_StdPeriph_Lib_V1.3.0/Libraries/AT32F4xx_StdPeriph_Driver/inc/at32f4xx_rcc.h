@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_rcc.h
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx RCC header file
   **************************************************************************
   */
@@ -297,10 +297,17 @@ typedef struct
   */
 #define RCC_ERTCCLKSelection_LSE             ((uint32_t)0x00000100)
 #define RCC_ERTCCLKSelection_LSI             ((uint32_t)0x00000200)
+#ifdef AT32F421xx
+#define RCC_ERTCCLKSelection_HSE_Div32       ((uint32_t)0x00000300)
+#define IS_RCC_ERTCCLK_SEL(SEL)              (((SEL) == RCC_ERTCCLKSelection_LSE) || \
+                                              ((SEL)  == RCC_ERTCCLKSelection_LSI) || \
+                                              ((SEL)  == RCC_ERTCCLKSelection_HSE_Div32))
+#else
 #define RCC_ERTCCLKSelection_HSE_Div128      ((uint32_t)0x00000300)
 #define IS_RCC_ERTCCLK_SEL(SEL)              (((SEL) == RCC_ERTCCLKSelection_LSE) || \
                                               ((SEL)  == RCC_ERTCCLKSelection_LSI) || \
                                               ((SEL)  == RCC_ERTCCLKSelection_HSE_Div128))
+#endif
 #else
 /** @defgroup RTC_clock_source
   * @{

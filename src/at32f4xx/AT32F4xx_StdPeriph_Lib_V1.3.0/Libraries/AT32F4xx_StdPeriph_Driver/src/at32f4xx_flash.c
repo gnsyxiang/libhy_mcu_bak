@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_flash.c
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx FMC source file
   **************************************************************************
   */
@@ -82,9 +82,9 @@
 
 /* Delay definition */
 #define ERS_TIMEOUT                 ((uint32_t)0x10000000)
-#define PRGM_TIMEOUT                ((uint32_t)0x0000F000)
+#define PRGM_TIMEOUT                ((uint32_t)0x00100000)
 #define EXT_FLASH_ERS_TIMEOUT       ((uint32_t)0xFFFFFFFF)
-#define EXT_FLASH_PRGM_TIMEOUT      ((uint32_t)0x00080000)
+#define EXT_FLASH_PRGM_TIMEOUT      ((uint32_t)0x00100000)
 /**
   * @}
   */
@@ -1580,7 +1580,7 @@ FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
 
   if(FLASH_FLAG == FLASH_FLAG_UOBFLR)
   {
-    if((FLASH->UOB & FLASH_FLAG_UOBFLR) != (uint32_t)RESET)
+    if((FLASH->UOB & 0x01) != (uint32_t)RESET)
     {
       bitstatus = SET;
     }
@@ -1632,7 +1632,7 @@ FlagStatus FLASH_GetFlagStatus(uint32_t FLASH_FLAG)
 
   if(FLASH_FLAG == FLASH_FLAG_UOBFLR)
   {
-    if((FLASH->UOB & FLASH_FLAG_UOBFLR) != (uint32_t)RESET)
+    if((FLASH->UOB & 0x01) != (uint32_t)RESET)
     {
       bitstatus = SET;
     }

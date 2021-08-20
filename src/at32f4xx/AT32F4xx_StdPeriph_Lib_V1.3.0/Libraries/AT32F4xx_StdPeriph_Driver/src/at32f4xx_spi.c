@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_spi.c
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx SPI source file
   **************************************************************************
   */
@@ -349,16 +349,33 @@ void I2S_Init(SPI_Type* SPIx, I2S_InitType* I2S_InitStruct)
     sourceclock = RCC_Clocks.SYSCLK_Freq;
 
     /* Compute the Real divider depending on the MCLK output state with a floating point */
-    if(I2S_InitStruct->I2S_MCLKOE == I2S_MCLKOE_ENABLE)
+    if((I2S_InitStruct->I2s_AudioProtocol == I2S_AUDIOPROTOCOL_PCMLONG) || (I2S_InitStruct->I2s_AudioProtocol == I2S_AUDIOPROTOCOL_PCMSHORT))
     {
-      /* MCLK output is enabled */
-      tmp = (uint16_t)(((((sourceclock / 256) * 10) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      if(I2S_InitStruct->I2S_MCLKOE == I2S_MCLKOE_ENABLE)
+      {
+        /* MCLK output is enabled */
+        tmp = (uint16_t)(((((sourceclock / 128) * 10) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      }
+      else
+      {
+        /* MCLK output is disabled */
+        tmp = (uint16_t)(((((sourceclock / (16 * packetlength)) * 10 ) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      }
     }
     else
     {
-      /* MCLK output is disabled */
-      tmp = (uint16_t)(((((sourceclock / (32 * packetlength)) * 10 ) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      if(I2S_InitStruct->I2S_MCLKOE == I2S_MCLKOE_ENABLE)
+      {
+        /* MCLK output is enabled */
+        tmp = (uint16_t)(((((sourceclock / 256) * 10) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      }
+      else
+      {
+        /* MCLK output is disabled */
+        tmp = (uint16_t)(((((sourceclock / (32 * packetlength)) * 10 ) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      }
     }
+    
 
     /* Remove the floating point */
     tmp = tmp / 10;

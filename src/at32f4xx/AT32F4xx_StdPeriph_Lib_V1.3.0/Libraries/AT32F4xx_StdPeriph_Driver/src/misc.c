@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : misc.c
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx MISC source file
   **************************************************************************
   */
@@ -108,6 +108,10 @@ void NVIC_Init(NVIC_InitType* NVIC_InitStruct)
 
   if (NVIC_InitStruct->NVIC_IRQChannelCmd != DISABLE)
   {
+    if(((SCB->AIRCR) & (uint32_t)0x700) < 0x300)
+    {
+      NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+    }
     /* Compute the Corresponding IRQ Priority --------------------------------*/
     tmppriority = (0x700 - ((SCB->AIRCR) & (uint32_t)0x700)) >> 0x08;
     tmppre = (0x4 - tmppriority);

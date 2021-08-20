@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * File   : at32f4xx_rcc.c
-  * Version: V1.3.0
-  * Date   : 2021-03-18
+  * Version: V1.3.1
+  * Date   : 2021-08-06
   * Brief  : at32f4xx RCC source file
   **************************************************************************
   */
@@ -628,7 +628,8 @@ void RCC_LSICmd(FunctionalState NewState)
   *   This parameter can be one of the following values:
   *     @arg RCC_ERTCCLKSelection_LSE: LSE selected as ERTC clock
   *     @arg RCC_ERTCCLKSelection_LSI: LSI selected as ERTC clock
-  *     @arg RCC_ERTCCLKSelection_HSE_Div128: HSE clock divided by 128 selected as ERTC clock
+  *     @arg RCC_ERTCCLKSelection_HSE_Div32: HSE clock divided by 32 selected as ERTC clock for AT32F421xx
+  *     @arg RCC_ERTCCLKSelection_HSE_Div128: HSE clock divided by 128 selected as ERTC clock for AT32F415xx
   * @retval None
   */
 void RCC_ERTCCLKConfig(uint32_t RCC_ERTCCLKSelect)
