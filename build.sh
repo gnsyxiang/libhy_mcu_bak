@@ -21,9 +21,14 @@ if [ x$1 = x"mcu" ]; then
     gcc_prefix=arm-none-eabi
     cross_gcc_path=${data_disk_path}/opt/toolchains/${vender}/${gcc_version}/bin/${gcc_prefix}-
     _ldflag_com="-specs=nano.specs -specs=nosys.specs"
-    # _param_com="--with-mcu_cortex=m0 --with-mcu=hc32l13x"
+
+    # _cppflags_com=""
+    # _cflags_com="-mcpu=cortex-m0 -mthumb"
+    # _param_com="--with-mcu=hc32l13x"
+
     _cppflags_com="-DAT32F407VGT7 -DAT_START_F407_V1_0 -DUSE_STDPERIPH_DRIVER -DSYSCLK_FREQ_240MHz=240000000"
-    _param_com="--with-mcu_cortex=m4 --with-mcu=at32f4xx"
+    _cflags_com="-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard"
+    _param_com="--with-mcu=at32f4xx"
 else
     help_info
 fi
@@ -46,7 +51,7 @@ ${target_path}/configure                                    \
     CC=${cross_gcc_path}gcc                                 \
     CXX=${cross_gcc_path}g++                                \
     CPPFLAGS="-I${lib_3rd_path}/include ${_cppflags_com}"   \
-    CFLAGS=""                                               \
+    CFLAGS="${_cflags_com}"                                 \
     CXXFLAGS=""                                             \
     LDFLAGS="-L${lib_3rd_path}/lib ${_ldflag_com}"          \
     LIBS=""                                                 \

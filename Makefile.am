@@ -67,14 +67,6 @@ CFLAGS_COM          += $(_remove_unuse_func)
 CXXFLAGS_COM        += $(_remove_unuse_func)
 BIN_LDFLAGS_COM     += -Wl,--gc-sections
 
-if COMPILE_SELECT_MCU_CORTEX_M0
-CFLAGS_COM          += $(M0_CFLAGS)
-endif
-
-if COMPILE_SELECT_MCU_CORTEX_M4
-CFLAGS_COM          += $(M4_CFLAGS)
-endif
-
 export CPPFLAGS_COM
 export CFLAGS_COM
 export CXXFLAGS_COM
