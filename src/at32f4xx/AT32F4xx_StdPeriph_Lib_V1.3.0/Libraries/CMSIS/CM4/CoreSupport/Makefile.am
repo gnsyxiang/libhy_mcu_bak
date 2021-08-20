@@ -35,14 +35,14 @@ _no_install_headers_com += \
                            arm_math.h \
                            cmsis_armcc.h \
                            cmsis_armcc_V6.h \
-                           cmsis_gcc.h \
-                           cmsis_iar.h \
-                           core_cm4.h \
-                           core_cmFunc.h \
-                           core_cmInstr.h \
-                           core_cmSimd.h
+                           cmsis_iar.h
 
-_install_headers_com    +=
+_install_headers_com    += \
+                           core_cmSimd.h \
+                           core_cmFunc.h \
+                           cmsis_gcc.h \
+                           core_cmInstr.h \
+                           core_cm4.h
 
 # ------------------
 # make install files

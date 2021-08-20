@@ -69,12 +69,12 @@ libDeviceSupport_la_CXXFLAGS = $(_cxxflags_com)
 libDeviceSupport_la_LDFLAGS  = $(_ldflags_com)
 libDeviceSupport_la_LIBADD   = $(_ldadd_com)
 
-_no_install_headers_com += \
-                           at32f4xx.h \
-                           at32f4xx_conf.h \
-                           system_at32f4xx.h
+_no_install_headers_com +=
 
-_install_headers_com    +=
+_install_headers_com    += \
+                           at32f4xx_conf.h \
+                           system_at32f4xx.h \
+                           at32f4xx.h
 
 # ------------------
 # make install files

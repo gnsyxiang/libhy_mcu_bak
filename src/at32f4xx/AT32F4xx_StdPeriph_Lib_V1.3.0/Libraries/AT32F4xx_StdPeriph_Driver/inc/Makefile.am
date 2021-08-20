@@ -29,7 +29,9 @@ install_includedir      = $(includedir)/@project_name@
 # ---------------------
 # add necessary content
 # ---------------------
-_no_install_headers_com += \
+_no_install_headers_com +=
+
+_install_headers_com    += \
                            at32f4xx_acc.h \
                            at32f4xx_adc.h \
                            at32f4xx_bkp.h \
@@ -43,6 +45,7 @@ _no_install_headers_com += \
                            at32f4xx_eth.h \
                            at32f4xx_exti.h \
                            at32f4xx_flash.h \
+                           at32f4xx_gpio_ex.h \
                            at32f4xx_gpio.h \
                            at32f4xx_i2c.h \
                            at32f4xx_iwdg.h \
@@ -51,13 +54,12 @@ _no_install_headers_com += \
                            at32f4xx_rtc.h \
                            at32f4xx_sdio.h \
                            at32f4xx_spi.h \
+                           at32f4xx_syscfg.h \
                            at32f4xx_tim.h \
                            at32f4xx_usart.h \
                            at32f4xx_wwdg.h \
                            at32f4xx_xmc.h \
                            misc.h
-
-_install_headers_com    +=
 
 # ------------------
 # make install files
