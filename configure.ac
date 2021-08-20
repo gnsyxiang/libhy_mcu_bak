@@ -4,7 +4,6 @@
 AC_PREREQ([2.69])
 
 m4_include([m4/check_project_info.m4])
-m4_include([m4/get_cross_gcc_info.m4])
 
 AC_INIT([PROJECT_NAME], [VERSION_NUM], [EMAIL_INFO], [PROJECT_NAME], [PROJECT_URL])
 AC_CONFIG_SRCDIR([config.h.in])
@@ -22,13 +21,12 @@ PKG_PROG_PKG_CONFIG([0.24])
 
 # check m4 macro
 CHECK_PROJECT_INFO
-GCC_PREFIX_INFO
 CHECK_VERSION_INFO
 CHECK_DOXYGEN
 CHECK_JAVA
 
 SELECT_MCU_CORTEX
-ENABLE_MCU
+SELECT_MCU
 
 # Checks for programs.
 AC_PROG_CXX
@@ -78,25 +76,18 @@ AC_CONFIG_FILES([Makefile
                  include/Makefile
                  res/Makefile
                  src/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/AT32F4xx_StdPeriph_Driver/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/AT32F4xx_StdPeriph_Driver/inc/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/AT32F4xx_StdPeriph_Driver/src/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/CM4/CoreSupport/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/CM4/DeviceSupport/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/CM4/DeviceSupport/startup/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/CM4/DeviceSupport/startup/gcc/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/CM4/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Libraries/Makefile
-                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/AT32F4xx_StdPeriph_Driver/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/AT32F4xx_StdPeriph_Driver/inc/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/AT32F4xx_StdPeriph_Driver/src/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/CM4/CoreSupport/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/CM4/DeviceSupport/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/CM4/DeviceSupport/startup/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/CM4/DeviceSupport/startup/gcc/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/CM4/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/CMSIS/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/Makefile
+                 src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Makefile
                  src/at32f4xx/Makefile
-                 src/at32f4xx/lwip-2.1.2/Makefile
-                 src/at32f4xx/lwip-2.1.2/port/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/api/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/core/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/core/ipv4/Makefile
-                 src/at32f4xx/lwip-2.1.2/src/netif/Makefile
                  src/hc32l13x/CMSIS/Include/Makefile
                  src/hc32l13x/CMSIS/Makefile
                  src/hc32l13x/Makefile

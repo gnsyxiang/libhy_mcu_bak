@@ -18,11 +18,11 @@
 #     last modified: 15/07 2021 13:36
 # ===============================================================
 
-if COMPILE_MCU_AT32F4XX
+if COMPILE_SELECT_MCU_AT32F4XX
 mcu_type = at32f4xx
 endif
 
-if COMPILE_MCU_HC32L13X
+if COMPILE_SELECT_MCU_HC32L13X
 mcu_type = hc32l13x
 endif
 

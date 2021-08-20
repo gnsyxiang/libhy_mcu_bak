@@ -18,7 +18,7 @@
 #     last modified: 05/03 2021 10:35
 # ===============================================================
 
-SUBDIRS = AT32F4xx_StdPeriph_Lib_V1.3.0
+SUBDIRS = $(AT32F4XX_DRIVER)
 
 noinst_LTLIBRARIES = libmcu.la
 
@@ -36,7 +36,7 @@ _ldadd_com      =
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    +=
+_include_com    += -I$(top_srcdir)/include
 
 _sources_com    += hy_func_check.c
 
@@ -50,7 +50,7 @@ _cxxflags_com   += $(CXXFLAGS_COM)
 
 _ldflags_com    += $(LIB_LDFLAGS_COM)
 
-_ldadd_com      += $(top_builddir)/src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.0/libStdPeriph_Lib.la
+_ldadd_com      += $(top_builddir)/src/at32f4xx/$(AT32F4XX_DRIVER)/libmcu_driver.la
 
 libmcu_la_SOURCES    = $(_sources_com)
 libmcu_la_CPPFLAGS   = $(_cppflags_com)

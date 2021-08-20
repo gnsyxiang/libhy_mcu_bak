@@ -1,0 +1,49 @@
+dnl ===============================================================
+dnl 
+dnl Release under GPLv-3.0.
+dnl 
+dnl @file    select_mcu.m4
+dnl @brief   
+dnl @author  gnsyxiang <gnsyxiang@163.com>
+dnl @date    20/08 2021 09:26
+dnl @version v0.0.1
+dnl 
+dnl @since    note
+dnl @note     note
+dnl 
+dnl     change log:
+dnl     NO.     Author              Date            Modified
+dnl     00      zhenquan.qiu        20/08 2021      create the file
+dnl 
+dnl     last modified: 20/08 2021 09:26
+dnl ===============================================================
+
+# SELECT_MCU()
+# --------------------------------------------------------------
+# select mcu
+
+AC_DEFUN([SELECT_MCU],
+    [
+        AC_ARG_WITH([mcu],
+            [AS_HELP_STRING([--with-mcu=@<:@at32f4xx|hc32l13x@:>@], [select system os about @<:@at32f4xx|hc32l13x@:>@ @<:@default=at32f4xx@:>@])],
+            [],
+            [with_mcu=at32f4xx])
+
+        case "$with_mcu" in
+            at32f4xx)
+                AC_DEFINE(HAVE_SELECT_MCU_AT32F4XX,  1, [select mcu at32f4xx])
+                AT32F4XX_DRIVER="AT32F4xx_StdPeriph_Lib_V1.3.1"
+                AC_SUBST(AT32F4XX_DRIVER)
+            ;;
+            hc32l13x)
+                AC_DEFINE(HAVE_SELECT_MCU_HC32L13X,  1, [select mcu hc32l13x])
+                HC32L13X_DRIVER=""
+                AC_SUBST(HC32L13X_DRIVER)
+            ;;
+            *) AC_MSG_ERROR([bad value ${with_mcu} for --with-mcu=@<:@at32f4xx|hc32l13x@:>@]) ;;
+        esac
+
+        AM_CONDITIONAL([COMPILE_SELECT_MCU_AT32F4XX],    [test "x$with_mcu" = "xat32f4xx"])
+        AM_CONDITIONAL([COMPILE_SELECT_MCU_HC32L13X],    [test "x$with_mcu" = "xhc32l13x"])
+    ])
+
