@@ -18,19 +18,15 @@
 #     last modified: 15/07 2021 13:36
 # ===============================================================
 
-if COMPILE_SELECT_MCU_AT32F4XX
-mcu_type = at32f4xx
+if COMPILE_SELECT_MCU_AT
+vender_type = at
 endif
 
-if COMPILE_SELECT_MCU_HC32L13X
-mcu_type = hc32l13x
+if COMPILE_SELECT_MCU_HC
+vender_type = hc
 endif
 
-if COMPILE_SELECT_MCU_HC32F003
-mcu_type = hc32f003
-endif
-
-SUBDIRS = $(mcu_type)
+SUBDIRS = $(vender_type)
 
 lib_LTLIBRARIES = lib@project_name@.la
 
@@ -48,9 +44,9 @@ _ldadd_com      =
 # ---------------------
 # add necessary content
 # ---------------------
-_include_com    +=
+_include_com    += -I$(top_srcdir)/include
 
-_sources_com    +=
+_sources_com    += hy_func_check.c
 
 _cppflags_com   += \
                    $(CPPFLAGS_COM) \
@@ -65,7 +61,7 @@ _ldflags_com    += \
                    -version-info @current@:@revision@:@age@ \
                    $(LIB_LDFLAGS_COM)
 
-_ldadd_com      += $(top_builddir)/src/$(mcu_type)/libmcu.la
+_ldadd_com      += $(top_builddir)/src/$(vender_type)/libmcu_vender.la
 
 lib@project_name@_la_SOURCES    = $(_sources_com)
 lib@project_name@_la_CPPFLAGS   = $(_cppflags_com)
