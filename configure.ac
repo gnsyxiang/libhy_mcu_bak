@@ -48,6 +48,7 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h netinet/in.h s
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
 AC_TYPE_INT16_T
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
@@ -66,6 +67,7 @@ AC_CHECK_TYPES([ptrdiff_t])
 
 # Checks for library functions.
 AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MALLOC
 AC_CHECK_FUNCS([gethostbyname gettimeofday inet_ntoa memmove memset select strchr strdup strerror strncasecmp strrchr strstr strtol strtoul])
 
 AC_CONFIG_FILES([Makefile
@@ -87,6 +89,14 @@ AC_CONFIG_FILES([Makefile
                  src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Libraries/Makefile
                  src/at32f4xx/AT32F4xx_StdPeriph_Lib_V1.3.1/Makefile
                  src/at32f4xx/Makefile
+                 src/hc32f003/CMSIS/Include/Makefile
+                 src/hc32f003/CMSIS/Makefile
+                 src/hc32f003/Makefile
+                 src/hc32f003/driver/Makefile
+                 src/hc32f003/driver/inc/Makefile
+                 src/hc32f003/driver/src/Makefile
+                 src/hc32f003/mcu/Makefile
+                 src/hc32f003/mcu/common/Makefile
                  src/hc32l13x/CMSIS/Include/Makefile
                  src/hc32l13x/CMSIS/Makefile
                  src/hc32l13x/Makefile

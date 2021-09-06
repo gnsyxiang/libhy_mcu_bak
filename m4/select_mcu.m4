@@ -25,7 +25,7 @@ dnl ===============================================================
 AC_DEFUN([SELECT_MCU],
     [
         AC_ARG_WITH([mcu],
-            [AS_HELP_STRING([--with-mcu=@<:@at32f4xx|hc32l13x@:>@], [select system os about @<:@at32f4xx|hc32l13x@:>@ @<:@default=at32f4xx@:>@])],
+            [AS_HELP_STRING([--with-mcu=@<:@at32f4xx|hc32l13x|hc32f003@:>@], [select system os about @<:@at32f4xx|hc32l13x|hc32f003@:>@ @<:@default=at32f4xx@:>@])],
             [],
             [with_mcu=at32f4xx])
 
@@ -40,10 +40,16 @@ AC_DEFUN([SELECT_MCU],
                 HC32L13X_DRIVER=""
                 AC_SUBST(HC32L13X_DRIVER)
             ;;
-            *) AC_MSG_ERROR([bad value ${with_mcu} for --with-mcu=@<:@at32f4xx|hc32l13x@:>@]) ;;
+            hc32f003)
+                AC_DEFINE(HAVE_SELECT_MCU_HC32F003,  1, [select mcu hc32f003])
+                HC32F003_DRIVER=""
+                AC_SUBST(HC32F003_DRIVER)
+            ;;
+            *) AC_MSG_ERROR([bad value ${with_mcu} for --with-mcu=@<:@at32f4xx|hc32l13x|hc32f003@:>@]) ;;
         esac
 
         AM_CONDITIONAL([COMPILE_SELECT_MCU_AT32F4XX],    [test "x$with_mcu" = "xat32f4xx"])
         AM_CONDITIONAL([COMPILE_SELECT_MCU_HC32L13X],    [test "x$with_mcu" = "xhc32l13x"])
+        AM_CONDITIONAL([COMPILE_SELECT_MCU_HC32F003],    [test "x$with_mcu" = "xhc32f003"])
     ])
 

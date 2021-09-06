@@ -26,6 +26,10 @@ if COMPILE_SELECT_MCU_HC32L13X
 mcu_type = hc32l13x
 endif
 
+if COMPILE_SELECT_MCU_HC32F003
+mcu_type = hc32f003
+endif
+
 SUBDIRS = $(mcu_type)
 
 lib_LTLIBRARIES = lib@project_name@.la
